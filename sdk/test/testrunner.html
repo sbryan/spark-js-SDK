@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="utf-8">
+        <title>Mocha Tests</title>
+        <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    </head>
+    <body>
+        <div id="mocha"></div>
+        <script src="../node_modules/should/should.js"></script>
+        <script src="../node_modules/mocha/mocha.js"></script>
+
+        <script src="../src/AutodeskNamespace.js"></script>
+        <script src="../src/Request.js"></script>
+        <!-- Add script files above this line -->
+
+        <script>mocha.setup('bdd')</script>
+
+        <script src="RequestSpec.js"></script>
+        <!-- Add unit test files above this line -->
+
+        <script>
+            mocha.checkLeaks();
+            mocha.run();
+        </script>
+    </body>
+</html>
