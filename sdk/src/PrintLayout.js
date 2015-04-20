@@ -18,7 +18,7 @@ Autodesk.Spark.PrintLayout = function( printerType, layoutName )
 
     var _this = this;
     var _lock = false;
-    var _name = 'Print Job';    // TODO: Make unique with date stamp "... YYYY/MM/DD HH:MM"
+    var _name = layoutName || 'Print Job';    // TODO: Make unique with date stamp "... YYYY/MM/DD HH:MM"
     var _prepared = false;
     var _models = [];           // List of PrintModel's in this layout.
     var _settings = {};         // Printer settings (or profile?)
@@ -125,7 +125,7 @@ Autodesk.Spark.PrintLayout = function( printerType, layoutName )
         function removeModel(index)
         {
             var removed = _models.splice(index, 1);
-            // TODO... what else do we need to do here?
+            // TODO... what else do we need to do here? Update visuals?
             return _this;
         }
         return checkLock(modelIndex).then(unprepareLayout).then(removeModel);
@@ -151,7 +151,6 @@ Autodesk.Spark.PrintLayout = function( printerType, layoutName )
 
             return model.transform(transform);
         }
-
         return checkLock([modelIndex, transform]).then(unprepareLayout).then(transformModel);
     };
 
@@ -335,7 +334,17 @@ Autodesk.Spark.PrintLayout = function( printerType, layoutName )
     {
         // TODO: We probably should lock the PrintModel objects in this layout.
         if( state && this.getPrintable() )
+        {
             _lock = state;
+            return true;
+        }
+        return false;
+    };
+
+
+    this.getLock = function()
+    {
+        return _lock;
     };
 
 

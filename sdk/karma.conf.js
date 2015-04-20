@@ -18,6 +18,7 @@ module.exports = function(config) {
       'node_modules/should/should.js',
       'src/AutodeskNamespace.js', // This should be replaced with 'src/*.js' once the rest of the files don't have errors
       'src/Request.js',
+      'src/PrintLayout.js',
       'test/*Spec.js'
     ],
 
