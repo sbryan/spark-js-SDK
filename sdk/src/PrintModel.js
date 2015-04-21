@@ -17,9 +17,10 @@ var ADSKSpark = ADSKSpark || {};
  */
 
 
-ADSKSpark.PrintModel = function( source, name )
+ADSKSpark.PrintModel = function( source, name, fileInfo )
 {
-    var Client = ADSKSpark.Client;
+    var Client  = ADSKSpark.Client;
+    var MeshAPI = ADSKSpark.MeshAPI;
 
     // A print model represents a single Spark Mesh resource and tracks
     // as much information as possible about this entity.
@@ -28,63 +29,13 @@ ADSKSpark.PrintModel = function( source, name )
     var _this = this;
     var _sourceModel = source;  // Source file path.
     var _name = name;
+    var _fileInfo = fileInfo;
     var _error = null;
-    var _fileInfo = null;
     var _meshData = null;
     var _importPromise = null;
     var _serial = 0;
     var _options = { 'reposition': true, 'reorient': true, 'support': true };
 
-    function readFileData()
-    {
-        return new Promise(function(resolve, reject) {
-            if( _fileInfo  === null )
-            {
-                var fileData = readfile(_sourceModel);
-                _fileInfo = [fileData, _name];
-                resolve(_fileInfo);
-            }
-            else
-                resolve(_fileInfo);
-        });
-    }
-
-    function uploadFile(result)
-    {
-        return new Promise(function(resolve, reject) {
-            if( _fileInfo  === null )
-            {
-                var fileData = result[0];
-                var fileName = result[1];
-                // TODO: How to do multi-part form data upload?
-                Client.authorizedApiRequest('files/upload/', fileData).post().then(function(response) {
-                    _fileInfo = response.files[0];
-                    resolve(_fileInfo);
-                });
-            }
-            else
-                resolve(_fileInfo);
-        });
-    }
-
-    function importMesh(fileInfo)
-    {
-        return new Promise(function(resolve, reject) {
-            var payload = {
-                file_id: fileInfo.file_id,
-                name: _name,
-                transform: [
-                    [1, 0, 0, 0],
-                    [0, 1, 0, 0],
-                    [0, 0, 1, 0]
-                ]
-            };
-            Client.authorizedApiRequest('meshes/import/', payload).post().then(function(response) {
-                _meshData = response;
-                resolve(_meshData);  // Response is Spark Mesh data
-            });
-        });
-    }
 
     function setMeshData(data)
     {
@@ -103,20 +54,13 @@ ADSKSpark.PrintModel = function( source, name )
 
 
     // Returns promise that resolves to this object.
-	this.importMesh = function()
+	this.importMesh = function(progressCallback)
     {
         if( !_importPromise )
-            _importPromise = readFileData().then(uploadFile).then(importMesh).then(setMeshData).catch(setError);
+            _importPromise = MeshAPI.importMesh(_fileInfo.file_id, _name, transform, progressCallback)
+                            .then(setMeshData).catch(setError);
 
         return _importPromise;
-    };
-
-
-    // Do we need this???
-	this.setName = function( name )
-    {
-        // If so, do we POST to meshes/rename and update the mesh data?
-        _name = name;
     };
 
 
@@ -146,31 +90,28 @@ ADSKSpark.PrintModel = function( source, name )
     };
 
 
-	this.transform = function( transform )
+	this.transform = function( transform, progressCallback )
     {
         // TODO: Check if the transform valid and is different.
         // TODO: Check if the mesh has been imported
         //
-        return new Promise(function(resolve, reject) {
-            var payload = {
-                id: _meshData.id,
-                transform: transform
-            };
-            Client.authorizedApiRequest('meshes/transform/', payload).post().then(function(response) {
-                // Update model with new mesh data
-                setMeshData(response.result);
-            });
-        });
+        return MeshAPI.transformMesh(this.getId(), transform, progressCallback)
+                .then(setMeshData);
     };
 
 
-	this.analyze = function()
+	this.analyze = function(progressCallback)
     {
         // Returns promise. May already be fulfilled if analyzed previously.
+        if( _meshData && _meshData.analyzed )
+            return Promise.resolve(_meshData);
+
+        return MeshAPI.analyzeMesh(this.getId(), transform, progressCallback)
+                .then(setMeshData);
     };
 
 
-	this.repair = function(all)
+	this.repair = function(all, progressCallback)
     {
         // Returns promise. On success _meshData is updated.
         // Consider: Track old mesh value and operation for undo/redo.

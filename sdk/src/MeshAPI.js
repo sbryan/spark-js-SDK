@@ -36,6 +36,8 @@ var ADSKSpark = ADSKSpark || {};
     ADSKSpark.MeshAPI = {
         /**
          */
+
+        // progressCallback is optional
         importMesh: function(fileId, name, generateVisual, transform, progressCallback) {
 
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
@@ -44,8 +46,39 @@ var ADSKSpark = ADSKSpark || {};
                     .then(waiter.wait);
         },
 
+        // progressCallback is optional (not implemented yet)
         uploadFile: function(file, progressCallback) {
             return uploadFileObject(file, progressCallback);
         },
+
+        transformMesh: function( meshId, transform ) {
+            var payload = {
+                id: meshId,
+                transform: transform
+            };
+            return Client.authorizedApiRequest('meshes/transform', payload).post();
+        },
+
+        // progressCallback is optional
+        analyzeMesh: function( meshId, progressCallback ) {
+            var payload = {
+                id: meshId
+            };
+            // TODO: It's possible to get immediate 200 response instead of 202 + task.
+            var waiter = new ADSKSpark.TaskWaiter(progressCallback);
+            return Client.authorizedApiRequest('meshes/analyze', payload).post()
+                    .then(waiter.wait);
+        },
+
+        generateVisual: function( meshId, progressCallback ) {
+            var payload = {
+                id: meshId
+            };
+            // TODO: It's possible to get immediate 200 response instead of 202 + task.
+            var waiter = new ADSKSpark.TaskWaiter(progressCallback);
+            return Client.authorizedApiRequest('meshes/generateVisual', payload).post()
+                    .then(waiter.wait);
+        }
+
     };
 }());
