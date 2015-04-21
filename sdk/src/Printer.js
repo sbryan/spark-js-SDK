@@ -5,80 +5,6 @@ var Spark = Spark || {};
 
 
     /**
-     * A base class for paginated arrays of items.
-     * @param {Object} data - JSON data.
-     * @constructor
-     */
-    Spark.Paginated = function (data) {
-        this._parse(data);
-    };
-
-    Spark.Paginated.prototype = Object.create(Array.prototype); // Almost-array
-    Spark.Paginated.prototype.constructor = Spark.Paginated;
-
-    Spark.Paginated.prototype._parse = function (data) {
-        this.clear();
-        this.raw = data;
-    };
-
-    /**
-     * Return true if the previous link is valid.
-     * @returns {boolean}
-     */
-    Spark.Paginated.prototype.hasPrev = function () {
-        return this.raw._link_prev != '';
-    };
-
-    /**
-     * Get previous items.
-     * Updates this object with the new items.
-     * @returns {?Promise} - A Promise that will resolve to an array of items.
-     */
-    Spark.Paginated.prototype.prev =  function () {
-        var link_prev = this.raw._link_prev,
-            that = this;
-
-        if (link_prev) {
-            return Client.authorizedApiRequest(link_prev)
-                .get()
-                .then(function (data) {
-                    that._parse(data);
-                    return that;
-                });
-        }
-        return null;
-    };
-
-    /**
-     * Return true if the next link is valid.
-     * @returns {boolean}
-     */
-    Spark.Paginated.prototype.hasNext = function () {
-        return this.raw._link_next != '';
-    };
-
-    /**
-     * Get next items.
-     * Updates this object with the new items.
-     * @returns {?Promise} - A Promise that will resolve to an array of items.
-     */
-    Spark.Paginated.prototype.next = function () {
-        var link_next = this.raw._link_next,
-            that = this;
-
-        if (link_next) {
-            return Client.authorizedApiRequest(link_next)
-                .get()
-                .then(function (data) {
-                    that._parse(data);
-                    return that;
-                });
-        }
-        return null;
-    };
-
-
-    /**
      * A paginated array of printers.
      * @param {Object} data - JSON data.
      * @constructor
@@ -111,31 +37,6 @@ var Spark = Spark || {};
             var that = this;
             printers.forEach(function (printer) {
                 that.push(new Spark.Printer(printer));
-            });
-        }
-    };
-
-
-    /**
-     * A paginated array of jobs.
-     * @param {Object} data - JSON data.
-     * @constructor
-     */
-    Spark.Jobs = function (data) {
-        Spark.Paginated.call(this, data);
-    };
-
-    Spark.Jobs.prototype = Object.create(Spark.Paginated);
-    Spark.Jobs.prototype.constructor = Spark.Jobs;
-
-    Spark.Jobs.prototype._parse = function (data) {
-        Spark.Paginated.prototype._parse.apply(this, data);
-
-        var jobs = data.printer_jobs;
-        if (Array.isArray(jobs)) {
-            var that = this;
-            jobs.forEach(function (job) {
-                that.push(job);
             });
         }
     };
@@ -268,15 +169,16 @@ var Spark = Spark || {};
             return this.sendCommand('calibrate');
         },
 
-        _kLatestFirmwareVersion: "1.1.20150219.0", // TODO: add to config
+        _kLatestFirmwareVersion: "1.1.20150219.0", // TODO: ember only. add to config?
 
         /**
          * Return true if the printer firmware needs to be updated.
+         * TODO: where to find this data for different printer versions?
          * @returns {boolean}
          */
         needsFirmwareUpgrade: function () {
             if (this.firmware) {
-                if (printerFrontend.Utils.versionCompare(this.firmware, _kLatestFirmwareVersion) === -1) { // TODO: extract
+                if (this._versionCompare(this.firmware, _kLatestFirmwareVersion) === -1) {
                     return true;
                 }
             }
@@ -321,7 +223,7 @@ var Spark = Spark || {};
          * @param {String} command
          * @param {String} params
          * @param {Object} options
-         * @returns {Promise} - A Promise that will resolve to the task status.
+         * @returns {Promise} - A Promise that will resolve to the command status.
          */
         sendCommandAndWait: function (command, params, options) {
             this.sendCommand(command, params)
@@ -336,7 +238,7 @@ var Spark = Spark || {};
         /**
          * Send a command to the printer.
          * @param {String} command
-         * @param {String} params
+         * @param {String} [params]
          * @returns {Promise} - A Promise that will resolve to the command and task_id.
          */
         sendCommand: function (command, params) {
@@ -352,7 +254,7 @@ var Spark = Spark || {};
          * @param {String} command
          * @param {String} task_id
          * @param {Object} options
-         * @returns {Promise} - A Promise that will resolve to the command and task_id.
+         * @returns {Promise} - A Promise that will resolve to the command status.
          */
         waitForCommand: function (command, task_id, options) {
             options = options || {};
@@ -447,6 +349,54 @@ var Spark = Spark || {};
         startJob: function (job_id) {
             return Client.authorizedApiRequest('/print/printers/' + this.id + '/jobs')
                 .put({job_id: job_id});
+        },
+
+        // http://stackoverflow.com/questions/6832596/how-to-compare-software-version-number-using-js-only-number
+        _versionCompare: function(v1, v2, options) {
+            var lexicographical = options && options.lexicographical,
+                zeroExtend = options && options.zeroExtend,
+                v1parts = v1.split('.'),
+                v2parts = v2.split('.');
+
+            function isValidPart(x) {
+                return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+            }
+
+            if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+                return NaN;
+            }
+
+            if (zeroExtend) {
+                while (v1parts.length < v2parts.length) v1parts.push("0");
+                while (v2parts.length < v1parts.length) v2parts.push("0");
+            }
+
+            if (!lexicographical) {
+                v1parts = v1parts.map(Number);
+                v2parts = v2parts.map(Number);
+            }
+
+            for (var i = 0; i < v1parts.length; ++i) {
+                if (v2parts.length == i) {
+                    return 1;
+                }
+
+                if (v1parts[i] == v2parts[i]) {
+                    continue;
+                }
+                else if (v1parts[i] > v2parts[i]) {
+                    return 1;
+                }
+                else {
+                    return -1;
+                }
+            }
+
+            if (v1parts.length != v2parts.length) {
+                return -1;
+            }
+
+            return 0;
         }
     };
 
