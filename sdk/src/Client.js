@@ -1,7 +1,7 @@
-AutodeskNamespace('Autodesk.Spark');
+var ADSKSpark = ADSKSpark || {};
 
 (function() {
-    var Client = Autodesk.Spark.Client = {};
+    var Client = ADSKSpark.Client = {};
 
     var _clientId = '';
     var _clientSecret = '';
@@ -40,10 +40,10 @@ AutodeskNamespace('Autodesk.Spark');
     };
 
     Client.basicApiRequest = function(api) {
-        return Autodesk.Spark.Request(_apiUrl + '/api/' + _apiVersion + api, 'Bearer ' + _base64ClientCode);
+        return ADSKSpark.Request(_apiUrl + '/api/' + _apiVersion + api, 'Bearer ' + _base64ClientCode);
     };
 
     Client.authorizedApiRequest = function(api) {
-        return Autodesk.Spark.Request(_apiUrl + '/api/' + _apiVersion + api, 'Bearer ' + _accessToken);
+        return ADSKSpark.Request(_apiUrl + '/api/' + _apiVersion + api, 'Bearer ' + _accessToken);
     };
 }());

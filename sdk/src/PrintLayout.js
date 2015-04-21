@@ -1,9 +1,8 @@
-AutodeskNamespace('Autodesk.Spark');
+var ADSKSpark = ADSKSpark || {};
 
-
-Autodesk.Spark.PrintLayout = function( printerType, layoutName )
+ADSKSpark.PrintLayout = function( printerType, layoutName )
 {
-    var Client = Autodesk.Spark.Client;
+    var Client = ADSKSpark.Client;
 
     // A print layout follows one or more models through the print preparation
     // process. The layout can be in various states:
@@ -92,7 +91,7 @@ Autodesk.Spark.PrintLayout = function( printerType, layoutName )
         //
         function createModel(localPath)
         {
-            var model = new Autodesk.Spark.PrintModel(localPath, getNameFromPath(localPath));
+            var model = new ADSKSpark.PrintModel(localPath, getNameFromPath(localPath));
             _models.push(model);
             return model.importMesh();
         }
@@ -364,4 +363,3 @@ Autodesk.Spark.PrintLayout = function( printerType, layoutName )
         _printerType = printerType;
     };
 };
-

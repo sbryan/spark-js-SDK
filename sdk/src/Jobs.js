@@ -1,8 +1,7 @@
 var ADSKSpark = ADSKSpark || {};
 
 (function () {
-    var Client = Autodesk.Spark.Client;
-
+    var Client = ADSKSpark.Client;
 
     /**
      * A paginated array of jobs.
