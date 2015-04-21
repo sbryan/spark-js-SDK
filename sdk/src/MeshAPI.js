@@ -4,7 +4,7 @@ var ADSKSpark = ADSKSpark || {};
     var Client = ADSKSpark.Client;
     var _meshCounter = 0;
 
-    var requestImport = function(fileId, name, generateVisual, transform, waiter)
+    var requestImport = function(fileId, name, generateVisual, transform)
     {
         ++_meshCounter;
         name = name || ("Mesh_" + _meshCounter);
@@ -19,12 +19,7 @@ var ADSKSpark = ADSKSpark || {};
             "transform": transform,
             "generate_visual": !!generateVisual
         };
-        var importPromise = Client.authorizedApiRequest('/meshes/import', parms).post();
-
-        if( waiter )
-            importPromise.then(waiter.wait);
-
-        return importPromise;
+        return Client.authorizedApiRequest('/meshes/import', parms).post();
     }
 
     var uploadFileObject = function(file, progressCallback)
@@ -42,8 +37,11 @@ var ADSKSpark = ADSKSpark || {};
         /**
          */
         importMesh: function(fileId, name, generateVisual, transform, progressCallback) {
-            var waiter = progressCallback ? new ADSKSpark.TaskWaiter(progressCallback) : null;
-            return requestImport(fileId, name, generateVisual, transform, waiter);
+
+            var waiter = new ADSKSpark.TaskWaiter(progressCallback);
+
+            return requestImport(fileId, name, generateVisual, transform)
+                    .then(waiter.wait);
         },
 
         uploadFile: function(file, progressCallback) {
