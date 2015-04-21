@@ -45,10 +45,10 @@ Autodesk.Spark.Request = function(url, authorization) {
             }
 
             xhr.onload = function() {
-                if (this.status === 200) {
+                if (this.status === 200 || this.status === 201 || this.status === 202 || this.status === 204) {
                     resolve(JSON.parse(this.responseText));
                 } else {
-                    reject(new Error(this.statusText));
+                    reject(new Error(this.status + ' ' + this.responseText));
                 }
             };
             xhr.onerror = function() {
