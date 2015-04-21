@@ -16,15 +16,14 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'node_modules/should/should.js',
-      'src/AutodeskNamespace.js', // This should be replaced with 'src/*.js' once the rest of the files don't have errors
-      'src/Request.js',
-      'src/PrintLayout.js',
+      'src/*.js',
       'test/*Spec.js'
     ],
 
 
     // list of files to exclude
     exclude: [
+        'src/Printer.js' // Causes a runtime error at the moment
     ],
 
 
