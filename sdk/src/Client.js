@@ -1,7 +1,7 @@
-AutodeskNamespace('Autodesk.Spark');
+var ADSKSpark = ADSKSpark || {};
 
 (function() {
-    var Client = Autodesk.Spark.Client = {};
+    var Client = ADSKSpark.Client = {};
 
     var _clientId = '';
     var _apiVersion = 'v1';
@@ -12,7 +12,7 @@ AutodeskNamespace('Autodesk.Spark');
 
     // Helper functions
     var getGuestTokenFromServer = function() {
-        return Autodesk.Spark.Request(_guestTokenUrl).get().then(function(data) {
+        return ADSKSpark.Request(_guestTokenUrl).get().then(function(data) {
             var date = new Date();
             var now = date.getTime();
             data.expires_at = now + parseInt(data.expires_in) * 1000;
@@ -79,6 +79,6 @@ AutodeskNamespace('Autodesk.Spark');
     };
 
     Client.authorizedApiRequest = function(api) {
-        return Autodesk.Spark.Request(_apiUrl + '/api/' + _apiVersion + api, 'Bearer ' + _accessToken);
+        return ADSKSpark.Request(_apiUrl + '/api/' + _apiVersion + api, 'Bearer ' + _accessToken);
     };
 }());

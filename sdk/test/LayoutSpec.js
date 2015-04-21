@@ -96,9 +96,9 @@ describe('PrintLayout class', function() {
     });
 
     it('Should exist and be constructable', function() {
-        Should.exist(Autodesk.Spark.PrintLayout);
+        Should.exist(ADSKSpark.PrintLayout);
 
-        var layout = new Autodesk.Spark.PrintLayout(emberType);
+        var layout = new ADSKSpark.PrintLayout(emberType);
 
         Should.exist(layout);
         layout.should.be.Object;
@@ -106,7 +106,7 @@ describe('PrintLayout class', function() {
 
     describe('Basic Methods', function() {
         it('get methods', function(done) {
-            var layout = new Autodesk.Spark.PrintLayout(emberType);
+            var layout = new ADSKSpark.PrintLayout(emberType);
 
             Should(layout.getId()).equal(null); // Id may not be exposed in future
 
@@ -123,7 +123,7 @@ describe('PrintLayout class', function() {
         });
 
         it('should be unlocked and unlockable', function(done) {
-            var layout = new Autodesk.Spark.PrintLayout(emberType);
+            var layout = new ADSKSpark.PrintLayout(emberType);
 
             layout.getLock().should.equal(false);
             layout.setLock().should.equal(false);

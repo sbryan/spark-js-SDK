@@ -98,7 +98,7 @@ describe('Request', function() {
     };
 
     before(function() {
-        ASR = Autodesk.Spark.Request;
+        ASR = ADSKSpark.Request;
         testURL = 'http://localhost';
     });
 

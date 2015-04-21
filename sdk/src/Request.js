@@ -1,13 +1,13 @@
-AutodeskNamespace('Autodesk.Spark');
+var ADSKSpark = ADSKSpark || {};
 
 // A wrapper for XHR requests that returns a promise.
-// Usage: Autodesk.Spark.Request('http://alpha.spark.autodesk.com/api/v1/printDB/printers').get([headers[, data]]).then(...);
+// Usage: ADSKSpark.Request('http://alpha.spark.autodesk.com/api/v1/printDB/printers').get([headers[, data]]).then(...);
 // Based on https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise#Example_using_new_XMLHttpRequest()
 /**
  * @param {String} url - The url for the request.
  * @param {String} [authorization] - If specified, the Authorization header will be set with this value by default.
  */
-Autodesk.Spark.Request = function(url, authorization) {
+ADSKSpark.Request = function(url, authorization) {
     var makeRequest = function(method, headers, data) {
         headers = headers || {};
         if (!headers.hasOwnProperty('Content-Type')) {

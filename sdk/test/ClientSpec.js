@@ -1,11 +1,11 @@
-describe.only('Client', function() {
+describe('Client', function() {
     'use strict';
 
     var ASC, xhr, requests;
     var testGuestUrl, testAccessUrl, testApiUrl;
 
     before(function() {
-        ASC = Autodesk.Spark.Client;
+        ASC = ADSKSpark.Client;
         testGuestUrl = 'http://localhost/guest';
         testAccessUrl = 'http://localhost/access';
         testApiUrl = 'https://localhost';

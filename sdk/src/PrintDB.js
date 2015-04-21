@@ -1,12 +1,12 @@
-AutodeskNamespace('Autodesk.Spark');
+var ADSKSpark = ADSKSpark || {};
 
 (function() {
-    var Client = Autodesk.Spark.Client;
+    var Client = ADSKSpark.Client;
 
     // The printDB singleton.
     // TODO: Should we cache results?
     // TODO: There is a way to make this object's properties immutable. Is that something we would want to do?
-    Autodesk.Spark.PrintDB = {
+    ADSKSpark.PrintDB = {
         /**
          * @param {String} [typeId] - The type ID. If not specified, return all printer types.
          * @returns {Promise} - A promise that will resolve with a list of printer types.

@@ -1,4 +1,4 @@
-AutodeskNamespace('Autodesk.Spark');
+var ADSKSpark = ADSKSpark || {};
 
 // NOTE: We may want to make this class private and not expose it to clients
 // since some operations on it really should be done via the layout object.
@@ -17,9 +17,9 @@ AutodeskNamespace('Autodesk.Spark');
  */
 
 
-Autodesk.Spark.PrintModel = function( source, name )
+ADSKSpark.PrintModel = function( source, name )
 {
-    var Client = Autodesk.Spark.Client;
+    var Client = ADSKSpark.Client;
 
     // A print model represents a single Spark Mesh resource and tracks
     // as much information as possible about this entity.
@@ -198,4 +198,3 @@ Autodesk.Spark.PrintModel = function( source, name )
         setMeshData(meshData);
     };
 };
-
