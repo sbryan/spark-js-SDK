@@ -27,7 +27,7 @@ describe('Mesh API tests', function() {
                 done("THIS SHOULD NOT HAVE WORKED");
             })
             .catch(function(err) {
-                err.message.should.equal('404 NOT FOUND');
+                err.message.should.equal('404');
                 done();
             });
     });
