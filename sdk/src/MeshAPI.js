@@ -22,11 +22,11 @@ var ADSKSpark = ADSKSpark || {};
                 "name": name,
                 "transform": transform
             };
-            var waiter = ADSKSpark.TaskWaiter(progressCallback);
+            var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             return Client.authorizedApiRequest('/meshes/import', parms)
                 .post().then(waiter.wait);
-        },
+        }
 
     };
 }());

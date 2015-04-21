@@ -1,6 +1,8 @@
 describe('Mesh API tests', function() {
     'use strict';
 
+    var MeshApi = ADSKSpark.MeshAPI;
+
 
     before(function() {
     });
@@ -12,18 +14,22 @@ describe('Mesh API tests', function() {
     });
 
     it('Should exist', function(done) {
-        var MeshApi = ADSKSpark.MeshAPI;
-
         Should.exist(MeshApi);
 
         MeshApi.should.be.Object.with.properties(['importMesh']);
         done();
     });
 
-    it('Should import a mesh', function(done) {
-        // TODO ...
+    it('Should fail importing a bogus mesh', function(done) {
 
-        done();
+        MeshApi.importMesh("FUBAR_MESH_ID", "NONAME")
+            .then(function() {
+                done("THIS SHOULD NOT HAVE WORKED");
+            })
+            .catch(function(err) {
+                err.message.should.equal('404 NOT FOUND');
+                done();
+            });
     });
 
 });

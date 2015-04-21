@@ -25,7 +25,7 @@ ADSKSpark.TaskWaiter = function( progressCallback )
     }
 
 
-    this._pollTask()
+    this._pollTask = function()
     {
         return Client.authorizedApiRequest('/print/tasks/' + _taskId)
                 .post().then(checkTaskResponse);
