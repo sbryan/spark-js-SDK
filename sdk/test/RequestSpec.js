@@ -114,7 +114,7 @@ describe('Request', function() {
         xhr.restore();
     });
 
-    it('Exists', function() {
+    it('should exist', function() {
         Should.exist(ASR);
 
         var request = ASR(testURL);
