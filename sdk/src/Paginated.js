@@ -1,4 +1,4 @@
-var Spark = Spark || {};
+var ADSKSpark = ADSKSpark || {};
 
 (function () {
     var Client = Autodesk.Spark.Client;
@@ -9,14 +9,14 @@ var Spark = Spark || {};
      * @param {Object} data - JSON data.
      * @constructor
      */
-    Spark.Paginated = function (data) {
+    ADSKSpark.Paginated = function (data) {
         this._parse(data);
     };
 
-    Spark.Paginated.prototype = Object.create(Array.prototype); // Almost-array
-    Spark.Paginated.prototype.constructor = Spark.Paginated;
+    ADSKSpark.Paginated.prototype = Object.create(Array.prototype); // Almost-array
+    ADSKSpark.Paginated.prototype.constructor = ADSKSpark.Paginated;
 
-    Spark.Paginated.prototype._parse = function (data) {
+    ADSKSpark.Paginated.prototype._parse = function (data) {
         this.clear();
         this.raw = data;
     };
@@ -25,7 +25,7 @@ var Spark = Spark || {};
      * Return true if the previous link is valid.
      * @returns {boolean}
      */
-    Spark.Paginated.prototype.hasPrev = function () {
+    ADSKSpark.Paginated.prototype.hasPrev = function () {
         return this.raw._link_prev != '';
     };
 
@@ -34,7 +34,7 @@ var Spark = Spark || {};
      * Updates this object with the new items.
      * @returns {?Promise} - A Promise that will resolve to an array of items.
      */
-    Spark.Paginated.prototype.prev = function () {
+    ADSKSpark.Paginated.prototype.prev = function () {
         var link_prev = this.raw._link_prev,
             that = this;
 
@@ -53,7 +53,7 @@ var Spark = Spark || {};
      * Return true if the next link is valid.
      * @returns {boolean}
      */
-    Spark.Paginated.prototype.hasNext = function () {
+    ADSKSpark.Paginated.prototype.hasNext = function () {
         return this.raw._link_next != '';
     };
 
@@ -62,7 +62,7 @@ var Spark = Spark || {};
      * Updates this object with the new items.
      * @returns {?Promise} - A Promise that will resolve to an array of items.
      */
-    Spark.Paginated.prototype.next = function () {
+    ADSKSpark.Paginated.prototype.next = function () {
         var link_next = this.raw._link_next,
             that = this;
 

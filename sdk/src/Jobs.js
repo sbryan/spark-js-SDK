@@ -1,4 +1,4 @@
-var Spark = Spark || {};
+var ADSKSpark = ADSKSpark || {};
 
 (function () {
     var Client = Autodesk.Spark.Client;
@@ -9,15 +9,15 @@ var Spark = Spark || {};
      * @param {Object} data - JSON data.
      * @constructor
      */
-    Spark.Jobs = function (data) {
-        Spark.Paginated.call(this, data);
+    ADSKSpark.Jobs = function (data) {
+        ADSKSpark.Paginated.call(this, data);
     };
 
-    Spark.Jobs.prototype = Object.create(Spark.Paginated);
-    Spark.Jobs.prototype.constructor = Spark.Jobs;
+    ADSKSpark.Jobs.prototype = Object.create(ADSKSpark.Paginated);
+    ADSKSpark.Jobs.prototype.constructor = ADSKSpark.Jobs;
 
-    Spark.Jobs.prototype._parse = function (data) {
-        Spark.Paginated.prototype._parse.apply(this, data);
+    ADSKSpark.Jobs.prototype._parse = function (data) {
+        ADSKSpark.Paginated.prototype._parse.apply(this, data);
 
         var jobs = data.printer_jobs;
         if (Array.isArray(jobs)) {

@@ -1,4 +1,4 @@
-var Spark = Spark || {};
+var ADSKSpark = ADSKSpark || {};
 
 (function () {
     var Client = Autodesk.Spark.Client;
@@ -9,34 +9,34 @@ var Spark = Spark || {};
      * @param {Object} data - JSON data.
      * @constructor
      */
-    Spark.Printers = function (data) {
-        Spark.Paginated.call(this, data);
+    ADSKSpark.Printers = function (data) {
+        ADSKSpark.Paginated.call(this, data);
     };
 
-    Spark.Printers.prototype = Object.create(Spark.Paginated);
-    Spark.Printers.prototype.constructor = Spark.Printers;
+    ADSKSpark.Printers.prototype = Object.create(ADSKSpark.Paginated);
+    ADSKSpark.Printers.prototype.constructor = ADSKSpark.Printers;
 
     /**
      * Get printers registered to a member.
      * @param {Object} params - limit/offset/sort/filter options.
      * @returns {Promise} - A promise that will resolve to an array of printers.
      */
-    Spark.Printers.get = function (params) {
+    ADSKSpark.Printers.get = function (params) {
         return Client.authorizedApiRequest('/print/printers')
             .get(params)
             .then(function (data) {
-                return new Spark.Printers(data);
+                return new ADSKSpark.Printers(data);
             });
     };
 
-    Spark.Printers.prototype._parse = function (data) {
-        Spark.Paginated.prototype._parse.apply(this, data);
+    ADSKSpark.Printers.prototype._parse = function (data) {
+        ADSKSpark.Paginated.prototype._parse.apply(this, data);
 
         var printers = data.printers;
         if (Array.isArray(printers)) {
             var that = this;
             printers.forEach(function (printer) {
-                that.push(new Spark.Printer(printer));
+                that.push(new ADSKSpark.Printer(printer));
             });
         }
     };
@@ -47,7 +47,7 @@ var Spark = Spark || {};
      * @param {Object} data - JSON data.
      * @constructor
      */
-    Spark.Printer = function (data) {
+    ADSKSpark.Printer = function (data) {
         this.id = data.printer_id;
         this.name = data.printer_name;
         this.firmware = data.firmware;
@@ -62,14 +62,14 @@ var Spark = Spark || {};
      * @param {String} name - Printer nickname.
      * @returns {Promise} - A Promise that will resolve to a printer.
      */
-    Spark.Printer.register = function (code, name) {
+    ADSKSpark.Printer.register = function (code, name) {
         return Client.authorizedApiRequest('/print/printers/register')
             .post(null, {registration_code: code, printer_name: name});
 
         // TODO: when api is fixed, this should resolve to new printer
         // TODO: until then, we could always call getById()?
         //  .then(function (data) {
-        //      return new Spark.Printer(data);
+        //      return new ADSKSpark.Printer(data);
         //  });
     };
 
@@ -78,17 +78,17 @@ var Spark = Spark || {};
      * @param {String} id - Printer id.
      * @returns {Promise} - A Promise that will resolve to a printer.
      */
-    Spark.Printer.getById = function (id) {
+    ADSKSpark.Printer.getById = function (id) {
         return Client.authorizedApiRequest('/print/printers/' + id)
             .get()
             .then(function (data) {
-                return new Spark.Printer(data);
+                return new ADSKSpark.Printer(data);
             });
     };
 
-    Spark.Printer.prototype = {
+    ADSKSpark.Printer.prototype = {
 
-        constructor: Spark.Printer,
+        constructor: ADSKSpark.Printer,
 
         /**
          * Check printer status.
@@ -319,7 +319,7 @@ var Spark = Spark || {};
             return Client.authorizedApiRequest('/print/printers/' + this.id + '/jobs')
                 .get()
                 .then(function (data) {
-                    return new Spark.Jobs(data);
+                    return new ADSKSpark.Jobs(data);
                 });
         },
 
