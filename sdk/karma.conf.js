@@ -16,6 +16,9 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'node_modules/should/should.js',
+      'src/Paginated.js',
+      'src/Jobs.js',
+      'src/Printer.js',
       'src/*.js',
       'test/*Spec.js'
     ],
@@ -23,7 +26,6 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-        'src/Printer.js' // Causes a runtime error at the moment
     ],
 
 

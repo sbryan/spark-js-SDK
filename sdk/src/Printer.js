@@ -12,7 +12,7 @@ var ADSKSpark = ADSKSpark || {};
         ADSKSpark.Paginated.call(this, data);
     };
 
-    ADSKSpark.Printers.prototype = Object.create(ADSKSpark.Paginated);
+    ADSKSpark.Printers.prototype = Object.create(ADSKSpark.Paginated.prototype);
     ADSKSpark.Printers.prototype.constructor = ADSKSpark.Printers;
 
     /**
