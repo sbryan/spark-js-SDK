@@ -175,28 +175,31 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * Pause a running print job.
-         * @param {String} job_id
+         * @param {ADSKSpark.Job|String} job - Job or job id.
          * @returns {Promise}
          */
-        pause: function (job_id) {
+        pause: function (job) {
+            var job_id = (job instanceof ADSKSpark.Job) ? job.id : job;
             return this.sendCommand('pause', {job_id: job_id});
         },
 
         /**
          * Resume a paused print job.
-         * @param {String} job_id
+         * @param {ADSKSpark.Job|String} job - Job or job id.
          * @returns {Promise}
          */
-        resume: function (job_id) {
+        resume: function (job) {
+            var job_id = (job instanceof ADSKSpark.Job) ? job.id : job;
             return this.sendCommand('resume', {job_id: job_id});
         },
 
         /**
          * Cancel a running print job.
-         * @param {String} job_id
+         * @param {ADSKSpark.Job|String} job - Job or job id.
          * @returns {Promise}
          */
-        cancel: function (job_id) {
+        cancel: function (job) {
+            var job_id = (job instanceof ADSKSpark.Job) ? job.id : job;
             return this.sendCommand('cancel', {job_id: job_id});
         },
 
@@ -394,13 +397,14 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * Start a queued print job for a printer.
-         * @param {String} job_id
+         * @param {ADSKSpark.Job|String} job - Job or job id.
          * @returns {Promise}
          */
-        startJob: function (job_id) {
+        startJob: function (job) {
+            var job_id = (job instanceof ADSKSpark.Job) ? job.id : job;
             return Client.authorizedApiRequest('/print/printers/' + this.id + '/jobs')
                 .put({job_id: job_id});
-        },
+        }
 
     };
 
