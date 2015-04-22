@@ -45,10 +45,10 @@ ADSKSpark.Request = function(url, authorization) {
             }
 
             xhr.onload = function() {
-                if (this.status === 200 || this.status === 201 || this.status === 202 || this.status === 204) {
-                    resolve(JSON.parse(this.responseText));
+                if (xhr.status === 200 || xhr.status === 201 || xhr.status === 202 || xhr.status === 204) {
+                    resolve(JSON.parse(xhr.responseText));
                 } else {
-                    reject(new Error(this.status + ' ' + this.responseText));
+                    reject(new Error(xhr.status + ' ' + xhr.responseText));
                 }
             };
             xhr.onerror = function() {
