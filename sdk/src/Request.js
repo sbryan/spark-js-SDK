@@ -31,6 +31,7 @@ ADSKSpark.Request = function(url, authorization) {
         var promise = new Promise(function(resolve, reject) {
             var xhr = new XMLHttpRequest();
 
+            // console.log(method + " -> " + url);
             xhr.open(method, url);
 
             // Set the headers
@@ -51,8 +52,12 @@ ADSKSpark.Request = function(url, authorization) {
                     reject(new Error(xhr.status + ' ' + xhr.responseText));
                 }
             };
-            xhr.onerror = function() {
-                // if the request failed, it's probably due to a 404
+            xhr.onerror = function(e) {
+                // Why can we not get more info about what the error was?
+                // See: https://xhr.spec.whatwg.org/#suggested-names-for-events-using-the-progressevent-interface
+                console.log('XHR error type: ' + e.type);
+
+                // If the request failed, it's probably due to a 404.
                 reject(new Error(404));
             };
 
