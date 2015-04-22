@@ -26,6 +26,11 @@ ADSKSpark.Request = function(url, authorization) {
                     payload += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
                 }
             }
+
+            if (method === 'GET') {
+                url += '?' + payload;
+                payload = '';
+            }
         }
 
         var promise = new Promise(function(resolve, reject) {

@@ -122,18 +122,118 @@ describe('Request', function() {
 
     context('GET', function() {
         testAllResponseCodesForMethod('GET');
+
+        // Test sending data
+        // For a GET request, it should be appended to the URL since a 'GET' has no request body
+        it('should be able to send data', function() {
+            var data = {
+                field1: 'field',
+                field2: 2
+            };
+            var dataURLString = '?field1=field&field2=2';
+            var promise = ASR(testURL).get(undefined, data);
+
+            promise.should.be.instanceOf(Promise);
+
+            // Check that a request was sent properly
+            requests.length.should.equal(1);
+            var fakeXhr = requests[0];
+            fakeXhr.url.should.equal(testURL + dataURLString);
+            fakeXhr.method.should.equal('GET');
+            Should(fakeXhr.requestBody).not.be.ok; // body should be null or ''
+
+            // Fake a successful response
+            fakeXhr.respond(200, {'Content-Type': 'application/json'}, JSON.stringify('success!'));
+
+            return promise;
+        });
     });
 
     context('POST', function() {
         testAllResponseCodesForMethod('POST');
+
+        // Test sending data
+        // For a POST request, it should be contained in the request's body
+        it('should be able to send data', function() {
+            var data = {
+                field1: 'field',
+                field2: 2
+            };
+            var dataString = 'field1=field&field2=2';
+            var promise = ASR(testURL).post(undefined, data);
+
+            promise.should.be.instanceOf(Promise);
+
+            // Check that a request was sent properly
+            requests.length.should.equal(1);
+            var fakeXhr = requests[0];
+            fakeXhr.url.should.equal(testURL);
+            fakeXhr.method.should.equal('POST');
+            Should(fakeXhr.requestBody).equal(dataString);
+
+            // Fake a successful response
+            fakeXhr.respond(200, {'Content-Type': 'application/json'}, JSON.stringify('success!'));
+
+            return promise;
+        });
     });
 
     context('PUT', function() {
         testAllResponseCodesForMethod('PUT');
+
+        // Test sending data
+        // For a POST request, it should be contained in the request's body
+        it('should be able to send data', function() {
+            var data = {
+                field1: 'field',
+                field2: 2
+            };
+            var dataString = 'field1=field&field2=2';
+            var promise = ASR(testURL).put(undefined, data);
+
+            promise.should.be.instanceOf(Promise);
+
+            // Check that a request was sent properly
+            requests.length.should.equal(1);
+            var fakeXhr = requests[0];
+            fakeXhr.url.should.equal(testURL);
+            fakeXhr.method.should.equal('PUT');
+            Should(fakeXhr.requestBody).equal(dataString);
+
+            // Fake a successful response
+            fakeXhr.respond(200, {'Content-Type': 'application/json'}, JSON.stringify('success!'));
+
+            return promise;
+        });
     });
 
     context('DELETE', function() {
         testAllResponseCodesForMethod('DELETE');
+
+        // Test sending data
+        // For a POST request, it should be contained in the request's body
+        it('should be able to send data', function() {
+            var data = {
+                field1: 'field',
+                field2: 2
+            };
+            var dataString = 'field1=field&field2=2';
+            var promise = ASR(testURL).delete(undefined, data);
+
+            promise.should.be.instanceOf(Promise);
+
+            // Check that a request was sent properly
+            requests.length.should.equal(1);
+            var fakeXhr = requests[0];
+            fakeXhr.url.should.equal(testURL);
+            fakeXhr.method.should.equal('DELETE');
+            Should(fakeXhr.requestBody).equal(dataString);
+
+            // Fake a successful response
+            fakeXhr.respond(200, {'Content-Type': 'application/json'}, JSON.stringify('success!'));
+
+            return promise;
+        });
     });
 
 });
