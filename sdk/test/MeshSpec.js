@@ -8,6 +8,8 @@ describe('Mesh API tests', function() {
     });
 
     beforeEach(function() {
+        var testApiUrl = 'http://localhost:9998';
+        ADSKSpark.Client.initialize(null, null, null, testApiUrl);
     });
 
     afterEach(function() {
