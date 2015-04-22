@@ -20,7 +20,7 @@ describe('Mesh API tests', function() {
         done();
     });
 
-    it.only('Should fail importing a bogus mesh', function() {
+    it('Should fail importing a bogus mesh', function() {
         return MeshApi.importMesh('FUBAR_MESH_ID', 'NONAME')
             .then(function() {
                 return Promise.reject(new Error('THIS SHOULD NOT HAVE WORKED'));
