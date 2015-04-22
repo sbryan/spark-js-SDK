@@ -31,7 +31,7 @@ ADSKSpark.Request = function(url, authorization) {
         var promise = new Promise(function(resolve, reject) {
             var xhr = new XMLHttpRequest();
 
-            // console.log(method + " -> " + url);
+            // console.log(method + " -> " + url + " (" + payload + ")");
             xhr.open(method, url);
 
             // Set the headers

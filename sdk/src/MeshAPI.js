@@ -19,7 +19,7 @@ var ADSKSpark = ADSKSpark || {};
             "transform": transform,
             "generate_visual": !!generateVisual
         };
-        return Client.authorizedApiRequest('/meshes/import', parms).post();
+        return Client.authorizedApiRequest('/meshes/import').post(null, parms);
     }
 
     var uploadFileObject = function(file, progressCallback)
@@ -28,7 +28,7 @@ var ADSKSpark = ADSKSpark || {};
         formData.append(file.name, file);
                 
         // TODO: file upload progress ???
-        return Client.authorizedApiRequest('/files/upload', formData).post();
+        return Client.authorizedApiRequest('/files/upload').post(null, formData);
     }
 
     // The Mesh API singleton.
@@ -56,7 +56,7 @@ var ADSKSpark = ADSKSpark || {};
                 id: meshId,
                 transform: transform
             };
-            return Client.authorizedApiRequest('meshes/transform', payload).post();
+            return Client.authorizedApiRequest('meshes/transform').post(null, payload);
         },
 
         // progressCallback is optional
@@ -66,7 +66,7 @@ var ADSKSpark = ADSKSpark || {};
             };
             // TODO: It's possible to get immediate 200 response instead of 202 + task.
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
-            return Client.authorizedApiRequest('meshes/analyze', payload).post()
+            return Client.authorizedApiRequest('meshes/analyze').post(null, payload)
                     .then(waiter.wait);
         },
 
@@ -76,7 +76,7 @@ var ADSKSpark = ADSKSpark || {};
             };
             // TODO: It's possible to get immediate 200 response instead of 202 + task.
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
-            return Client.authorizedApiRequest('meshes/generateVisual', payload).post()
+            return Client.authorizedApiRequest('meshes/generateVisual').post(null, payload)
                     .then(waiter.wait);
         }
 

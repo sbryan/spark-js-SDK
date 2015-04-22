@@ -43,7 +43,7 @@ ADSKSpark.PrintModel = function( source, name, fileInfo )
         _meshData = data;
         _serial++;
         // TODO send change event?
-        return _this;
+        return data;
     }
 
     function setError(data)
@@ -119,11 +119,22 @@ ADSKSpark.PrintModel = function( source, name, fileInfo )
     };
 
 
-	this.getVisual = function()
+	this.getVisualId = function(progressCallback)
     {
+        function resolveVisualId(data)
+        {
+            return Promise.resolve(_meshData.visual_file_id);
+        }
+
         // Returns a promise to get the visual.
         // Note that operations like repair and PrintLayout.prepare may automatically
         // generate a visual, which means this promise may resolve immediately.
+        if( _meshData && _meshData.visual_file_id )
+            return resolveVisualId();
+
+        return MeshAPI.generateVisual(this.getId(), progressCallback)
+                .then(setMeshData)
+                .then(resolveVisualId);
     };
 
 	this.getSerialNumber = function()
