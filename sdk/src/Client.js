@@ -4,7 +4,6 @@ var ADSKSpark = ADSKSpark || {};
     var Client = ADSKSpark.Client = {};
 
     var _clientId = '';
-    var _apiVersion = 'v1';
     var _apiUrl = '';
     var _guestTokenUrl = '';
     var _accessTokenUrl = '';
@@ -30,19 +29,13 @@ var ADSKSpark = ADSKSpark || {};
      *                                 handle exchanging the client secret for a guest access token.
      * @param {String} accessTokenUrl - The URL of your authentication server used for access tokens. This server should
      *                                 handle exchanging a provided code for an access token.
-     * @param {String} apiUrl - The URL of the spark api. (Ex. https://sandbox.spark.autodesk.com)
-     * @param {Object} [options] - An optional dictionary of options.
-     * @param {String} [options.apiVersion=v1] - The version of the API you wish to access.
+     * @param {String} apiUrl - The URL of the spark api. (Ex. https://sandbox.spark.autodesk.com/api/vi)
      */
-    Client.initialize = function(clientId, guestTokenUrl, accessTokenUrl, apiUrl, options) {
+    Client.initialize = function(clientId, guestTokenUrl, accessTokenUrl, apiUrl) {
         _clientId = clientId;
         _guestTokenUrl = guestTokenUrl;
         _accessTokenUrl = accessTokenUrl;
         _apiUrl = apiUrl;
-
-        if (options && options.apiVersion) {
-            _apiVersion = options.apiVersion;
-        }
     };
 
     Client.login = function() {
@@ -77,12 +70,12 @@ var ADSKSpark = ADSKSpark || {};
         return getGuestTokenFromServer();
     };
 
-    Client.authorizedApiRequest = function(api) {
+    Client.authorizedApiRequest = function(endpoint) {
         var authorization;
 
         if( _accessToken )
             authorization = 'Bearer ' + _accessToken;
 
-        return ADSKSpark.Request(_apiUrl + '/api/' + _apiVersion + api, authorization);
+        return ADSKSpark.Request(_apiUrl + endpoint, authorization);
     };
 }());
