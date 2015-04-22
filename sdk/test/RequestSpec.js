@@ -182,7 +182,7 @@ describe('Request', function() {
         testAllResponseCodesForMethod('PUT');
 
         // Test sending data
-        // For a POST request, it should be contained in the request's body
+        // For a PUT request, it should be contained in the request's body
         it('should be able to send data', function() {
             var data = {
                 field1: 'field',
@@ -211,7 +211,7 @@ describe('Request', function() {
         testAllResponseCodesForMethod('DELETE');
 
         // Test sending data
-        // For a POST request, it should be contained in the request's body
+        // For a DELETE request, it should be contained in the request's body
         it('should be able to send data', function() {
             var data = {
                 field1: 'field',
