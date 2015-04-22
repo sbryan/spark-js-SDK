@@ -71,14 +71,18 @@ var ADSKSpark = ADSKSpark || {};
     Client.getGuestToken = function() {
         var guestToken = JSON.parse(localStorage.getItem('spark-guest-token'));
         var now = Date.now();
-        if (guestToken && guestToken.expires_at && guestToken.expires_at > now) {
+        if (guestToken && guestToken.expires_at && guestToken.expires_at > now)
             return Promise.resolve(guestToken.access_token);
-        } else {
-            return getGuestTokenFromServer();
-        }
+
+        return getGuestTokenFromServer();
     };
 
     Client.authorizedApiRequest = function(api) {
-        return ADSKSpark.Request(_apiUrl + '/api/' + _apiVersion + api, 'Bearer ' + _accessToken);
+        var authorization;
+
+        if( _accessToken )
+            authorization = 'Bearer ' + _accessToken;
+
+        return ADSKSpark.Request(_apiUrl + '/api/' + _apiVersion + api, authorization);
     };
 }());
