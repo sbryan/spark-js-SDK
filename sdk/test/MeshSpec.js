@@ -22,12 +22,18 @@ describe('Mesh API tests', function() {
         done();
     });
 
-    it('Should fail importing a bogus mesh', function() {
+    it('Should fail importing a bogus mesh', function(done) {
         return MeshApi.importMesh('FUBAR_MESH_ID', 'NONAME')
             .then(function() {
-                return Promise.reject(new Error('THIS SHOULD NOT HAVE WORKED'));
-            }, function(err) {
-                err.message.should.equal('404');
+                done(new Error('THIS SHOULD NOT HAVE WORKED'));
+            })
+            .catch(function(err) {
+                err.message.should.startWith('404');
+                done(); // Correct result!!
+            })
+            // Catch should failures:
+            .catch(function(fail) {
+                done(fail);
             });
     });
 
