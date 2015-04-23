@@ -34,7 +34,7 @@ ADSKSpark.PrintModel = function( source, name, fileInfo )
     var _meshData = null;
     var _importPromise = null;
     var _serial = 0;
-    var _options = { 'reposition': true, 'reorient': true, 'support': true };
+    var _attributes = { 'reposition': true, 'reorient': true, 'support': true };
 
 
     function setMeshData(data)
@@ -76,17 +76,17 @@ ADSKSpark.PrintModel = function( source, name, fileInfo )
     };
 
 
-	this.setOptions = function( options )
+	this.setAttributes = function( attributes )
     {
-        _options.support    = !!options.support;
-        _options.reposition = !!options.reposition;
-        _options.reorient   = !!options.reorient;
+        _attributes.support    = !!attributes.support;
+        _attributes.reposition = !!attributes.reposition;
+        _attributes.reorient   = !!attributes.reorient;
     };
 
 
-	this.getOptions = function()
+	this.getAttributes = function()
     {
-        return _options;
+        return _attributes;
     };
 
 

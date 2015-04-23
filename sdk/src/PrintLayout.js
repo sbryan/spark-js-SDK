@@ -171,7 +171,7 @@ ADSKSpark.PrintLayout = function( printerType, layoutName )
                 var meshAttrs = {};
                 var meshIds = _models.map(function(m) {
                     var id = m.getId();
-                    meshAttrs[id] = m.getOptions();
+                    meshAttrs[id] = m.getAttributes();
                     return id;
                 });
 
@@ -202,8 +202,12 @@ ADSKSpark.PrintLayout = function( printerType, layoutName )
                 };
                 return TrayAPI.prepareTray(_this.getId(), true)
                         .then(function(response) {
-                            // Must now traverse mesh list and update each one
+                            // Traverse the model list and update each one
                             // with the new mesh data.
+                            var newMeshes = response.meshes;
+                            for( var i=0; i < newMeshes.length; ++i ) {
+                                _models[i].updateMesh(newMeshes[i]);
+                            }
                             //
                             // Consider: tracking old tray and operation history
                             // for undo/redo.
