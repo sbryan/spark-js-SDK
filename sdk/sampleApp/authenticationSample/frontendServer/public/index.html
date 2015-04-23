@@ -38,7 +38,7 @@
         <!-- end spark sdk -->
 
         <script>
-            var CLIENT_ID = '<your app key>'; // Your app key
+            var APP_KEY = '<your app key>'; // Your app key
             var GUEST_TOKEN_URL = 'http://localhost:3000/guest_token';// The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
             var ACCESS_TOKEN_URL = 'http://localhost:3000/access_token';// The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
 
@@ -71,7 +71,7 @@
             jQuery(function ($) {
                 // Initialize the client
                 var Client = ADSKSpark.Client;
-                Client.initialize(CLIENT_ID, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, 'https://sandbox.spark.autodesk.com/api/v1');
+                Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, 'https://sandbox.spark.autodesk.com/api/v1');
 
                 //First let's see if we have a valid access token
                 if (Client.isAccessTokenValid()) {
