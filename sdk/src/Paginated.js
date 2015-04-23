@@ -25,13 +25,13 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {boolean}
      */
     ADSKSpark.Paginated.prototype.hasPrev = function () {
-        return this.raw._link_prev != '';
+        return this.raw._link_prev !== '';
     };
 
     /**
      * Get previous items.
      * Updates this object with the new items.
-     * @returns {?Promise} - A Promise that will resolve to an array of items.
+     * @returns {Promise} - A Promise that will resolve to an array of items.
      */
     ADSKSpark.Paginated.prototype.prev = function () {
         var link_prev = this.raw._link_prev,
@@ -45,7 +45,7 @@ var ADSKSpark = ADSKSpark || {};
                     return that;
                 });
         }
-        return null;
+        return Promise.reject(new Error('no prev link'));
     };
 
     /**
@@ -53,13 +53,13 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {boolean}
      */
     ADSKSpark.Paginated.prototype.hasNext = function () {
-        return this.raw._link_next != '';
+        return this.raw._link_next !== '';
     };
 
     /**
      * Get next items.
      * Updates this object with the new items.
-     * @returns {?Promise} - A Promise that will resolve to an array of items.
+     * @returns {Promise} - A Promise that will resolve to an array of items.
      */
     ADSKSpark.Paginated.prototype.next = function () {
         var link_next = this.raw._link_next,
@@ -73,7 +73,7 @@ var ADSKSpark = ADSKSpark || {};
                     return that;
                 });
         }
-        return null;
+        return Promise.reject(new Error('no next link'));
     };
 
 })();

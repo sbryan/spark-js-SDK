@@ -74,6 +74,7 @@ var ADSKSpark = ADSKSpark || {};
         this.name = data.printer_name;
         this.firmware = data.firmware;
         this.type_id = data.type_id;
+        this.is_primary = data.is_primary;
         this.raw = data;
         this.status = null;
     };
@@ -82,7 +83,7 @@ var ADSKSpark = ADSKSpark || {};
      * Register a printer to a member.
      * @param {String} code - Printer registration code.
      * @param {String} name - Printer nickname.
-     * @returns {Promise} - A Promise that will resolve to a printer.
+     * @returns {Promise}
      */
     ADSKSpark.Printer.register = function (code, name) {
         return Client.authorizedApiRequest('/print/printers/register')
@@ -316,15 +317,16 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {*}
          */
         generateRegistrationCode: function (secondary_member_email) {
-            if (this.raw.is_primary) {
+            if (this.is_primary) {
                 return Client.authorizedApiRequest('/print/printers/' + this.id + '/secondary_registration')
                     .post({secondary_member_email: secondary_member_email})
             }
+            return Promise.reject(new Error('not printer owner'));
         },
 
         /**
          * Get the members registered to this printer.
-         * @param {Object} params
+         * @param {Object} params - limit/offset/sort/filter options.
          * @returns {Promise} A Promise that resolves to an array of members.
          */
         getMembers: function (params) {
