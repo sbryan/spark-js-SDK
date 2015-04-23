@@ -40,6 +40,29 @@ var ADSKSpark = ADSKSpark || {};
         }
     };
 
+    /**
+     * A paginated array of members registered for a printer.
+     * @param {Object} data - JSON data.
+     * @constructor
+     */
+    ADSKSpark.PrinterMembers = function (data) {
+        ADSKSpark.Paginated.call(this, data);
+    };
+
+    ADSKSpark.PrinterMembers.prototype = Object.create(ADSKSpark.Paginated.prototype);
+    ADSKSpark.PrinterMembers.prototype.constructor = ADSKSpark.PrinterMembers;
+
+    ADSKSpark.PrinterMembers.prototype._parse = function (data) {
+        ADSKSpark.Paginated.prototype._parse.apply(this, data);
+
+        var members = data.members;
+        if (Array.isArray(members)) {
+            var that = this;
+            members.forEach(function (member) {
+                that.push(member);
+            });
+        }
+    };
 
     /**
      * A printer.
@@ -156,7 +179,7 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
-         * Reset the printer.
+         * Reboot the printer.
          * @returns {Promise}
          */
         reset: function () {
@@ -288,12 +311,42 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
+         * Generate a registration code for this printer.
+         * @param {String} secondary_member_email
+         * @returns {*}
+         */
+        generateRegistrationCode: function (secondary_member_email) {
+            if (this.raw.is_primary) {
+                return Client.authorizedApiRequest('/print/printers/' + this.id + '/secondary_registration')
+                    .post({secondary_member_email: secondary_member_email})
+            }
+        },
+
+        /**
+         * Get the members registered to this printer.
+         * @param {Object} params
+         * @returns {Promise} A Promise that resolves to an array of members.
+         */
+        getMembers: function (params) {
+            return Client.authorizedApiRequest('/print/printers/' + this.id + '/members')
+                .get(params)
+                .then(function (data) {
+                    return new ADSKSpark.PrinterMembers(data);
+                })
+        },
+
+        /**
          * Unregister a printer.
+         * @param {String} [member_id]
          * @returns {Promise}
          */
-        unregister: function () {
+        unregister: function (member_id) {
+            var params;
+            if (member_id) {
+                params = {secondary_member_id: member_id};
+            }
             return Client.authorizedApiRequest('/print/printers/' + this.id)
-                .delete();
+                .delete(params);
         },
 
         /**

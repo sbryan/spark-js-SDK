@@ -69,6 +69,16 @@ var ADSKSpark = ADSKSpark || {};
                 .catch(function (error) {
                     that.status = null;
                 });
+        },
+
+        /**
+         * Set a print job callback.
+         * @param {String} callback_url
+         * @returns {Promise}
+         */
+        setCallback: function (callback_url) {
+            return Client.authorizedApiRequest('/print/jobs/' + this.id)
+                .post({callback_url: callback_url})
         }
     };
 
