@@ -2,13 +2,32 @@ describe('Client', function() {
     'use strict';
 
     var ASC, xhr, requests;
-    var testGuestUrl, testAccessUrl, testApiUrl;
+    var testGuestUrl, testAccessUrl, testApiUrl, testClientId;
+    var fakeGuestToken, fakeAccessToken;
 
     before(function() {
         ASC = ADSKSpark.Client;
         testGuestUrl = 'http://localhost/guest';
         testAccessUrl = 'http://localhost/access';
         testApiUrl = 'https://localhost';
+        testClientId = 'this is not an ID';
+
+        fakeGuestToken = {
+            access_token: 'this is a fake guest token',
+            expires_in: 10000,
+            issued_at: Date.now()
+        };
+
+        fakeAccessToken = {
+            access_token: 'this is a fake access token',
+            expires_in: 10000,
+            issued_at: Date.now(),
+            refresh_token: 'this is a fake refresh token',
+            refresh_token_expires_in: 100000,
+            refresh_token_issued_at: Date.now()
+        };
+
+        ASC.initialize(testClientId, testGuestUrl, testAccessUrl, testApiUrl);
     });
 
     beforeEach(function() {
@@ -31,9 +50,7 @@ describe('Client', function() {
         ASC.should.be.Object.with.properties(['initialize', 'getGuestToken']);
     });
 
-    it('should get guest token', function(done) {
-        ASC.initialize('this is not an ID', testGuestUrl, testAccessUrl, testApiUrl);
-
+    it('should get guest token', function() {
         requests.length.should.equal(0);
 
         var promise = ASC.getGuestToken();
@@ -47,31 +64,23 @@ describe('Client', function() {
         xhr.method.should.equal('GET');
 
         // Respond with fake token
-        var fakeGuestToken = {
-            access_token: 'this is a fake token',
-            expires_in: 10000
-        };
         xhr.respond(200, {'Content-Type': 'application/json'}, JSON.stringify(fakeGuestToken));
 
         // Check promise
-        promise.then(function(data) {
+        return promise.then(function(data) {
             var guestToken = data;
 
             Should.exist(guestToken);
+            fakeGuestToken.access_token.should.equal(guestToken);
 
             // Should be able to get the same token again without a request being sent
             var secondPromise = ASC.getGuestToken();
 
             requests.length.should.equal(1);
 
-            secondPromise.then(function(data) {
+            return secondPromise.then(function(data) {
                 guestToken.should.equal(data);
-                done();
-            }, function(error) {
-                done(new Error('The second promise was rejected. ' + error.message));
             });
-        }, function(error) {
-            done(new Error('Promise was rejected. ' + error.message));
         });
     });
 
