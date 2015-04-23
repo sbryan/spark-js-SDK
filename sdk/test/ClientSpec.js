@@ -47,7 +47,14 @@ describe('Client', function() {
     it('should exist', function() {
         Should.exist(ASC);
 
-        ASC.should.be.Object.with.properties(['initialize', 'getGuestToken']);
+        ASC.should.be.Object.with.properties(
+            [
+                'initialize',
+                'getGuestToken',
+                'getLoginRedirectUrl',
+                'completeLogin'
+            ]
+        );
     });
 
     it('should get guest token', function() {
@@ -84,4 +91,36 @@ describe('Client', function() {
         });
     });
 
+    it('should get access token', function() {
+        requests.length.should.equal(0);
+
+        // We shouldn't already have a token
+        ASC.isAccessTokenValid().should.equal(false);
+
+        var promise = ASC.completeLogin('ACODE');
+        promise.should.be.instanceOf(Promise);
+
+        // Make sure the request was sent
+        requests.length.should.equal(1);
+        var xhr = requests[0];
+        xhr.url.should.equal(testAccessUrl + '?code=ACODE');
+        xhr.method.should.equal('GET');
+
+        // Respond with fake token
+        xhr.respond(200, {'Content-Type': 'application/json'}, JSON.stringify(fakeAccessToken));
+
+        // Check promise
+        return promise.then(function(data) {
+            var accessToken = data;
+
+            Should.exist(accessToken);
+            fakeAccessToken.access_token.should.equal(accessToken);
+
+            // We should now have a valid token
+            ASC.isAccessTokenValid().should.equal(true);
+
+            ASC.logout();
+            ASC.isAccessTokenValid().should.equal(false);
+        });
+    });
 });

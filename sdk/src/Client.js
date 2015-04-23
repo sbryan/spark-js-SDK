@@ -3,6 +3,7 @@ var ADSKSpark = ADSKSpark || {};
 (function() {
     var Client = ADSKSpark.Client = {};
     var GUEST_TOKEN_KEY = 'spark-guest-token';
+    var ACCESS_TOKEN_KEY = 'spark-access-token';
 
     var _clientId = '';
     var _apiUrl = '';
@@ -39,20 +40,55 @@ var ADSKSpark = ADSKSpark || {};
         _apiUrl = apiUrl;
     };
 
-    Client.login = function() {
-
+    /**
+     * Returns the URL to redirect to for logging in.
+     *
+     * @returns {String} - The URL.
+     */
+    Client.getLoginRedirectUrl = function() {
+        return _apiUrl + '/oauth/authorize' +
+            "?response_type=code" +
+            "&client_id=" + _clientId;
     };
 
+    /**
+     * Clears all access tokens that have been stored.
+     */
     Client.logout = function() {
-
+        localStorage.removeItem(GUEST_TOKEN_KEY);
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
     };
 
+    /**
+     * Completes the login process and gets an access_token.
+     *
+     * @param {String} code - The code that was returned after the user signed in. {@see ADSKSpark.Client#login}
+     * @returns {Promise} - A promise that resolves to the access token.
+     */
     Client.completeLogin = function(code) {
+        return ADSKSpark.Request(_accessTokenUrl).get(undefined, {code: code}).then(function(data) {
+            if (data && data.expires_in && data.access_token) {
+                var now = Date.now();
+                data.expires_at = now + parseInt(data.expires_in) * 1000;
+                localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
 
+                return data.access_token;
+            }
+
+            return Promise.reject(new Error(data));
+        });
     };
 
-    Client.getToken = function() {
+    /**
+     * Checks if the access token exists and has not expired.
+     *
+     * @returns {Boolean} - True if the access token exists and has not expired. Otherwise, false.
+     */
+    Client.isAccessTokenValid = function() {
+        var accessToken = JSON.parse(localStorage.getItem(ACCESS_TOKEN_KEY));
+        var now = Date.now();
 
+        return !!(accessToken && accessToken.expires_at && accessToken.expires_at > now);
     };
 
     /**
