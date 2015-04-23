@@ -2,7 +2,7 @@ var ADSKSpark = ADSKSpark || {};
 
 ADSKSpark.PrintLayout = function( printerType, layoutName )
 {
-    var Client = ADSKSpark.Client;
+    var TrayAPI = ADSKSpark.TraiAPI;
 
     // A print layout follows one or more models through the print preparation
     // process. The layout can be in various states:
@@ -163,65 +163,59 @@ ADSKSpark.PrintLayout = function( printerType, layoutName )
 
         function createTray()
         {
-            return new Promise(function(resolve, reject) {
-                // TODO: Validate that we have one or more meshes to add.
-                // Already created?
-                if( !_this._trayData )
-                {
-                    // Collect meshes and mesh attributes, invoke create.
-                    var meshAttrs = {};
-                    var meshIds = _models.map(function(m) {
-                        var id = m.getId();
-                        meshAttrs[id] = m.getOptions();
-                        return id;
-                    });
+            // TODO: Validate that we have one or more meshes to add.
+            // Already created?
+            if( !_this._trayData )
+            {
+                // Collect meshes and mesh attributes, invoke create.
+                var meshAttrs = {};
+                var meshIds = _models.map(function(m) {
+                    var id = m.getId();
+                    meshAttrs[id] = m.getOptions();
+                    return id;
+                });
 
-                    var payload = {
-                        'mesh_ids': meshIds,
-                        'mesh_attrs': meshAttrs,
-                        'printer_type_id': _printerType.id,
-                        'profile_id': _printerProfileId ? _printerProfileId : _printerType.profile_id
-                    };
-
-                    Client.authorizedApiRequest('/print/trays/', payload).post().then(function(response) {
-                        _this._prepared = false;
-                        _this._trayData = response;
-                        resolve(_this);
-                    });
-                }
-                else
-                    resolve(_this);
-            });
+                return TrayAPI.createTray(
+                            _printerType.id, 
+                            _printerProfileId ? _printerProfileId : _printerType.profile_id,
+                            meshIds,
+                            meshAttrs
+                        ).then(function(response) {
+                            _this._prepared = false;
+                            _this._trayData = response;
+                            return response;
+                        });
+            }
+            Promise.resolve(_this._trayData);
         }
 
-        function requestPrepare( _this )    // TODO: Do we need _this argument?
+        function requestPrepare() 
         {
-            return new Promise(function(resolve, reject) {
-                if( !_this._prepared )
-                {
-                    // Consider: always use generate_visual option and
-                    // collect visual files for each mesh??
-                    //
-                    var payload = {
-                        'id': _this.getId(),
-                        'generate_visual': true
-                    };
-                    Client.authorizedApiRequest('/print/trays/prepare', payload).post().then(function(response) {
-                        // Must now traverse mesh list and update each one
-                        // with the new mesh data.
-                        //
-                        // Consider: tracking old tray and operation history
-                        // for undo/redo.
-                        //
-                        _this._trayData = response; // New tray!
-                        _this._prepared = true;
-                        resolve(_this);
-                    });
-                }
-                else
-                    resolve(_this);
-            });
+            if( !_this._prepared )
+            {
+                // Consider: always use generate_visual option and
+                // collect visual files for each mesh??
+                //
+                var payload = {
+                    'id': _this.getId(),
+                    'generate_visual': true
+                };
+                return TrayAPI.prepareTray(_this.getId(), true)
+                        .then(function(response) {
+                            // Must now traverse mesh list and update each one
+                            // with the new mesh data.
+                            //
+                            // Consider: tracking old tray and operation history
+                            // for undo/redo.
+                            //
+                            _this._trayData = response; // New tray!
+                            _this._prepared = true;
+                            return response;
+                        });
+            }
+            Promise.resolve(_this._trayData);
         }
+
         // Returns promise.
         return checkLock().then(createTray).then(requestPrepare);
     };
