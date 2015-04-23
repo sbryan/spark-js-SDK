@@ -2,6 +2,7 @@ var ADSKSpark = ADSKSpark || {};
 
 (function() {
     var Client = ADSKSpark.Client = {};
+    var GUEST_TOKEN_KEY = 'spark-guest-token';
 
     var _clientId = '';
     var _apiUrl = '';
@@ -15,7 +16,7 @@ var ADSKSpark = ADSKSpark || {};
             var date = new Date();
             var now = date.getTime();
             data.expires_at = now + parseInt(data.expires_in) * 1000;
-            localStorage.setItem('spark-guest-token', JSON.stringify(data));
+            localStorage.setItem(GUEST_TOKEN_KEY, JSON.stringify(data));
 
             return data.access_token;
         });
@@ -62,7 +63,7 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {Promise} - A promise that resolves to the guest token.
      */
     Client.getGuestToken = function() {
-        var guestToken = JSON.parse(localStorage.getItem('spark-guest-token'));
+        var guestToken = JSON.parse(localStorage.getItem(GUEST_TOKEN_KEY));
         var now = Date.now();
         if (guestToken && guestToken.expires_at && guestToken.expires_at > now)
             return Promise.resolve(guestToken.access_token);
