@@ -44,8 +44,17 @@ ADSKSpark.PrintLayout = function( printerType, layoutName )
         _trayData = null;
         _error = null;
         // TODO: If we've tossed the tray then any support data is now invalid!!!
-        // So we must traverse the models and reset them to an initial state.
         //
+        // This will have to be revisited... When a tray is modified how much of the
+        // previously prepared state and content do we keep? For example if supports
+        // have been generated for some meshes we can continue to use them until that
+        // particular mesh is modified in some way. 
+        //
+        // So should we do this or not? Should the user choose whether they want
+        // the entire tray to be automatically laid out?
+        for( var i=0; i < newMeshes.length; ++i ) {
+            _models[i].setAttributes( { 'reposition': true, 'reorient': true, 'support': true } );
+        }
         // Pass input data through to resolve:
         return Promise.resolve(data);
     }

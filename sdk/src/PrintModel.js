@@ -78,9 +78,14 @@ ADSKSpark.PrintModel = function( source, name, fileInfo )
 
 	this.setAttributes = function( attributes )
     {
-        _attributes.support    = !!attributes.support;
-        _attributes.reposition = !!attributes.reposition;
-        _attributes.reorient   = !!attributes.reorient;
+        if( attributes.support !== undefined )
+            _attributes.support    = !!attributes.support;
+
+        if( attributes.reposition !== undefined )
+            _attributes.reposition = !!attributes.reposition;
+
+        if( attributes.reorient !== undefined )
+            _attributes.reorient   = !!attributes.reorient;
     };
 
 
