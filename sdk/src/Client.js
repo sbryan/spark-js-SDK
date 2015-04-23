@@ -92,6 +92,17 @@ var ADSKSpark = ADSKSpark || {};
     };
 
     /**
+     * Returns the access_token if one is currently in local storage. Null otherwise.
+     *
+     * @returns {?String} - The access token or null if not found.
+     */
+    Client.getAccessToken = function() {
+        var accessToken = JSON.parse(localStorage.getItem(ACCESS_TOKEN_KEY));
+
+        return (accessToken && accessToken.access_token) ? accessToken.access_token : null;
+    };
+
+    /**
      * Return a promise that resolves to the guest access token.
      * This will attempt to retrieve the token from local storage. If it's missing, a call will be made to
      * the authentication server.

@@ -95,6 +95,7 @@ describe('Client', function() {
         requests.length.should.equal(0);
 
         // We shouldn't already have a token
+        Should(ASC.getAccessToken()).equal(null);
         ASC.isAccessTokenValid().should.equal(false);
 
         var promise = ASC.completeLogin('ACODE');
@@ -115,6 +116,7 @@ describe('Client', function() {
 
             Should.exist(accessToken);
             fakeAccessToken.access_token.should.equal(accessToken);
+            accessToken.should.equal(ASC.getAccessToken());
 
             // We should now have a valid token
             ASC.isAccessTokenValid().should.equal(true);
