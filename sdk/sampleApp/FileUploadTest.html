@@ -1,0 +1,47 @@
+<html>
+    <script type="text/javascript" src="../src/Request.js"></script>
+    <script type="text/javascript" src="../src/Client.js"></script>
+    <script type="text/javascript" src="../src/MeshAPI.js"></script>
+
+<form>
+ <input id="fileInput" type="file" />
+</form>
+
+    <script>
+    document.getElementById("fileInput").onchange = function () {
+        // retrieve File from input
+        var file = this.files[0];
+
+        console.log("GOT: " + file.name);
+
+        /*
+        // set FileReader's onload event
+        var reader = new FileReader();
+        reader.onload = function () {
+            // the results of the read is available with the FileReader's
+            // result property when the callback is executed
+            var fileContent = this.result;
+            console.log("GOT: " + fileContent.length);
+
+            // send fileContent to server via Ajax request
+            // ...
+        };
+        // initiate reading
+        reader.readAsDataURL(file);
+        */
+
+        ADSKSpark.Client.initialize(null, null, null, 'http://localhost:9998');
+        var MeshAPI = ADSKSpark.MeshAPI;
+        MeshAPI.uploadFile(file)
+            .then(function(result) {
+                for( i in result )
+                console.log(i + ": " + result[i])
+            })
+            .catch(function(err) {
+                alert(err.message);
+            });
+
+    };
+    </script>
+
+</html>
