@@ -19,7 +19,7 @@ var ADSKSpark = ADSKSpark || {};
             "transform": transform,
             "generate_visual": !!generateVisual
         };
-        return Client.authorizedApiRequest('/meshes/import').post(null, parms);
+        return Client.authorizedApiRequest('/geom/meshes/import').post(null, parms);
     }
 
     var uploadFileObject = function(file, progressCallback)
@@ -56,7 +56,7 @@ var ADSKSpark = ADSKSpark || {};
                 id: meshId,
                 transform: transform
             };
-            return Client.authorizedApiRequest('meshes/transform').post(null, payload);
+            return Client.authorizedApiRequest('/geom/meshes/transform').post(null, payload);
         },
 
         // progressCallback is optional
@@ -66,7 +66,7 @@ var ADSKSpark = ADSKSpark || {};
             };
             // TODO: It's possible to get immediate 200 response instead of 202 + task.
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
-            return Client.authorizedApiRequest('meshes/analyze').post(null, payload)
+            return Client.authorizedApiRequest('/geom/meshes/analyze').post(null, payload)
                     .then(waiter.wait);
         },
 
@@ -76,7 +76,7 @@ var ADSKSpark = ADSKSpark || {};
             };
             // TODO: It's possible to get immediate 200 response instead of 202 + task.
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
-            return Client.authorizedApiRequest('meshes/generateVisual').post(null, payload)
+            return Client.authorizedApiRequest('/geom/meshes/generateVisual').post(null, payload)
                     .then(waiter.wait);
         }
 
