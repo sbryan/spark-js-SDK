@@ -10,26 +10,32 @@ var ADSKSpark = ADSKSpark || {};
 ADSKSpark.Request = function(url, authorization) {
     var makeRequest = function(method, headers, data) {
         headers = headers || {};
-        if (!headers.hasOwnProperty('Content-Type')) {
-            headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        }
 
         var payload = '';
 
-        if (data) {
-            var argcount = 0;
-            for (var key in data) {
-                if (data.hasOwnProperty(key)) {
-                    if (argcount++) {
-                        payload += '&';
-                    }
-                    payload += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
-                }
+        if (data instanceof FormData) {
+            payload = data;
+        }
+        else {
+            if (!headers.hasOwnProperty('Content-Type')) {
+                headers['Content-Type'] = 'application/x-www-form-urlencoded';
             }
+            if (data) {
 
-            if (method === 'GET') {
-                url += '?' + payload;
-                payload = '';
+                var argcount = 0;
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        if (argcount++) {
+                            payload += '&';
+                        }
+                        payload += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
+                    }
+                }
+
+                if (method === 'GET') {
+                    url += '?' + payload;
+                    payload = '';
+                }
             }
         }
 
