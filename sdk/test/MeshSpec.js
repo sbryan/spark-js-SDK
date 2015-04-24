@@ -28,7 +28,7 @@ describe('Mesh API tests', function() {
                 done(new Error('THIS SHOULD NOT HAVE WORKED'));
             })
             .catch(function(err) {
-                err.message.should.startWith('404');
+                err.message.should.startWith('400');
                 done(); // Correct result!!
             })
             // Catch should failures:
