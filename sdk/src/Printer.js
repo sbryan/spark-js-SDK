@@ -29,7 +29,7 @@ var ADSKSpark = ADSKSpark || {};
     };
 
     ADSKSpark.Printers.prototype._parse = function (data) {
-        ADSKSpark.Paginated.prototype._parse.apply(this, data);
+        ADSKSpark.Paginated.prototype._parse.call(this, data);
 
         var printers = data.printers;
         if (Array.isArray(printers)) {
@@ -53,7 +53,7 @@ var ADSKSpark = ADSKSpark || {};
     ADSKSpark.PrinterMembers.prototype.constructor = ADSKSpark.PrinterMembers;
 
     ADSKSpark.PrinterMembers.prototype._parse = function (data) {
-        ADSKSpark.Paginated.prototype._parse.apply(this, data);
+        ADSKSpark.Paginated.prototype._parse.call(this, data);
 
         var members = data.members;
         if (Array.isArray(members)) {

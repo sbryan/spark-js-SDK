@@ -16,7 +16,7 @@ var ADSKSpark = ADSKSpark || {};
     ADSKSpark.Paginated.prototype.constructor = ADSKSpark.Paginated;
 
     ADSKSpark.Paginated.prototype._parse = function (data) {
-        this.clear();
+        this.splice(0, this.length);
         this.data = data;
     };
 

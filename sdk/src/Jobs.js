@@ -29,7 +29,7 @@ var ADSKSpark = ADSKSpark || {};
     };
 
     ADSKSpark.Jobs.prototype._parse = function (data) {
-        ADSKSpark.Paginated.prototype._parse.apply(this, data);
+        ADSKSpark.Paginated.prototype._parse.call(this, data);
 
         var jobs = data.jobs || data.printer_jobs;
         if (Array.isArray(jobs)) {
