@@ -46,7 +46,7 @@ var ADSKSpark = ADSKSpark || {};
     ADSKSpark.Job = function (data) {
         this.id = data.job_id;
         this.printer_id = data.printer_id;
-        this.raw = data;
+        this.data = data;
         this.status = null;
     };
 

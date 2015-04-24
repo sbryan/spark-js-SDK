@@ -75,7 +75,7 @@ var ADSKSpark = ADSKSpark || {};
         this.firmware = data.firmware;
         this.type_id = data.type_id;
         this.is_primary = data.is_primary;
-        this.raw = data;
+        this.data = data;
         this.status = null;
     };
 
@@ -136,7 +136,7 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {boolean}
          */
         isOnline: function () {
-            return this.status || this.raw.printer_last_health !== 'Offline';
+            return this.status || this.data.printer_last_health !== 'Offline';
         },
 
         /**
@@ -312,9 +312,28 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
+         * Set printer member role.
+         * @param {String} secondary_member_id
+         * @param {boolean} is_printer_scoped - true if the member is allowed to send general commands to the printer.
+         * @param {boolean} is_job_scoped - true if the member is allowed to send jobs to the printer.
+         * @returns {Promise}
+         */
+        setMemberRole: function (secondary_member_id, is_printer_scoped, is_job_scoped) {
+            if (this.is_primary) {
+                return Client.authorizedApiRequest('/print/printers/' + this.id + '/member_role')
+                    .post({
+                        secondary_member_id: secondary_member_id,
+                        is_printer_scoped: is_printer_scoped,
+                        is_job_scoped: is_job_scoped
+                    });
+            }
+            return Promise.reject(new Error('not printer owner'));
+        },
+
+        /**
          * Generate a registration code for this printer.
          * @param {String} secondary_member_email
-         * @returns {*}
+         * @returns {Promise}
          */
         generateRegistrationCode: function (secondary_member_email) {
             if (this.is_primary) {
