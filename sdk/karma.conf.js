@@ -16,6 +16,8 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'node_modules/should/should.js',
+      'src/Request.js',
+      'src/Client.js',
       'src/Paginated.js',
       'src/Jobs.js',
       'src/Printer.js',
