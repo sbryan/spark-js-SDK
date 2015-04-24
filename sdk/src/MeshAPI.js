@@ -4,8 +4,7 @@ var ADSKSpark = ADSKSpark || {};
     var Client = ADSKSpark.Client;
     var _meshCounter = 0;
 
-    var requestImport = function(fileId, name, generateVisual, transform)
-    {
+    var requestImport = function(fileId, name, generateVisual, transform) {
         ++_meshCounter;
         name = name || ("Mesh_" + _meshCounter);
         transform = transform || [
@@ -13,14 +12,18 @@ var ADSKSpark = ADSKSpark || {};
             [0, 1, 0, 0],
             [0, 0, 1, 0]
         ];
-        var parms = {
+        var data = {
             "file_id": fileId,
             "name": name,
             "transform": transform,
             "generate_visual": !!generateVisual
         };
-        return Client.authorizedApiRequest('/geom/meshes/import').post(null, parms);
-    }
+
+        var headers = {
+            'Content-Type' : 'application/json'
+        };
+        return Client.authorizedApiRequest('/geom/meshes/import').post(headers, JSON.stringify(data));
+    };
 
     var uploadFileObject = function(file, progressCallback)
     {
@@ -29,7 +32,7 @@ var ADSKSpark = ADSKSpark || {};
                 
         // TODO: file upload progress ???
         return Client.authorizedApiRequest('/files/upload').post(null, formData);
-    }
+    };
 
     // The Mesh API singleton.
     //

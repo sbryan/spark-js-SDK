@@ -153,13 +153,12 @@ describe('Request', function() {
         testAllResponseCodesForMethod('POST');
 
         // Test sending data
-        // For a POST request, it should be contained in the request's body
+        // For a POST request, the data should be put in the request's body without modification
         it('should be able to send data', function() {
             var data = {
                 field1: 'field',
                 field2: 2
             };
-            var dataString = 'field1=field&field2=2';
             var promise = ASR(testURL).post(undefined, data);
 
             promise.should.be.instanceOf(Promise);
@@ -169,7 +168,7 @@ describe('Request', function() {
             var fakeXhr = requests[0];
             fakeXhr.url.should.equal(testURL);
             fakeXhr.method.should.equal('POST');
-            Should(fakeXhr.requestBody).equal(dataString);
+            Should(fakeXhr.requestBody).eql(data);
 
             // Fake a successful response
             fakeXhr.respond(200, {'Content-Type': 'application/json'}, JSON.stringify('success!'));
@@ -182,13 +181,12 @@ describe('Request', function() {
         testAllResponseCodesForMethod('PUT');
 
         // Test sending data
-        // For a PUT request, it should be contained in the request's body
+        // For a PUT request, the data should be put in the request's body without modification
         it('should be able to send data', function() {
             var data = {
                 field1: 'field',
                 field2: 2
             };
-            var dataString = 'field1=field&field2=2';
             var promise = ASR(testURL).put(undefined, data);
 
             promise.should.be.instanceOf(Promise);
@@ -198,7 +196,7 @@ describe('Request', function() {
             var fakeXhr = requests[0];
             fakeXhr.url.should.equal(testURL);
             fakeXhr.method.should.equal('PUT');
-            Should(fakeXhr.requestBody).equal(dataString);
+            Should(fakeXhr.requestBody).eql(data);
 
             // Fake a successful response
             fakeXhr.respond(200, {'Content-Type': 'application/json'}, JSON.stringify('success!'));
@@ -211,13 +209,12 @@ describe('Request', function() {
         testAllResponseCodesForMethod('DELETE');
 
         // Test sending data
-        // For a DELETE request, it should be contained in the request's body
+        // For a DELETE request, the data should be put in the request's body without modification
         it('should be able to send data', function() {
             var data = {
                 field1: 'field',
                 field2: 2
             };
-            var dataString = 'field1=field&field2=2';
             var promise = ASR(testURL).delete(undefined, data);
 
             promise.should.be.instanceOf(Promise);
@@ -227,7 +224,7 @@ describe('Request', function() {
             var fakeXhr = requests[0];
             fakeXhr.url.should.equal(testURL);
             fakeXhr.method.should.equal('DELETE');
-            Should(fakeXhr.requestBody).equal(dataString);
+            Should(fakeXhr.requestBody).eql(data);
 
             // Fake a successful response
             fakeXhr.respond(200, {'Content-Type': 'application/json'}, JSON.stringify('success!'));

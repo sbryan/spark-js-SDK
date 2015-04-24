@@ -13,30 +13,20 @@ ADSKSpark.Request = function(url, authorization) {
 
         var payload = '';
 
-        if (data instanceof FormData) {
-            payload = data;
-        }
-        else {
-            if (!headers.hasOwnProperty('Content-Type')) {
-                headers['Content-Type'] = 'application/x-www-form-urlencoded';
-            }
-            if (data) {
-
-                var argcount = 0;
-                for (var key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        if (argcount++) {
-                            payload += '&';
-                        }
-                        payload += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
+        if (data && method === 'GET') {
+            var argcount = 0;
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    if (argcount++) {
+                        payload += '&';
                     }
-                }
-
-                if (method === 'GET') {
-                    url += '?' + payload;
-                    payload = '';
+                    payload += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
                 }
             }
+            url += '?' + payload;
+            payload = '';
+        } else {
+            payload = data;
         }
 
         var promise = new Promise(function(resolve, reject) {
