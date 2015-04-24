@@ -56,7 +56,7 @@ ADSKSpark.Request = function(url, authorization) {
             xhr.onerror = function(e) {
                 // Why can we not get more info about what the error was?
                 // See: https://xhr.spec.whatwg.org/#suggested-names-for-events-using-the-progressevent-interface
-                console.log('XHR error type: ' + e.type);
+                // console.log('XHR error type: ' + e.type);
 
                 // If the request failed, it's probably due to a 404.
                 reject(new Error(404));
