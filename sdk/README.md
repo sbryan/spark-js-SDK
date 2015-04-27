@@ -12,9 +12,10 @@ This SDK is intended to fulfill two main goals:
 
 ####Reference to the APIs
 You can get full reference to the APIs by visiting these URLs:
-* Authentication - http://docs.sparkauthentication.apiary.io
-* Print APIs - http://docs.sparkprint1.apiary.io
-* Drive APIs - http://docs.sparkdriveapi.apiary.io
+* Authentication - https://spark.autodesk.com/developers/reference/authentication
+* Print APIs - https://spark.autodesk.com/developers/reference/print
+* Drive APIs - https://spark.autodesk.com/developers/reference/drive
+* Print firmware APIs - https://spark.autodesk.com/developers/reference/firmware 
 
 ### Code Guidelines
 
@@ -47,6 +48,7 @@ The other important thing is to stick to the current conventions in this code ba
   ---- print-preparation.js
   ---- printer-registration.js
   ---- printer-management.js
+  ---- printer-firmware.js
   --- drive
   ---- files.js
   ---- assets.js
@@ -64,6 +66,7 @@ The other important thing is to stick to the current conventions in this code ba
   ---- print-preparation.js
   ---- printer-registration.js
   ---- printer-management.js
+  ---- printer-firmware.js
   --- drive
   ---- files.js
   ---- assets.js
