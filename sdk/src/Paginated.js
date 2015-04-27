@@ -25,7 +25,7 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {boolean}
      */
     ADSKSpark.Paginated.prototype.hasPrev = function () {
-        return this.data._link_prev !== '';
+        return !!this.data._link_prev;
     };
 
     /**
@@ -53,7 +53,7 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {boolean}
      */
     ADSKSpark.Paginated.prototype.hasNext = function () {
-        return this.data._link_next !== '';
+        return !!this.data._link_next;
     };
 
     /**

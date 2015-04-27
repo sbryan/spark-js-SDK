@@ -70,8 +70,8 @@ var ADSKSpark = ADSKSpark || {};
      * @constructor
      */
     ADSKSpark.Printer = function (data) {
-        this.id = data.printer_id;
-        this.name = data.printer_name;
+        this.id = data.printer_id || data.id;
+        this.name = data.printer_name || data.name;
         this.firmware = data.firmware;
         this.type_id = data.type_id;
         this.is_primary = data.is_primary;
@@ -358,13 +358,13 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * Unregister a printer.
-         * @param {String} [member_id]
+         * @param {String} [secondary_member_id]
          * @returns {Promise}
          */
-        unregister: function (member_id) {
+        unregister: function (secondary_member_id) {
             var params;
-            if (member_id) {
-                params = {secondary_member_id: member_id};
+            if (secondary_member_id) {
+                params = {secondary_member_id: secondary_member_id};
             }
             return Client.authorizedApiRequest('/print/printers/' + this.id)
                 .delete(params);
@@ -411,7 +411,6 @@ var ADSKSpark = ADSKSpark || {};
             return Client.authorizedApiRequest('/print/printers/' + this.id + '/jobs')
                 .put({job_id: job_id});
         }
-
     };
 
 })();

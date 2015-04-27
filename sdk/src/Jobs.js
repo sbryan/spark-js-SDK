@@ -38,6 +38,9 @@ var ADSKSpark = ADSKSpark || {};
                 if (!job.printer_id) {
                     job.printer_id = data.printer_id;
                 }
+                if (!job.member_id) {
+                    job.member_id = data.member_id;
+                }
                 that.push(new ADSKSpark.Job(job));
             });
         }
@@ -72,12 +75,12 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
-         * Set a print job callback.
+         * Set a callback for a print job.
          * @param {String} callback_url
          * @returns {Promise}
          */
         setCallback: function (callback_url) {
-            return Client.authorizedApiRequest('/print/jobs/' + this.id)
+            return Client.authorizedApiRequest('/print/jobs/' + this.id + '/register')
                 .post({callback_url: callback_url})
         }
     };
