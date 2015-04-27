@@ -71,15 +71,16 @@ The other important thing is to stick to the current conventions in this code ba
   ---- files.js
   ---- assets.js
   ---- members.js
-  -- SampleApps
-  --- 3D Printer
-  --- Print Prep
-  --- Storage App
-  --- Gallery App
+  -- sample-apps
+  --- authentication_sample
+  --- 3d_printer_sample
+  --- print_preparation_sample
+  --- storage_app
+  --- gallery_app
   -- karma.conf.js
   -- Gruntfile.js
   -- package.json
-  - server
+  - authentication-server
   -- nodejs
   -- ...
   -- ...
