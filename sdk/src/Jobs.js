@@ -28,8 +28,8 @@ var ADSKSpark = ADSKSpark || {};
             });
     };
 
-    ADSKSpark.Jobs.prototype._parse = function (data) {
-        ADSKSpark.Paginated.prototype._parse.call(this, data);
+    ADSKSpark.Jobs.prototype.parse = function (data) {
+        ADSKSpark.Paginated.prototype.parse.call(this, data);
 
         var jobs = data.jobs || data.printer_jobs;
         if (Array.isArray(jobs)) {
@@ -46,9 +46,14 @@ var ADSKSpark = ADSKSpark || {};
         }
     };
 
+    /**
+     * A print job.
+     * @param {Object} data - JSON data.
+     * @constructor
+     */
     ADSKSpark.Job = function (data) {
         this.id = data.job_id;
-        this.printer_id = data.printer_id;
+        this.printerId = data.printer_id;
         this.data = data;
         this.status = null;
     };
@@ -76,12 +81,12 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * Set a callback for a print job.
-         * @param {String} callback_url
+         * @param {string} callbackUrl
          * @returns {Promise}
          */
-        setCallback: function (callback_url) {
+        setCallback: function (callbackUrl) {
             return Client.authorizedApiRequest('/print/jobs/' + this.id + '/register')
-                .post({callback_url: callback_url})
+                .post(null, {callback_url: callbackUrl})
         }
     };
 
