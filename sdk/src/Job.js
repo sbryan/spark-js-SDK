@@ -22,7 +22,7 @@ var ADSKSpark = ADSKSpark || {};
      */
     ADSKSpark.Jobs.get = function (params) {
         return Client.authorizedApiRequest('/print/jobs')
-            .get(params)
+            .get(null, params)
             .then(function (data) {
                 return new ADSKSpark.Jobs(data);
             });

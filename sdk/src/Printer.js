@@ -22,7 +22,7 @@ var ADSKSpark = ADSKSpark || {};
      */
     ADSKSpark.Printers.get = function (params) {
         return Client.authorizedApiRequest('/print/printers')
-            .get(params)
+            .get(null, params)
             .then(function (data) {
                 return new ADSKSpark.Printers(data);
             });
@@ -367,7 +367,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         getMembers: function (params) {
             return Client.authorizedApiRequest('/print/printers/' + this.id + '/members')
-                .get(params)
+                .get(null, params)
                 .then(function (data) {
                     return new ADSKSpark.PrinterMembers(data);
                 })
@@ -394,7 +394,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         getJobs: function (params) {
             return Client.authorizedApiRequest('/print/printers/' + this.id + '/jobs')
-                .get(params)
+                .get(null, params)
                 .then(function (data) {
                     return new ADSKSpark.Jobs(data);
                 });
