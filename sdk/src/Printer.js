@@ -80,19 +80,32 @@ var ADSKSpark = ADSKSpark || {};
     };
 
     /**
-     * Register a printer to a member.
+     * Register a printer to a printer owner.
+     * @param {string} name - Printer name.
      * @param {string} code - Printer registration code.
-     * @param {string} name - Printer nickname.
+     * @param {string} [memberId] - Secondary member id if registering as a printer user.
      * @returns {Promise}
      */
-    ADSKSpark.Printer.register = function (code, name) {
+    ADSKSpark.Printer.register = function (name, code, memberId) {
         return Client.authorizedApiRequest('/print/printers/register')
-            .post(null, {registration_code: code, printer_name: name});
+            .post(null, {
+                printer_name: name,
+                registration_code: code,
+                secondary_member_id: memberId
+            })
+            .then(function (data) {
+                if (data.registered) {
+                    return ADSKSpark.Printer.getById(data.printer_id);
+                }
+                return Promise.reject(new Error('not registered'));
+            });
 
-        // TODO: when api is fixed, this should resolve to new printer
-        // TODO: until then, we could always call getById()?
+        // TODO: when api is fixed, this can be simplified
         //  .then(function (data) {
-        //      return new ADSKSpark.Printer(data);
+        //      if (data.registered) {
+        //          return new ADSKSpark.Printer(data);
+        //      }
+        //      return Promise.reject(new Error('not registered'));
         //  });
     };
 
@@ -381,7 +394,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         getJobs: function (params) {
             return Client.authorizedApiRequest('/print/printers/' + this.id + '/jobs')
-                .get()
+                .get(params)
                 .then(function (data) {
                     return new ADSKSpark.Jobs(data);
                 });
