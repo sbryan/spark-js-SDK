@@ -9,23 +9,18 @@ var ADSKSpark = ADSKSpark || {};
      * @constructor
      */
     ADSKSpark.Paginated = function (data) {
-        this._parse(data);
+        this.parse(data);
     };
 
     ADSKSpark.Paginated.prototype = Object.create(Array.prototype); // Almost-array
     ADSKSpark.Paginated.prototype.constructor = ADSKSpark.Paginated;
-
-    ADSKSpark.Paginated.prototype._parse = function (data) {
-        this.splice(0, this.length);
-        this.data = data;
-    };
 
     /**
      * Return true if the previous link is valid.
      * @returns {boolean}
      */
     ADSKSpark.Paginated.prototype.hasPrev = function () {
-        return this.data._link_prev !== '';
+        return !!this.data._link_prev;
     };
 
     /**
@@ -34,14 +29,14 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {Promise} - A Promise that will resolve to an array of items.
      */
     ADSKSpark.Paginated.prototype.prev = function () {
-        var link_prev = this.data._link_prev,
+        var linkPrev = this.data._link_prev,
             that = this;
 
-        if (link_prev) {
-            return Client.authorizedApiRequest(link_prev)
+        if (linkPrev) {
+            return Client.authorizedApiRequest(linkPrev)
                 .get()
                 .then(function (data) {
-                    that._parse(data);
+                    that.parse(data);
                     return that;
                 });
         }
@@ -53,7 +48,7 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {boolean}
      */
     ADSKSpark.Paginated.prototype.hasNext = function () {
-        return this.data._link_next !== '';
+        return !!this.data._link_next;
     };
 
     /**
@@ -62,18 +57,23 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {Promise} - A Promise that will resolve to an array of items.
      */
     ADSKSpark.Paginated.prototype.next = function () {
-        var link_next = this.data._link_next,
+        var linkNext = this.data._link_next,
             that = this;
 
-        if (link_next) {
-            return Client.authorizedApiRequest(link_next)
+        if (linkNext) {
+            return Client.authorizedApiRequest(linkNext)
                 .get()
                 .then(function (data) {
-                    that._parse(data);
+                    that.parse(data);
                     return that;
                 });
         }
         return Promise.reject(new Error('no next link'));
+    };
+
+    ADSKSpark.Paginated.prototype.parse = function (data) {
+        this.splice(0, this.length);
+        this.data = data;
     };
 
 })();
