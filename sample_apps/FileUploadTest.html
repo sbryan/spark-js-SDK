@@ -45,8 +45,8 @@
                 return MeshAPI.importMesh(upload.file_id, upload.name, true);
             })
             .then(function(mesh) {
-                var report = '</b>Imported mesh:</b> ' + mesh.name + ' ID: ' + mesh.file_id + '\n';
-                report += 'Visual file: ' + mesh.visual_file_id + '\n';
+                var report = '<b>Imported mesh:</b> ' + mesh.name + ' ID: ' + mesh.id + '\n';
+                report += '<b>Visual file:</b> ' + mesh.visual_file_id + '\n';
                 p.innerHTML += report + '\n';
             })
             .catch(function(err) {

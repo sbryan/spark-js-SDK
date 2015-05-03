@@ -22,14 +22,14 @@ var ADSKSpark = ADSKSpark || {};
      */
     ADSKSpark.Jobs.get = function (params) {
         return Client.authorizedApiRequest('/print/jobs')
-            .get(params)
+            .get(null, params)
             .then(function (data) {
                 return new ADSKSpark.Jobs(data);
             });
     };
 
-    ADSKSpark.Jobs.prototype._parse = function (data) {
-        ADSKSpark.Paginated.prototype._parse.call(this, data);
+    ADSKSpark.Jobs.prototype.parse = function (data) {
+        ADSKSpark.Paginated.prototype.parse.call(this, data);
 
         var jobs = data.jobs || data.printer_jobs;
         if (Array.isArray(jobs)) {
@@ -38,14 +38,22 @@ var ADSKSpark = ADSKSpark || {};
                 if (!job.printer_id) {
                     job.printer_id = data.printer_id;
                 }
+                if (!job.member_id) {
+                    job.member_id = data.member_id;
+                }
                 that.push(new ADSKSpark.Job(job));
             });
         }
     };
 
+    /**
+     * A print job.
+     * @param {Object} data - JSON data.
+     * @constructor
+     */
     ADSKSpark.Job = function (data) {
         this.id = data.job_id;
-        this.printer_id = data.printer_id;
+        this.printerId = data.printer_id;
         this.data = data;
         this.status = null;
     };
@@ -72,13 +80,13 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
-         * Set a print job callback.
-         * @param {String} callback_url
+         * Set a callback for a print job.
+         * @param {string} callbackUrl
          * @returns {Promise}
          */
-        setCallback: function (callback_url) {
-            return Client.authorizedApiRequest('/print/jobs/' + this.id)
-                .post({callback_url: callback_url})
+        setCallback: function (callbackUrl) {
+            return Client.authorizedApiRequest('/print/jobs/' + this.id + '/register')
+                .post(null, {callback_url: callbackUrl})
         }
     };
 
