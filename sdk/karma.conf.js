@@ -19,7 +19,7 @@ module.exports = function(config) {
       'src/Request.js',
       'src/Client.js',
       'src/Paginated.js',
-      'src/Jobs.js',
+      'src/Job.js',
       'src/Printer.js',
       'src/*.js',
       'test/*Spec.js'
