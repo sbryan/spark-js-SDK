@@ -90,9 +90,12 @@ The other important thing is to stick to the current conventions in this code ba
 ```  
 
 #### Naming conventions
-* File names should be all lower case with dashes as separators between words
-* Variables should be Camel cased
-* Objects should be in Pascal case
+* File names should follow these conventions:
+  * When a file contains a primary class or object interface the file name should match the class or object name.
+  * Otherwise the author should name the file to describe the contents as best as possible within a reasonable name length.
+  * Use of dashes and underscores in filenames is discouraged. Upper or lower camel case for filenames is preferred.
+* Variables should be camelCase
+* Objects should be in PascalCase
 * Constants should be all cases with underscores between words
 
 #### More conventions
