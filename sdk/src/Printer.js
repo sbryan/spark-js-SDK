@@ -30,13 +30,14 @@ var ADSKSpark = ADSKSpark || {};
 
     ADSKSpark.Printers.prototype.parse = function (data) {
         ADSKSpark.Paginated.prototype.parse.call(this, data);
-
-        var printers = data.printers;
-        if (Array.isArray(printers)) {
-            var that = this;
-            printers.forEach(function (printer) {
-                that.push(new ADSKSpark.Printer(printer));
-            });
+        if (data) {
+            var printers = data.printers;
+            if (Array.isArray(printers)) {
+                var that = this;
+                printers.forEach(function (printer) {
+                    that.push(new ADSKSpark.Printer(printer));
+                });
+            }
         }
     };
 
@@ -54,13 +55,14 @@ var ADSKSpark = ADSKSpark || {};
 
     ADSKSpark.PrinterMembers.prototype.parse = function (data) {
         ADSKSpark.Paginated.prototype.parse.call(this, data);
-
-        var members = data.members;
-        if (Array.isArray(members)) {
-            var that = this;
-            members.forEach(function (member) {
-                that.push(member);
-            });
+        if (data) {
+            var members = data.members;
+            if (Array.isArray(members)) {
+                var that = this;
+                members.forEach(function (member) {
+                    that.push(member);
+                });
+            }
         }
     };
 

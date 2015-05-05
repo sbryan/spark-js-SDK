@@ -9,8 +9,7 @@ var ADSKSpark = ADSKSpark || {};
      * @constructor
      */
     ADSKSpark.Jobs = function (data) {
-        if( data )
-            ADSKSpark.Paginated.call(this, data);
+        ADSKSpark.Paginated.call(this, data);
     };
 
     ADSKSpark.Jobs.prototype = Object.create(ADSKSpark.Paginated.prototype);
@@ -32,19 +31,20 @@ var ADSKSpark = ADSKSpark || {};
 
     ADSKSpark.Jobs.prototype.parse = function (data) {
         ADSKSpark.Paginated.prototype.parse.call(this, data);
-
-        var jobs = data.jobs || data.printer_jobs;
-        if (Array.isArray(jobs)) {
-            var that = this;
-            jobs.forEach(function (job) {
-                if (!job.printer_id) {
-                    job.printer_id = data.printer_id;
-                }
-                if (!job.member_id) {
-                    job.member_id = data.member_id;
-                }
-                that.push(new ADSKSpark.Job(job));
-            });
+        if (data) {
+            var jobs = data.jobs || data.printer_jobs;
+            if (Array.isArray(jobs)) {
+                var that = this;
+                jobs.forEach(function (job) {
+                    if (!job.printer_id) {
+                        job.printer_id = data.printer_id;
+                    }
+                    if (!job.member_id) {
+                        job.member_id = data.member_id;
+                    }
+                    that.push(new ADSKSpark.Job(job));
+                });
+            }
         }
     };
 

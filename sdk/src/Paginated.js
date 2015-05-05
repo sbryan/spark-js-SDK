@@ -20,7 +20,7 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {boolean}
      */
     ADSKSpark.Paginated.prototype.hasPrev = function () {
-        return !!this.data._link_prev;
+        return this.data && !!this.data._link_prev;
     };
 
     /**
@@ -29,16 +29,18 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {Promise} - A Promise that will resolve to an array of items.
      */
     ADSKSpark.Paginated.prototype.prev = function () {
-        var linkPrev = this.data._link_prev,
-            that = this;
+        if (this.data) {
+            var linkPrev = this.data._link_prev,
+                that = this;
 
-        if (linkPrev) {
-            return Client.authorizedApiRequest(linkPrev)
-                .get()
-                .then(function (data) {
-                    that.parse(data);
-                    return that;
-                });
+            if (linkPrev) {
+                return Client.authorizedApiRequest(linkPrev)
+                    .get()
+                    .then(function (data) {
+                        that.parse(data);
+                        return that;
+                    });
+            }
         }
         return Promise.reject(new Error('no prev link'));
     };
@@ -48,7 +50,7 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {boolean}
      */
     ADSKSpark.Paginated.prototype.hasNext = function () {
-        return !!this.data._link_next;
+        return this.data && !!this.data._link_next;
     };
 
     /**
@@ -57,16 +59,18 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {Promise} - A Promise that will resolve to an array of items.
      */
     ADSKSpark.Paginated.prototype.next = function () {
-        var linkNext = this.data._link_next,
-            that = this;
+        if (this.data) {
+            var linkNext = this.data._link_next,
+                that = this;
 
-        if (linkNext) {
-            return Client.authorizedApiRequest(linkNext)
-                .get()
-                .then(function (data) {
-                    that.parse(data);
-                    return that;
-                });
+            if (linkNext) {
+                return Client.authorizedApiRequest(linkNext)
+                    .get()
+                    .then(function (data) {
+                        that.parse(data);
+                        return that;
+                    });
+            }
         }
         return Promise.reject(new Error('no next link'));
     };
