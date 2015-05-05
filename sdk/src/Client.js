@@ -94,6 +94,17 @@ var ADSKSpark = ADSKSpark || {};
     };
 
     /**
+     * Returns the full access token object if one is currently in local storage. Null otherwise.
+     *
+     * @returns {?String} - The access token or null if not found.
+     */
+    Client.getAccessTokenObject = function() {
+        var accessToken = JSON.parse(localStorage.getItem(ACCESS_TOKEN_KEY));
+
+        return (accessToken && accessToken.access_token) ? accessToken : null;
+    };
+
+    /**
      * Returns the access_token if one is currently in local storage. Null otherwise.
      *
      * @returns {?String} - The access token or null if not found.
