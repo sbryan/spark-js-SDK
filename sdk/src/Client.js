@@ -131,11 +131,19 @@ var ADSKSpark = ADSKSpark || {};
         return getGuestTokenFromServer();
     };
 
+    /**
+     * Request the API with an access token (if exists)
+     * @param endpoint
+     * @returns {*}
+     */
     Client.authorizedApiRequest = function(endpoint) {
         var authorization;
 
-        if( _accessToken )
+        _accessToken = Client.getAccessToken();
+
+        if( _accessToken ) {
             authorization = 'Bearer ' + _accessToken;
+        }
 
         return ADSKSpark.Request(_apiUrl + endpoint, authorization);
     };
