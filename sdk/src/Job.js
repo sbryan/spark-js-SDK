@@ -9,7 +9,8 @@ var ADSKSpark = ADSKSpark || {};
      * @constructor
      */
     ADSKSpark.Jobs = function (data) {
-        ADSKSpark.Paginated.call(this, data);
+        if( data )
+            ADSKSpark.Paginated.call(this, data);
     };
 
     ADSKSpark.Jobs.prototype = Object.create(ADSKSpark.Paginated.prototype);
@@ -17,12 +18,13 @@ var ADSKSpark = ADSKSpark || {};
 
     /**
      * Get jobs registered to a member.
+     * @param {Object} headers - Optional list of request header properties.
      * @param {Object} params - limit/offset/sort/filter options.
      * @returns {Promise} - A promise that will resolve to an array of jobs.
      */
-    ADSKSpark.Jobs.get = function (params) {
+    ADSKSpark.Jobs.get = function (headers, params) {
         return Client.authorizedApiRequest('/print/jobs')
-            .get(null, params)
+            .get(headers, params)
             .then(function (data) {
                 return new ADSKSpark.Jobs(data);
             });
