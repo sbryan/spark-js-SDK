@@ -2,6 +2,8 @@ var ADSKSpark = ADSKSpark || {};
 
 (function() {
     var Client = ADSKSpark.Client = {};
+    var Helpers = ADSKSpark.Helpers;
+
     var GUEST_TOKEN_KEY = 'spark-guest-token';
     var ACCESS_TOKEN_KEY = 'spark-access-token';
 
@@ -125,5 +127,12 @@ var ADSKSpark = ADSKSpark || {};
             authorization = 'Bearer ' + _accessToken;
 
         return ADSKSpark.Request(_apiUrl + endpoint, authorization);
+    };
+
+    /**
+     * Open an auth window
+     */
+    Client.openLoginWindow = function(){
+        Helpers.popupWindow(Client.getLoginRedirectUrl(),'spark',350,600);
     };
 }());
