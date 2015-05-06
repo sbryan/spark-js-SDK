@@ -112,3 +112,34 @@ if (response.code === RESPONSE_ERROR_MSG){
 }
 ```
 Where you define RESPONSE_ERROR_MSG in a separate constants file.
+
+### Testing and Packaging
+
+Install Node.js and then:
+
+```sh
+$ git clone git://github.com/spark3dp/spark-js-sdk
+$ sudo npm -g install grunt-cli karma bower
+$ cd spark-js-sdk/sdk
+$ npm install
+$ bower install
+```
+
+### Testing
+See the README.md inside the test folder
+
+### Packaging
+
+To build your own package:
+
+```sh
+$ grunt build
+```
+or
+
+```sh
+$ grunt build:[version]
+```
+Where version might be any string.
+
+(We package in the dist folder the latest version with a suffix "latest" and a suffix of the current stable version).
