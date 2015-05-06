@@ -1,7 +1,8 @@
 {
   "name": "autodesk-spark-sdk",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Autodesk, Inc.",
+  "license": "Apache 2.0",
   "scripts": {
       "test": "karma start karma.conf.js"
   },
@@ -14,7 +15,10 @@
     "karma-mocha-reporter": "^1.0.2",
     "karma-sinon": "^1.0.4",
     "should": "4.6.3",
-    "sinon": "^1.14.1"
+    "sinon": "^1.14.1",
+    "grunt": "^0.4.5",
+    "time-grunt": "^0.3.1",
+    "grunt-contrib-uglify": "~0.5.0"
   },
   "engines": {
     "node": ">=0.10.0"
