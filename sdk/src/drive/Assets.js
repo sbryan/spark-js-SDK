@@ -65,8 +65,6 @@ var ADSKSpark = ADSKSpark || {};
 				return encodeURIComponent(k) + "=" + encodeURIComponent(asset[k]);
 			}).join('&');
 
-			params = params.substring(0, params.length - 1);
-
 			var headers = {'Content-type': 'application/x-www-form-urlencoded'};
 			return Client.authorizedApiRequest('/assets')
 				.post(headers, params)
