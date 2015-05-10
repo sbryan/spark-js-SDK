@@ -21,6 +21,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		getPublicAssetsByConditions: function (conditions) {
 
+
 			//default limit/offset
 			conditions.limit = conditions.limit ? conditions.limit : 12;
 			conditions.offset = conditions.offset ? conditions.offset : 0;
