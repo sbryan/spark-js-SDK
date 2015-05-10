@@ -27,7 +27,7 @@ To use the SDK you should include the SDK library in your HTML page right befory
 <script type="text/javascript" src="//spark-sdks.s3.amazonaws.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
 
-Then you would have to initialize the SDK client with your credentials and propriate environment:
+Then you would have to initialize the SDK client with your credentials and choose the environment between sandbox and production:
 
 ```JavaScript
 	ADSKSpark.Client.initialize('',// Your app key
