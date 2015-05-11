@@ -2,6 +2,8 @@ var ADSKSpark = ADSKSpark || {};
 
 (function() {
     var Client = ADSKSpark.Client = {};
+    var Helpers = ADSKSpark.Helpers;
+
     var GUEST_TOKEN_KEY = 'spark-guest-token';
     var ACCESS_TOKEN_KEY = 'spark-access-token';
 
@@ -10,6 +12,7 @@ var ADSKSpark = ADSKSpark || {};
     var _guestTokenUrl = '';
     var _accessTokenUrl = '';
     var _accessToken = '';
+    var _guestToken = '';
 
     // Helper functions
     var getGuestTokenFromServer = function() {
@@ -92,6 +95,17 @@ var ADSKSpark = ADSKSpark || {};
     };
 
     /**
+     * Returns the full access token object if one is currently in local storage. Null otherwise.
+     *
+     * @returns {?String} - The access token or null if not found.
+     */
+    Client.getAccessTokenObject = function() {
+        var accessToken = JSON.parse(localStorage.getItem(ACCESS_TOKEN_KEY));
+
+        return (accessToken && accessToken.access_token) ? accessToken : null;
+    };
+
+    /**
      * Returns the access_token if one is currently in local storage. Null otherwise.
      *
      * @returns {?String} - The access token or null if not found.
@@ -112,18 +126,53 @@ var ADSKSpark = ADSKSpark || {};
     Client.getGuestToken = function() {
         var guestToken = JSON.parse(localStorage.getItem(GUEST_TOKEN_KEY));
         var now = Date.now();
-        if (guestToken && guestToken.expires_at && guestToken.expires_at > now)
+        if (guestToken && guestToken.expires_at && guestToken.expires_at > now) {
             return Promise.resolve(guestToken.access_token);
+        }
 
         return getGuestTokenFromServer();
     };
 
+    /**
+     * Request the API with an access token (if exists)
+     * @param endpoint
+     * @returns {*}
+     */
     Client.authorizedApiRequest = function(endpoint) {
         var authorization;
 
-        if( _accessToken )
+        _accessToken = Client.getAccessToken();
+
+        if( _accessToken ) {
             authorization = 'Bearer ' + _accessToken;
+        }
 
         return ADSKSpark.Request(_apiUrl + endpoint, authorization);
+    };
+
+    /**
+     * Request the API with a guest token (if exists)
+     * @param endpoint
+     * @returns {*}
+     */
+    Client.authorizedAsGuestApiRequest = function(endpoint) {
+        var authorization;
+
+        return Client.getGuestToken().then(function(guestToken) {
+            _guestToken = guestToken;
+
+            if (_guestToken) {
+                authorization = 'Bearer ' + _guestToken;
+            }
+
+            return ADSKSpark.Request(_apiUrl + endpoint, authorization);
+        });
+    };
+
+    /**
+     * Open an auth window
+     */
+    Client.openLoginWindow = function(){
+        Helpers.popupWindow(Client.getLoginRedirectUrl(),'spark',350,600);
     };
 }());

@@ -52,7 +52,14 @@ describe('Client', function() {
                 'initialize',
                 'getGuestToken',
                 'getLoginRedirectUrl',
-                'completeLogin'
+                'completeLogin',
+                'logout',
+                'isAccessTokenValid',
+                'getAccessTokenObject',
+                'getAccessToken',
+                'authorizedApiRequest',
+                'authorizedAsGuestApiRequest',
+                'openLoginWindow'
             ]
         );
     });
