@@ -17,25 +17,28 @@ The authentication server stores your app secret and handles the exchange of the
 API server.
 
 #### Setup
-Modify `authenticationServer/config.js` to include you app's key and secret as instructed in the comments.
-
-Run `npm install` from within the `authenticationServer` directory. This will install the required node modules for this
-server.
+In the `authenticationServer` directory:
+- Copy `config.example.js` to `config.js` 
+- Modify `config.js` to include your app's key and secret as instructed in the comments.
+- Run `npm install`. This will install the required node modules for this server.
 
 #### How to Run
-Run `node server.js` to start the server on port 3000.
+- Run `node server.js` in the `authenticationServer` directory to start the server on port 3000.
 
 ## Frontend Server
 The frontend server is what serves your app. It communicates with your authentication server to get access tokens but for
 other API calls, it communicates with the spark platform directly.
 
 #### Setup
-Modify `frontendServer/public/index.html` as instructed in the comments.
+In the `frontendServer/public` directory:
+- DEV TEMPORARY: create or symlink the SDK "src" directory here.
+- Copy `index.sample.html` to `index.html`.
+- Modify `index.html` to set your API key and choice of API service as instructed in the comments.
 
-Run `npm install` from within the `frontendServer` directory. This will install the required node modules for this
-server.
+In the `frontendServer` directory:
+- Run `npm install`. This will install the required node modules for this server.
 
 #### How to Run
 Run `node server.js` from within the `frontendServer` directory to start the server on port 8000.
 
-In your browser, navigate to `localhost.autodesk.com:8000`.
+In your browser, navigate to `localhost.autodesk.com:8000` (or just `localhost:8000`).
