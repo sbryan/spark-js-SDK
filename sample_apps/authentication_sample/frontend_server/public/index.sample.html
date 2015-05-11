@@ -29,6 +29,23 @@
             </div>
 
         </div>
+        <br>
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
+                <div id="test-wrapper">
+                    <h2>Spark SDK Test</h2>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <button id="printer-types" class="btn btn-primary">Get Printer Types</button>
+                        <br>
+                        <p>Printer Types:<br>
+                        <pre id="printer-types-list"></pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <!-- /container -->
 
         <script type="text/javascript" charset="utf-8" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -37,14 +54,17 @@
         <!-- TODO: for now symlink to the src directory. Change this to installed minified source file -->
         <script type="text/javascript" charset="utf-8" src="src/Request.js"></script>
         <script type="text/javascript" charset="utf-8" src="src/Client.js"></script>
+        <script type="text/javascript" charset="utf-8" src="src/PrintDB.js"></script>
         <!-- end spark sdk -->
 
         <script>
             var APP_KEY = ''; // Your app key
             var API_ROOT = 'sandbox';  // Use 'sandbox' for testing and 'api' for production.
 
-            var GUEST_TOKEN_URL = 'http://localhost:3000/guest_token';// The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
-            var ACCESS_TOKEN_URL = 'http://localhost:3000/access_token';// The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
+            // The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
+            var GUEST_TOKEN_URL = 'http://localhost:3000/guest_token';
+            // The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
+            var ACCESS_TOKEN_URL = 'http://localhost:3000/access_token';
 
             function transformToAssocArray(prmstr) {
                 var params = {};
@@ -116,6 +136,17 @@
                 $('#guest-button').click(function() {
                     Client.getGuestToken().then(function(token) {
                         $('#guest-token-span').text(token);
+                    });
+                });
+
+                $('#printer-types').click(function() {
+                    ADSKSpark.PrintDB.getPrinterTypes().then(function(types) {
+                        for( var i=types.length;  --i >= 0; ) {
+                            $('#printer-types-list').append(types[i].name+'<br>');
+                        }
+                    })
+                    .catch( function(error) {
+                        $('#printer-types-list').text(error.message);
                     });
                 });
             });
