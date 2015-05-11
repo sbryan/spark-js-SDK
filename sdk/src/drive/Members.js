@@ -14,10 +14,10 @@ var ADSKSpark = ADSKSpark || {};
 	ADSKSpark.Members = {
 
 		/**
-		 * Gets member details by memberId
+		 * Gets member profile by memberId
 		 * @returns {Promise} - A promise that will resolve to a member object
 		 */
-		retrieveMemberDetails: function (memberId) {
+		getMemberProfile: function (memberId) {
 
 			//Make sure memberId is defined and that it is a number
 			if (!isNaN(memberId)) {
