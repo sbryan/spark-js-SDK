@@ -30,7 +30,7 @@ ADSKSpark.TaskWaiter = function( progressCallback )
         return new Promise(function(resolve) {
             setTimeout(function() { resolve(); }, _interval);
         }).then( _this._pollTask );
-    }
+    };
 
 
     this._pollTask = function()
@@ -38,7 +38,7 @@ ADSKSpark.TaskWaiter = function( progressCallback )
         console.log("Poll task");
         return Client.authorizedApiRequest('/print/tasks/' + _taskId)
                 .get().then(_this._checkTaskResponse);
-    }
+    };
 
 
     this.wait = function(opResult, interval) 

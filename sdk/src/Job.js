@@ -88,7 +88,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         setCallback: function (callbackUrl) {
             return Client.authorizedApiRequest('/print/jobs/' + this.id + '/register')
-                .post(null, {callback_url: callbackUrl})
+                .post(null, {callback_url: callbackUrl});
         }
     };
 

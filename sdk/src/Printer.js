@@ -357,7 +357,7 @@ var ADSKSpark = ADSKSpark || {};
         generateRegistrationCode: function (secondaryMemberEmail) {
             if (this.isPrimary) {
                 return Client.authorizedApiRequest('/print/printers/' + this.id + '/secondary_registration')
-                    .post(null, {secondary_member_email: secondaryMemberEmail})
+                    .post(null, {secondary_member_email: secondaryMemberEmail});
             }
             return Promise.reject(new Error('not printer owner'));
         },
