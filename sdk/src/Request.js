@@ -67,7 +67,10 @@ ADSKSpark.Request = function(url, authorization,options) {
                     resolve(response);
 
                 } else {
-                    reject(new Error(xhr.status + ' ' + xhr.responseText));
+                    var error = new Error(xhr.statusText);
+                    error.status = xhr.status;
+                    error.responseText = xhr.responseText;
+                    reject(error);
                 }
             };
             xhr.onerror = function(e) {
