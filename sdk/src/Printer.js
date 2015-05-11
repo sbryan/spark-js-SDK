@@ -89,12 +89,15 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {Promise}
      */
     ADSKSpark.Printer.register = function (name, code, memberId) {
+        var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+        var payload = ADSKSpark.Helpers.jsonToParameters({
+            printer_name: name,
+            registration_code: code,
+            secondary_member_id: memberId
+        });
+
         return Client.authorizedApiRequest('/print/printers/register')
-            .post(null, {
-                printer_name: name,
-                registration_code: code,
-                secondary_member_id: memberId
-            })
+            .post(headers, payload)
             .then(function (data) {
                 if (data.registered) {
                     return ADSKSpark.Printer.getById(data.printer_id);
