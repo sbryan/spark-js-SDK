@@ -20,7 +20,7 @@ var ADSKSpark = ADSKSpark || {};
             return Client.authorizedApiRequest('/printDB/printerTypes')
                 .get()
                 .then(function(data) {
-                    return data.printer_types;
+                    return data.printerTypes;
                 });
         },
 
