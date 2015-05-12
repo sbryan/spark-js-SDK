@@ -32,10 +32,12 @@ ADSKSpark.Helpers = function () {
 		 */
 		transformToAssocArray: function (prmstr) {
 			var params = {};
-			var prmarr = prmstr.split("&");
-			for (var i = 0; i < prmarr.length; i++) {
-				var tmparr = prmarr[i].split("=");
-				params[tmparr[0]] = tmparr[1];
+			if (prmstr) {
+				var prmarr = prmstr.split("&");
+				for (var i = 0; i < prmarr.length; i++) {
+					var tmparr = prmarr[i].split("=");
+					params[tmparr[0]] = tmparr[1];
+				}
 			}
 			return params;
 		},
