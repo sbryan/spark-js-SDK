@@ -95,9 +95,7 @@ var ADSKSpark = ADSKSpark || {};
 		createAsset: function (asset) {
 
 			//construct the full params
-			var params = Object.keys(asset).map(function (k) {
-				return encodeURIComponent(k) + "=" + encodeURIComponent(asset[k]);
-			}).join('&');
+			var params = ADSKSpark.Helpers.jsonToParameters(asset);
 
 			var headers = {'Content-type': 'application/x-www-form-urlencoded'};
 			return Client.authorizedApiRequest('/assets').post(headers, params);
@@ -117,11 +115,7 @@ var ADSKSpark = ADSKSpark || {};
 				var assetId = asset.assetId;
 
 				//construct the full params, omit assetId in the request
-				var params = Object.keys(asset).filter(function (key) {
-					return key !== 'assetId';
-				}).map(function (k) {
-					return encodeURIComponent(k) + "=" + encodeURIComponent(asset[k]);
-				}).join('&');
+				var params = ADSKSpark.Helpers.jsonToParameters(asset,'assetId');
 
 				return Client.authorizedApiRequest('/assets/' + assetId).put(null, params);
 			}
