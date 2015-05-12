@@ -46,8 +46,8 @@ ADSKSpark.Helpers = function () {
 		 * Extract params from URL
 		 * @returns {{}}
 		 */
-		extractParamsFromURL: function(){
-			var prmstr = window.location.search.substr(1);
+		extractParamsFromURL: function(prmstr){
+			prmstr = prmstr || window.location.search.substr(1);
 			var getParams = prmstr ? helpers.transformToAssocArray(prmstr) : [];
 
 			return getParams;
