@@ -79,7 +79,7 @@ ADSKSpark.Request = function(url, authorization,options) {
                 // console.log('XHR error type: ' + e.type);
 
                 // If the request failed, it's probably due to a 404.
-                reject(new Error(404));
+                reject(new Error('Error: ' + url + ' failed. Response:' + xhr.responseText));
             };
 
             xhr.send(payload);
