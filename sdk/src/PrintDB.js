@@ -12,12 +12,12 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise} - A promise that will resolve with a list of printer types.
          */
         getPrinterType: function(typeId) {
-            return Client.authorizedApiRequest('/printDB/printerTypes/' + typeId)
+            return Client.authorizedApiRequest('/printdb/printertypes/' + typeId)
                 .get();
         },
 
         getPrinterTypes: function() {
-            return Client.authorizedApiRequest('/printDB/printerTypes')
+            return Client.authorizedApiRequest('/printdb/printertypes')
                 .get()
                 .then(function(data) {
                     return data.printerTypes;
