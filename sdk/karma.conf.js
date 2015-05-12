@@ -10,12 +10,13 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'sinon','chai','chai-as-promised'],
+    frameworks: ['mocha', 'sinon','chai'],
 
 
     // list of files / patterns to load in the browser
     files: [
 	  'bower_components/promise-polyfill/Promise.js',
+      'node_modules/q/q.js',
       'node_modules/should/should.js',
       'src/utilities/*.js',
       'src/config/*.js',
