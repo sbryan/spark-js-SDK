@@ -54,7 +54,7 @@
 
                     <div class="col-md-10 col-md-offset-1">
                         <form id="upload-form">
-                         <input id="upload-file" type="file" />
+                         <input id="upload-file" class="btn btn-primary" type="file" />
                         </form>
                         <p>Status:<br>
                         <pre id="upload-log"></pre>
@@ -175,7 +175,10 @@
                             $('#upload-log').append(report);
                         })
                         .catch(function(err) {
-                            $('#upload-log').append('<b>ERROR:</b> ' + err.message);
+                            var report = '<b>ERROR:</b> ' + err.message + '\n';
+                            if( err.responseText )
+                                report += '<b>Response:</b> ' + err.responseText + '\n';
+                            $('#upload-log').append(report);
                         });
                 });
             });
