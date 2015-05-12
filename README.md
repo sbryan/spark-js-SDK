@@ -40,6 +40,9 @@ Then you would have to initialize the SDK client with your credentials and choos
 The current authentication process is using a server side that handles the fetching of access_token and guest_token. These are required
 so that your application will work. You can utilize one of the server implementations that are supplied in this repository.
 
+
+See [here](http://spark-sdks.s3.amazonaws.com/doc/index.html) full SDK reference
+
 #### Sample code
 
 ```HTML
