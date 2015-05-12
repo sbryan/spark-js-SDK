@@ -13,7 +13,7 @@ var ADSKSpark = ADSKSpark || {};
             [0, 0, 1, 0]
         ];
         var data = {
-            "file_id": fileId,
+            "file_id": fileId.toString(),
             "name": name,
             "transform": transform,
             "generate_visual": !!generateVisual
