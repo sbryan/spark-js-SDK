@@ -31,7 +31,6 @@ other API calls, it communicates with the spark platform directly.
 
 #### Setup
 In the `frontend_server/public` directory:
-- DEV TEMPORARY: create or symlink the SDK "src" directory here.
 - Copy `index.sample.html` to `index.html`.
 - Modify `index.html` to set your API key and choice of API service as instructed in the comments.
 
