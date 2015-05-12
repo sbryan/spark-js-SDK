@@ -11,19 +11,29 @@ var ADSKSpark = ADSKSpark || {};
     var _apiUrl = '';
     var _guestTokenUrl = '';
     var _accessTokenUrl = '';
+    var _refreshTokenUrl = '';
     var _accessToken = '';
     var _guestToken = '';
 
     // Helper functions
     var getGuestTokenFromServer = function() {
         return ADSKSpark.Request(_guestTokenUrl).get().then(function(data) {
-            var date = new Date();
-            var now = date.getTime();
+            var now = Date.now();
             data.expires_at = now + parseInt(data.expires_in) * 1000;
             localStorage.setItem(GUEST_TOKEN_KEY, JSON.stringify(data));
-
             return data.access_token;
         });
+    };
+
+    var refreshAccessToken = function () {
+        return ADSKSpark.Request(_refreshTokenUrl)
+            .get()
+            .then(function (data) {
+                var now = Date.now();
+                data.expires_at = now + parseInt(data.expires_in) * 1000;
+                localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
+                return data.access_token;
+            });
     };
 
     /**

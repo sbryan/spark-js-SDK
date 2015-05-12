@@ -83,7 +83,29 @@ app.get('/guest_token', function(req, res){
     });
 });
 
-// TODO: Add a refresh token endpoint
+// Refresh token service
+// See API reference - http://docs.sparkauthentication.apiary.io/#reference/oauth-2.0/access-token-refresh/refresh-an-access-token
+app.get('/refresh_token', function(req, res) {
+    var url = API_SERVER + '/oauth/refreshtoken',
+        params = "grant_type=refresh_token&refresh_token=" + req.query.refresh_token,
+        contentLength = params.length,
+        headers = {
+            'Authorization': 'Basic ' + toBase64(config.APP_KEY + ':' + config.APP_SECRET),
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Content-Length': contentLength
+        };
+
+    //call the refreshtoken endpoint
+    request({
+        headers: headers,
+        uri: url,
+        body: params,
+        method: 'POST'
+    }, function (err, result, body) {
+        //return the access token object (json)
+        res.send(body);
+    });
+});
 
 app.listen(port);
 
