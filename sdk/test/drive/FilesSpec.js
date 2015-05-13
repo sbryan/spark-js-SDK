@@ -10,6 +10,10 @@ describe('Files', function () {
 		mockedAuthorizedRequest = sinon.stub(Client, 'authorizedApiRequest');
 	});
 
+	after(function(){
+		mockedAuthorizedRequest.restore();
+	});
+
 	beforeEach(function () {
 		fakeFileRespPrivate = {
 			"files": [{

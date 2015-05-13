@@ -15,7 +15,8 @@ describe('Mesh API tests', function() {
         ADSKSpark.Client.initialize(null, null, null, testApiUrl);
     });
 
-    afterEach(function() {
+    after(function(){
+        mockedAuthorizedRequest.restore();
     });
 
     it('Should exist', function(done) {

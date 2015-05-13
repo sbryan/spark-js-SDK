@@ -10,6 +10,10 @@ describe('Members', function () {
 		mockedAuthorizedRequest = sinon.stub(Client, 'authorizedApiRequest');
 	});
 
+	after(function(){
+		mockedAuthorizedRequest.restore();
+	});
+
 	beforeEach(function () {
 
 		//this object is partial and contains many more fields
