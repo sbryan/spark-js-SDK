@@ -33,7 +33,7 @@ app.use(function(req, res, next) {
 
 
 // Access token service
-// See API reference - http://docs.sparkauthentication.apiary.io/#reference/oauth-2.0/access-token
+// See API reference - https://spark.autodesk.com/developers/reference/authentication?deeplink=%2Freference%2Foauth-2.0%2Faccess-token
 app.get('/access_token', function(req, res){
     var code = req.query.code;
 
@@ -59,7 +59,7 @@ app.get('/access_token', function(req, res){
 });
 
 // Guest token service
-// See API reference - http://docs.sparkauthentication.apiary.io/#reference/oauth-2.0/guest-token
+// See API reference - https://spark.autodesk.com/developers/reference/authentication?deeplink=%2Freference%2Foauth-2.0%2Fguest-token
 app.get('/guest_token', function(req, res){
     var url = API_SERVER + '/oauth/accesstoken',
         params = "grant_type=client_credentials",
@@ -84,7 +84,7 @@ app.get('/guest_token', function(req, res){
 });
 
 // Refresh token service
-// See API reference - http://docs.sparkauthentication.apiary.io/#reference/oauth-2.0/access-token-refresh/refresh-an-access-token
+// See API reference - https://spark.autodesk.com/developers/reference/authentication?deeplink=%2Freference%2Foauth-2.0%2Faccess-token-refresh
 app.get('/refresh_token', function(req, res) {
     var url = API_SERVER + '/oauth/refreshtoken',
         params = "grant_type=refresh_token&refresh_token=" + req.query.refresh_token,
