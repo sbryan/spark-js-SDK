@@ -18,7 +18,7 @@ describe('Helpers', function() {
 	});
 
 	it('should open a popup window', function() {
-		var popup = Helpers.popupWindow('http://google.com','test',200,200);
+		var popup = Helpers.popupWindow('http://google.com',200,200);
 		expect(popup).to.not.equal(null);
 		expect(popup.document).to.have.property('width');
 		expect(popup.document).to.have.property('height');

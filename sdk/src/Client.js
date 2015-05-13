@@ -208,6 +208,6 @@ var ADSKSpark = ADSKSpark || {};
      * Open an auth window
      */
     Client.openLoginWindow = function(){
-        Helpers.popupWindow(Client.getLoginRedirectUrl(),'spark',350,600);
+        Helpers.popupWindow(Client.getLoginRedirectUrl(),350,600);
     };
 }());
