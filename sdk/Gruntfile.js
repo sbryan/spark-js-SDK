@@ -1,8 +1,8 @@
 // # Globbing
 // for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
+// 'src/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
-// 'test/spec/**/*.js'
+// 'src/**/*.js'
 
 module.exports = function (grunt) {
 	'use strict';
@@ -28,10 +28,10 @@ module.exports = function (grunt) {
 				src: [
 					'bower_components/promise-polyfill/Promise.js',
 					appConfig.src + '/config/Constants.js',
-					appConfig.src + '/utilities/*.js',
-					appConfig.src + '/Request.js',
-					appConfig.src + '/Paginated.js',
+					appConfig.src + '/utilities/Helpers.js',
+					appConfig.src + '/utilities/Request.js',
 					appConfig.src + '/Client.js',
+					appConfig.src + '/utilities/Paginated.js',
 					appConfig.src + '/Job.js',
 					appConfig.src + '/Printer.js',
 					appConfig.src + '/*.js',
