@@ -1,7 +1,7 @@
 // Provide environment through console i.e. ENV=beta node server.js
 var env = process.env.ENV || 'local',
     port = process.env.PORT || 3000,
-    API_SERVER = (env === 'prod' ? 'https://api.spark.autodesk.com/api/v1' : 'https://sandbox.spark.autodesk.com/api/v1');
+    API_SERVER = (env === 'prod' ? 'https://api.spark.autodesk.com/api/v1' : 'https://sandbox.spark.autodesk.com/api/v1'),
     config = require('./config.js');
 
 //Make sure port is a number
