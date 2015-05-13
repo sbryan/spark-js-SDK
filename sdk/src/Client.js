@@ -12,8 +12,6 @@ var ADSKSpark = ADSKSpark || {};
     var _guestTokenUrl = '';
     var _accessTokenUrl = '';
     var _refreshTokenUrl = '';
-    var _accessToken = '';
-    var _guestToken = '';
 
     /**
      * Gets an access_token and stores it in localStorage, afterwards returns a promise that resolves to the guest token.
@@ -177,10 +175,10 @@ var ADSKSpark = ADSKSpark || {};
     Client.authorizedApiRequest = function(endpoint) {
         var authorization;
 
-        _accessToken = Client.getAccessToken();
+        var accessToken = Client.getAccessToken();
 
-        if( _accessToken ) {
-            authorization = 'Bearer ' + _accessToken;
+        if(accessToken) {
+            authorization = 'Bearer ' + accessToken;
         }
 
         return ADSKSpark.Request(_apiUrl + endpoint, authorization);
@@ -195,10 +193,9 @@ var ADSKSpark = ADSKSpark || {};
         var authorization;
 
         return Client.getGuestToken().then(function(guestToken) {
-            _guestToken = guestToken;
 
-            if (_guestToken) {
-                authorization = 'Bearer ' + _guestToken;
+            if (guestToken) {
+                authorization = 'Bearer ' + guestToken;
             }
 
             return ADSKSpark.Request(_apiUrl + endpoint, authorization);
