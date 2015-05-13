@@ -375,7 +375,7 @@ var ADSKSpark = ADSKSpark || {};
                 .get(null, params)
                 .then(function (data) {
                     return new ADSKSpark.PrinterMembers(data);
-                })
+                });
         },
 
         /**

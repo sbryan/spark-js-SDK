@@ -76,11 +76,11 @@ ADSKSpark.Helpers = function () {
                 } else if (Array.isArray(filter)) {
                     keys = keys.filter(function (key) {
                         return filter.indexOf(key) === -1;
-                    })
+                    });
                 } else { // string
                     keys = keys.filter(function (key) {
                         return key !== filter;
-                    })
+                    });
                 }
             }
 
