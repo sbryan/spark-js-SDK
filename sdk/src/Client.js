@@ -15,7 +15,11 @@ var ADSKSpark = ADSKSpark || {};
     var _accessToken = '';
     var _guestToken = '';
 
-    // Helper functions
+    /**
+     * Gets an access_token and stores it in localStorage, afterwards returns a promise that resolves to the guest token.
+     *
+     * @returns {Promise} - A promise that resolves to the guest token.
+     */
     var getGuestTokenFromServer = function() {
         return ADSKSpark.Request(_guestTokenUrl).get().then(function(data) {
             var now = Date.now();
@@ -25,31 +29,28 @@ var ADSKSpark = ADSKSpark || {};
         });
     };
 
-    var refreshAccessToken = function () {
-        return ADSKSpark.Request(_refreshTokenUrl)
-            .get()
-            .then(function (data) {
-                var now = Date.now();
-                data.expires_at = now + parseInt(data.expires_in) * 1000;
-                localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
-                return data.access_token;
-            });
-    };
+
+
+    /**** PUBLI METHODS ****/
 
     /**
      * Initializes the client.
      *
      * @param {String} clientId - The app key provided when you registered your app.
      * @param {String} guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
-     *                                 handle exchanging the client secret for a guest access token.
+     *                                 handle exchanging the client secret for a guest token.
      * @param {String} accessTokenUrl - The URL of your authentication server used for access tokens. This server should
      *                                 handle exchanging a provided code for an access token.
+     * @param {String} refreshTokenUrl - The URL of your authentication server used to refresh access tokens. This server
+     *                                  should call the refresh token api (extend the expiary time) and return a new valid
+     *                                  access token.
      * @param {String} apiUrl - The URL of the spark api. (Ex. https://sandbox.spark.autodesk.com/api/vi)
      */
-    Client.initialize = function(clientId, guestTokenUrl, accessTokenUrl, apiUrl) {
+    Client.initialize = function(clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, apiUrl) {
         _clientId = clientId;
         _guestTokenUrl = guestTokenUrl;
         _accessTokenUrl = accessTokenUrl;
+        _refreshTokenUrl = refreshTokenUrl;
         _apiUrl = apiUrl;
     };
 
@@ -65,15 +66,14 @@ var ADSKSpark = ADSKSpark || {};
     };
 
     /**
-     * Clears all access tokens that have been stored.
+     * Clears access token that have been stored, implements localStorage
      */
     Client.logout = function() {
-        localStorage.removeItem(GUEST_TOKEN_KEY);
         localStorage.removeItem(ACCESS_TOKEN_KEY);
     };
 
     /**
-     * Completes the login process and gets an access_token.
+     * Completes the login process, gets an access_token and stores it in localStorage.
      *
      * @param {String} code - The code that was returned after the user signed in. {@see ADSKSpark.Client#login}
      * @returns {Promise} - A promise that resolves to the access token.
@@ -127,7 +127,7 @@ var ADSKSpark = ADSKSpark || {};
     };
 
     /**
-     * Return a promise that resolves to the guest access token.
+     * Return a promise that resolves to the guest token.
      * This will attempt to retrieve the token from local storage. If it's missing, a call will be made to
      * the authentication server.
      *
@@ -143,10 +143,35 @@ var ADSKSpark = ADSKSpark || {};
         return getGuestTokenFromServer();
     };
 
+
+    /**
+     * Refreshes the access token to extend it's expiary and returns a promise that resolves to the access token object
+     *
+     * @returns {Promise} - A promise that resolves to the access token object.
+     */
+    Client.refreshAccessToken = function () {
+        var accessTokenObj = Client.getAccessTokenObject();
+
+        if (accessTokenObj) {
+            var refreshToken = accessTokenObj.refresh_token;
+            return ADSKSpark.Request(_refreshTokenUrl)
+                .get(null,{refresh_token:refreshToken})
+                .then(function (data) {
+                    var now = Date.now();
+                    data.expires_at = now + parseInt(data.expires_in) * 1000;
+                    localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
+                    return data;
+                });
+        }else{
+            return Promise.reject(new Error('Access token does not exist, you need to login again'));
+        }
+    };
+
     /**
      * Request the API with an access token (if exists)
-     * @param endpoint
-     * @returns {*}
+     * @param endpoint - The API endpoint to query
+     *
+     * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
      */
     Client.authorizedApiRequest = function(endpoint) {
         var authorization;
@@ -163,7 +188,7 @@ var ADSKSpark = ADSKSpark || {};
     /**
      * Request the API with a guest token (if exists)
      * @param endpoint
-     * @returns {*}
+     * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
      */
     Client.authorizedAsGuestApiRequest = function(endpoint) {
         var authorization;
