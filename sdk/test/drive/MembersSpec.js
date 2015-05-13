@@ -41,7 +41,7 @@ describe('Members', function () {
 		//mock
 		mockedAuthorizedRequest.withArgs('/members/' + fakeMember.member.id).returns({
 			get: function () {
-				return Q.resolve(fakeMember);
+				return Promise.resolve(fakeMember);
 			}
 		});
 
@@ -73,7 +73,7 @@ describe('Members', function () {
 		//mock
 		mockedAuthorizedRequest.withArgs('/members').returns({
 			get: function () {
-				return Q.resolve(fakeMember);
+				return Promise.resolve(fakeMember);
 			}
 		});
 

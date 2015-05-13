@@ -29,7 +29,7 @@ describe('Tray API tests', function() {
         //mock
         mockedAuthorizedRequest.withArgs('/print/trays').returns({
             post: function () {
-                return Q.reject({message:'400 error'});
+                return Promise.reject({message:'400 error'});
             }
         });
 

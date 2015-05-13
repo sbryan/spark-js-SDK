@@ -46,7 +46,7 @@ describe('Files', function () {
 		//mock
 		mockedAuthorizedRequest.withArgs('/files/' + fakeFileRespPrivate.files[0].file_id).returns({
 			get: function () {
-				return Q.resolve(fakeFileRespPrivate);
+				return Promise.resolve(fakeFileRespPrivate);
 			}
 		});
 
@@ -85,7 +85,7 @@ describe('Files', function () {
 			post: function (headers,fileData) {
 				var file = isPublic ? fakeFileRespPublic : fakeFileRespPrivate;
 				file.files.name = fileData.file;
-				return Q.resolve(fakeFileRespPrivate);
+				return Promise.resolve(fakeFileRespPrivate);
 			}
 		});
 

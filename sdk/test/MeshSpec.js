@@ -30,7 +30,7 @@ describe('Mesh API tests', function() {
         //mock
         mockedAuthorizedRequest.withArgs('/geom/meshes/import').returns({
             post: function () {
-                return Q.reject({message:'400 error'});
+                return Promise.reject({message:'400 error'});
             }
         });
 
