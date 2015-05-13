@@ -1,10 +1,13 @@
 describe('Mesh API tests', function() {
     'use strict';
 
-    var MeshApi = ADSKSpark.MeshAPI;
+    var MeshApi = ADSKSpark.MeshAPI,
+        mockedAuthorizedRequest;
 
 
     before(function() {
+        var Client = ADSKSpark.Client;
+        mockedAuthorizedRequest = sinon.stub(Client, 'authorizedApiRequest');
     });
 
     beforeEach(function() {
@@ -23,12 +26,20 @@ describe('Mesh API tests', function() {
     });
 
     it('Should fail importing a bogus mesh', function(done) {
+        //mock
+        mockedAuthorizedRequest.withArgs('/geom/meshes/import').returns({
+            post: function () {
+                return Q.reject({message:'400 error'});
+            }
+        });
+
         return MeshApi.importMesh('FUBAR_MESH_ID', 'NONAME')
             .then(function() {
                 done(new Error('THIS SHOULD NOT HAVE WORKED'));
             })
             .catch(function(err) {
-                err.message.should.startWith('400');
+                expect(err).to.have.property('message');
+                expect(err.message).to.have.string('400');
                 done(); // Correct result!!
             })
             // Catch should failures:

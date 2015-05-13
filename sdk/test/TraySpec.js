@@ -1,10 +1,12 @@
 describe('Tray API tests', function() {
     'use strict';
 
-    var TrayApi = ADSKSpark.TrayAPI;
-
+    var TrayApi = ADSKSpark.TrayAPI,
+        mockedAuthorizedRequest;
 
     before(function() {
+        var Client = ADSKSpark.Client;
+        mockedAuthorizedRequest = sinon.stub(Client, 'authorizedApiRequest');
     });
 
     beforeEach(function() {
@@ -23,12 +25,20 @@ describe('Tray API tests', function() {
     });
 
     it('Should fail creating a bogus tray', function(done) {
+        //mock
+        mockedAuthorizedRequest.withArgs('/print/trays').returns({
+            post: function () {
+                return Q.reject({message:'400 error'});
+            }
+        });
+
         return TrayApi.createTray('BAD_PRINTER', 'BAD_PROFILE', ['BAD_MESH'])
             .then(function() {
                 done(new Error('THIS SHOULD NOT HAVE WORKED'));
             })
             .catch(function(err) {
-                err.message.should.startWith('400');
+                expect(err).to.have.property('message');
+                expect(err.message).to.have.string('400');
                 done(); // Correct result!!
             })
             // Catch should failures:
