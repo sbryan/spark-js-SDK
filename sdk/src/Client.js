@@ -31,7 +31,7 @@ var ADSKSpark = ADSKSpark || {};
 
 
 
-    /**** PUBLI METHODS ****/
+    /**** PUBLIC METHODS ****/
 
     /**
      * Initializes the client.
@@ -42,7 +42,7 @@ var ADSKSpark = ADSKSpark || {};
      * @param {String} accessTokenUrl - The URL of your authentication server used for access tokens. This server should
      *                                 handle exchanging a provided code for an access token.
      * @param {String} refreshTokenUrl - The URL of your authentication server used to refresh access tokens. This server
-     *                                  should call the refresh token api (extend the expiary time) and return a new valid
+     *                                  should call the refresh token api (extend the expiry time) and return a new valid
      *                                  access token.
      * @param {String} apiUrl - The URL of the spark api. (Ex. https://sandbox.spark.autodesk.com/api/vi)
      */
@@ -66,7 +66,7 @@ var ADSKSpark = ADSKSpark || {};
     };
 
     /**
-     * Clears access token that have been stored, implements localStorage
+     * Clears access token that had been stored in localStorage
      */
     Client.logout = function() {
         localStorage.removeItem(ACCESS_TOKEN_KEY);
@@ -145,7 +145,7 @@ var ADSKSpark = ADSKSpark || {};
 
 
     /**
-     * Refreshes the access token to extend it's expiary and returns a promise that resolves to the access token object
+     * Refreshes the access token to extend its expiry and returns a promise that resolves to the access token object
      *
      * @returns {Promise} - A promise that resolves to the access token object.
      */
@@ -162,9 +162,10 @@ var ADSKSpark = ADSKSpark || {};
                     localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
                     return data;
                 });
-        }else{
-            return Promise.reject(new Error('Access token does not exist, you need to login again'));
         }
+        
+        return Promise.reject(new Error('Access token does not exist, you need to login again'));
+
     };
 
     /**
