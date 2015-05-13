@@ -72,11 +72,12 @@ var ADSKSpark = ADSKSpark || {};
      * @constructor
      */
     ADSKSpark.Printer = function (data) {
-        this.id = data.printer_id || data.id;
-        this.name = data.printer_name || data.name;
+        this.printer_id = data.printer_id || data.id;
+        this.printer_name = data.printer_name || data.name;
         this.firmware = data.firmware;
-        this.typeId = data.type_id;
-        this.isPrimary = data.is_primary;
+        this.type_id = data.type_id;
+        this.is_primary = data.is_primary;
+        this.printer_last_health = data.printer_last_health;
         this.data = data;
         this.status = null;
     };
@@ -137,7 +138,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         getStatus: function () {
             var that = this;
-            return Client.authorizedApiRequest('/print/printers/' + this.id)
+            return Client.authorizedApiRequest('/print/printers/' + this.printer_id)
                 .get()
                 .then(function (data) {
                     that.status = data;
@@ -273,7 +274,7 @@ var ADSKSpark = ADSKSpark || {};
             params = params || {};
             params.command = command;
 
-            return Client.authorizedApiRequest('/print/printers/' + this.id + '/command')
+            return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/command')
                 .post(null, params)
                 .then(function (data) {
                     return data;
@@ -341,8 +342,8 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise}
          */
         setMemberRole: function (secondaryMemberId, isPrinterScoped, isJobScoped) {
-            if (this.isPrimary) {
-                return Client.authorizedApiRequest('/print/printers/' + this.id + '/member_role')
+            if (this.is_primary) {
+                return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/member_role')
                     .post(null, {
                         secondary_member_id: secondaryMemberId,
                         is_printer_scoped: isPrinterScoped,
@@ -358,8 +359,8 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise}
          */
         generateRegistrationCode: function (secondaryMemberEmail) {
-            if (this.isPrimary) {
-                return Client.authorizedApiRequest('/print/printers/' + this.id + '/secondary_registration')
+            if (this.is_primary) {
+                return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/secondary_registration')
                     .post(null, {secondary_member_email: secondaryMemberEmail});
             }
             return Promise.reject(new Error('not printer owner'));
@@ -371,7 +372,7 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise} A Promise that resolves to an array of members.
          */
         getMembers: function (params) {
-            return Client.authorizedApiRequest('/print/printers/' + this.id + '/members')
+            return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/members')
                 .get(null, params)
                 .then(function (data) {
                     return new ADSKSpark.PrinterMembers(data);
@@ -388,7 +389,7 @@ var ADSKSpark = ADSKSpark || {};
             if (secondaryMemberId) {
                 params = {secondary_member_id: secondaryMemberId};
             }
-            return Client.authorizedApiRequest('/print/printers/' + this.id)
+            return Client.authorizedApiRequest('/print/printers/' + this.printer_id)
                 .delete(null, params);
         },
 
@@ -398,7 +399,7 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise} - A promise that will resolve to an array of jobs.
          */
         getJobs: function (params) {
-            return Client.authorizedApiRequest('/print/printers/' + this.id + '/jobs')
+            return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/jobs')
                 .get(null, params)
                 .then(function (data) {
                     return new ADSKSpark.Jobs(data);
@@ -414,7 +415,7 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise}
          */
         createJob: function (printableId, printableUrl, settings, callbackUrl) {
-            return Client.authorizedApiRequest('/print/printers/' + this.id + '/jobs')
+            return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/jobs')
                 .post(null, {
                     printable_id: printableId,
                     printable_url: printableUrl,
@@ -430,7 +431,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         startJob: function (job) {
             var jobId = (job instanceof ADSKSpark.Job) ? job.id : job;
-            return Client.authorizedApiRequest('/print/printers/' + this.id + '/jobs')
+            return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/jobs')
                 .put(null, {job_id: jobId});
         }
     };
