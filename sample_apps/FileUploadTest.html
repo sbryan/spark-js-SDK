@@ -35,7 +35,7 @@
         reader.readAsDataURL(file);
         ***/
 
-        ADSKSpark.Client.initialize(null, null, null, 'http://localhost:9998');
+        ADSKSpark.Client.initialize(null, null, null, null, 'http://localhost:9998');
         var MeshAPI = ADSKSpark.MeshAPI;
         MeshAPI.uploadFile(file)
             .then(function(result) {

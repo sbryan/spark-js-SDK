@@ -87,7 +87,8 @@
             var GUEST_TOKEN_URL = 'http://localhost:3000/guest_token';
             // The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
             var ACCESS_TOKEN_URL = 'http://localhost:3000/access_token';
-
+            // The refresh token endpoint that is implemented by your server (i.e. http://example.com/refresh_token)
+            var REFRESH_TOKEN_URL = 'http://localhost:3000/refresh_token';
 
             /**
              * Get the code param in URL after returning from Spark Auth flow
@@ -105,7 +106,7 @@
                 // Initialize the client
                 var Client = ADSKSpark.Client;
                 var API_URL = 'https://' + API_ROOT + '.spark.autodesk.com/api/v1';
-                Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, API_URL);
+                Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, REFRESH_TOKEN_URL, API_URL);
 
                 //First let's see if we have a valid access token
                 if (Client.isAccessTokenValid()) {
@@ -151,7 +152,9 @@
                 $('#printer-types').click(function() {
                     ADSKSpark.PrintDB.getPrinterTypes().then(function(types) {
                         for( var i=types.length;  --i >= 0; ) {
-                            $('#printer-types-list').append(types[i].name+'<br>');
+                            var p = types[i];
+                            var report = p.manufacturer + ': <b>' + p.name + '</b> [' + p.technology + ']<br>';
+                            $('#printer-types-list').append(report);
                         }
                     })
                     .catch( function(error) {
@@ -165,7 +168,9 @@
                     MeshAPI.uploadFile(file)
                         .then(function(result) {
                             var upload = result.files[0];
-                            var report = '<b>Uploaded file:</b> ' + upload.name + ' ID: ' + upload.file_id + '\n\n';
+                            var report = '<b>Uploaded file:</b> ' + upload.name +
+                                         ' ID: ' + upload.file_id +
+                                         ' typeof(ID): ' + typeof(upload.file_id) + '\n\n';
                             $('#upload-log').append(report);
                             return MeshAPI.importMesh(upload.file_id, upload.name, true);
                         })
