@@ -11,7 +11,7 @@ describe('Tray API tests', function() {
 
     beforeEach(function() {
         var testApiUrl = 'http://localhost:9998';
-        ADSKSpark.Client.initialize(null, null, null, testApiUrl);
+        ADSKSpark.Client.initialize(null, null, null, null, testApiUrl);
     });
 
     after(function(){

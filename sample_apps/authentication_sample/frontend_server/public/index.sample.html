@@ -87,7 +87,8 @@
             var GUEST_TOKEN_URL = 'http://localhost:3000/guest_token';
             // The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
             var ACCESS_TOKEN_URL = 'http://localhost:3000/access_token';
-
+            // The refresh token endpoint that is implemented by your server (i.e. http://example.com/refresh_token)
+            var REFRESH_TOKEN_URL = 'http://localhost:3000/access_token';
 
             /**
              * Get the code param in URL after returning from Spark Auth flow
@@ -105,7 +106,7 @@
                 // Initialize the client
                 var Client = ADSKSpark.Client;
                 var API_URL = 'https://' + API_ROOT + '.spark.autodesk.com/api/v1';
-                Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, API_URL);
+                Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, REFRESH_TOKEN_URL, API_URL);
 
                 //First let's see if we have a valid access token
                 if (Client.isAccessTokenValid()) {
