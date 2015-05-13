@@ -151,7 +151,9 @@
                 $('#printer-types').click(function() {
                     ADSKSpark.PrintDB.getPrinterTypes().then(function(types) {
                         for( var i=types.length;  --i >= 0; ) {
-                            $('#printer-types-list').append(types[i].name+'<br>');
+                            var p = types[i];
+                            var report = p.manufacturer + ': <b>' + p.name + '</b> [' + p.technology + ']<br>';
+                            $('#printer-types-list').append(report);
                         }
                     })
                     .catch( function(error) {
@@ -165,7 +167,9 @@
                     MeshAPI.uploadFile(file)
                         .then(function(result) {
                             var upload = result.files[0];
-                            var report = '<b>Uploaded file:</b> ' + upload.name + ' ID: ' + upload.file_id + '\n\n';
+                            var report = '<b>Uploaded file:</b> ' + upload.name +
+                                         ' ID: ' + upload.file_id +
+                                         ' typeof(ID): ' + typeof(upload.file_id) + '\n\n';
                             $('#upload-log').append(report);
                             return MeshAPI.importMesh(upload.file_id, upload.name, true);
                         })
