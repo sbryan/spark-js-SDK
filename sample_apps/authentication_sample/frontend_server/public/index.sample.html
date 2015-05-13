@@ -64,6 +64,38 @@
             </div>
 
         </div>
+        <br>
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
+                <div id="test-wrapper-printer-list">
+                    <h2>Spark SDK Printers Test</h2>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <button id="printers" class="btn btn-primary">Get Registered Printers</button>
+                        <p>Status:<br>
+                        <pre id="printer-list"></pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
+                <div id="test-wrapper-jobs-list">
+                    <h2>Spark SDK Jobs Test</h2>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <button id="jobs" class="btn btn-primary">Get Users Print Jobs</button>
+                        <p>Status:<br>
+                        <pre id="job-list"></pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
         <!-- /container -->
 
@@ -72,10 +104,13 @@
         <!-- spark sdk -->
         <!-- TODO: For now include the source directly. Change this to installed minified source file -->
         <script type="text/javascript" charset="utf-8" src="utilities/Helpers.js"></script>
+        <script type="text/javascript" charset="utf-8" src="utilities/Paginated.js"></script>
         <script type="text/javascript" charset="utf-8" src="utilities/Request.js"></script>
         <script type="text/javascript" charset="utf-8" src="Client.js"></script>
         <script type="text/javascript" charset="utf-8" src="PrintDB.js"></script>
+        <script type="text/javascript" charset="utf-8" src="Printer.js"></script>
         <script type="text/javascript" charset="utf-8" src="MeshAPI.js"></script>
+        <script type="text/javascript" charset="utf-8" src="Job.js"></script>
         <script type="text/javascript" charset="utf-8" src="Tasks.js"></script>
         <!-- end spark sdk -->
 
@@ -186,6 +221,43 @@
                             $('#upload-log').append(report);
                         });
                 });
+
+                $('#printers').click(function() {
+                    ADSKSpark.Printers.get().then(function(printers) {
+                        if( printers.length === 0 ) {
+                            $('#printer-list').append('No Printers Found\n');
+                        } else {
+                            for(var i=0; i < printers.length; ++i ) {
+                                report += '<b>Printer[' + printer.id + ']:</b> Name: ' + printer.printer_name
+                                + ' Type: ' + printer.type_id
+                                + ' Status: ' + printer.printer_last_health + '\n';
+                                $('#printer-list').append(report);
+                            }
+                        }
+                    })
+                    .catch( function(error) {
+                        $('#printer-list').text(error.message);
+                    });
+                });
+
+                $('#jobs').click(function() {
+                    ADSKSpark.Jobs.get().then(function(jobs) {
+                        if( jobs.length === 0 ) {
+                            $('#job-list').append('No Jobs Found\n');
+                        } else {
+                            for(var i=0; i < jobs.length; ++i ) {
+                                report += '<b>Job[' + job.id + ']:</b> Printer: ' + job.printer_id
+                                + ' Status: ' + job.status
+                                + ' Date: ' + job.date_time + '\n';
+                                $('#job-list').append(report);
+                            }
+                        }
+                    })
+                    .catch( function(error) {
+                        $('#job-list').text(error.message);
+                    });
+                });
+
             });
         </script>
     </body>
