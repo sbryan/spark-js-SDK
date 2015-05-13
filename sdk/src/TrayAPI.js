@@ -23,7 +23,7 @@ var ADSKSpark = ADSKSpark || {};
                 payload.mesh_attrs = meshAttrs;
 
             if( defaultMaterialId )
-                payload.default_material_id = defaulMaterialId;
+                payload.default_material_id = defaultMaterialId;
     
             return Client.authorizedApiRequest('/print/trays').post(null, payload)
                     .then(waiter.wait);
