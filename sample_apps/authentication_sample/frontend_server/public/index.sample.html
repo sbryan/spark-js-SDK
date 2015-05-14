@@ -207,7 +207,12 @@
                                          ' ID: ' + upload.file_id +
                                          ' typeof(ID): ' + typeof(upload.file_id) + '\n\n';
                             $('#upload-log').append(report);
-                            return MeshAPI.importMesh(upload.file_id, upload.name, true);
+
+                            function updateProgress(progress) {
+                                var report = '<b>Import progress:</b> ' + progress + '\n';
+                                $('#upload-log').append(report);
+                            }
+                            return MeshAPI.importMesh(upload.file_id, upload.name, true, null, updateProgress);
                         })
                         .then(function(mesh) {
                             var report = '<b>Imported mesh:</b> ' + mesh.name + ' ID: ' + mesh.id + '\n';
