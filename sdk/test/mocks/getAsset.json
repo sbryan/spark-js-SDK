@@ -1,0 +1,107 @@
+{
+  "keywords":"ddd",
+  "language":"en",
+  "region":"US",
+  "software":1019,
+  "artist":{
+    "location":"",
+    "avatar":"https ://static.spark.autodesk.com/Beta/2015/01/28__19_36_23/IMG_20141022_14582522.jpgec922c3e9f0711e49a2322000b210ce2 .jpgf0d6bd11-ad25-11e4-9a23-22000b210ce2.jpg",
+    "description":"",
+    "artist_id":20709989,
+    "artist_name":"greg rashkevitch"
+  },
+  "mesh":false,
+  "asset_id":1474495,
+  "asset_name":"Greg1 ",
+  "is_gallery_asset":false,
+  "description":"sfsddds ssf",
+  "download_count":0,
+  "is_online_viewer_available":false,
+  "parent_asset_id":"",
+  "is_premium":false,
+  "progress_status":1,
+  "delivery_media":"",
+  "asset_status_code":2,
+  "media_type":"Spark",
+  "view_count":69,
+  "model_type":1,
+  "is_download_asset":true,
+  "status_post_count":0,
+  "is_member_favorite":false,
+  "used_in_project_count":0,
+  "favorited_by":[
+  ],
+  "favorite_count":0,
+  "child_asset_count":0,
+  "date_submitted":"May 06, 2015 05:43:29",
+  "date_modified":"May 09, 2015 07:15:37",
+  "total_price":"",
+  "shop_id":"",
+  "is_for_sale":false,
+  "purchase_date":"",
+  "_link":"/assets/1474495",
+  "thumbnails":[
+    {
+      "caption":"fghfgh",
+      "description":"vnvbn",
+      "file_id":17203845,
+      "thumb_path_prefix":"https://static.spark.autodesk.com/Beta/2015/04/17__10_40_25/53182355.jpgd74e1d20-f400-11e4-9a23-22000b210ce2",
+      "is_primary":true
+    },
+    {
+      "caption":"",
+      "description":"",
+      "file_id":17203848,
+      "thumb_path_prefix":"https://static .spark.autodesk.com/Beta/2015/04/17__10_40_25/ScreenShot20150406at3.44.26PM.png8a2eb63e-f401-11e4-9a23-22000b210ce2",
+      "is_primary":false
+    },
+    {
+      "caption":"",
+      "description":"",
+      "file_id":17203761,
+      "thumb_path_prefix":"https://static .spark.autodesk.com/Beta/2015/04/17__10_40_25/53182355.jpg86a699a1-f3f9-11e4-9a23-22000b210ce2",
+      "is_primary":false
+    },
+    {
+      "caption":"caption2",
+      "description":"foobar2",
+      "file_id":17203760,
+      "thumb_path_prefix":"https: //static.spark.autodesk.com/Beta/2015/04/17__10_40_25/2005_07_21_shrek_cat1.jpg61b79072-f3f9-11e4-9a23-22000b210ce2",
+      "is_primary":false
+    },
+    {
+      "caption":"foo",
+      "description":"bar",
+      "file_id":17203846,
+      "thumb_path_prefix":"https ://static.spark.autodesk.com/Beta/2015/04/17__10_40_25/greg.jpgef8afccf-f400-11e4-9a23-22000b210ce2",
+      "is_primary":false
+    },
+    {
+      "caption":"new api",
+      "description":"new",
+      "file_id":17203851,
+      "thumb_path_prefix":"https://static.spark.autodesk.com/Beta/2015/04/17__10_40_25/greg.jpg0c1003fb-f403-11e4-9a23-22000b210ce2",
+      "is_primary":false
+    }
+  ],
+  "referenced_assets":[
+  ],
+  "file_formats":[
+    {
+      "size":7567484,
+      "file_id":17204128,
+      "id":197,
+      "version":"",
+      "name":"StereoLithography ( .stl )",
+      "md5sum":"0d7f73822e5dc473100ef0febd17c3f8",
+      "file_name":"porsche.stl"
+    }
+  ],
+  "extended_data":{
+  },
+  "is_authorized_download":false,
+  "is_deleted":false,
+  "is_repurchasable":false,
+  "is_store_asset":false,
+  "is_reviewable":false
+}

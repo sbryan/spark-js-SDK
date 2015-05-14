@@ -26,7 +26,8 @@ module.exports = function(config) {
       'src/Job.js',
       'src/Printer.js',
       'src/*.js',
-      'test/{,*/}*Spec.js'
+      'test/{,*/}*Spec.js',
+      'test/mocks/{,*/}*.json'
     ],
 
 
@@ -38,6 +39,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      'test/mocks/{,*/}*.json': ['html2js']
     },
 
 
