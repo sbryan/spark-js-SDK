@@ -20,11 +20,11 @@ var ADSKSpark = ADSKSpark || {};
 		 * @returns {Promise} - A promise that will resolve to all public assets
 		 */
 		getPublicAssetsByConditions: function (conditions) {
-
+			var conditions = conditions || {};
 
 			//default limit/offset
-			conditions.limit = conditions.limit ? conditions.limit : 12;
-			conditions.offset = conditions.offset ? conditions.offset : 0;
+			conditions.limit = conditions.limit && conditions.limit > 0 ? conditions.limit : 48;
+			conditions.offset = conditions.offset && conditions.offset >= 0 ? conditions.offset : 0;
 
 			return Client.authorizedAsGuestApiRequest('/assets').then(function(promise){
 				return promise.get(null, conditions);
