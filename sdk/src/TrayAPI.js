@@ -14,18 +14,19 @@ var ADSKSpark = ADSKSpark || {};
 
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
-            var payload = {
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
                 'printer_type_id': printerTypeId,
                 'profile_id': printerProfileId,
                 'mesh_ids': meshIds
-            };
+            });
             if( meshAttrs )
                 payload.mesh_attrs = meshAttrs;
 
             if( defaultMaterialId )
                 payload.default_material_id = defaultMaterialId;
     
-            return Client.authorizedApiRequest('/print/trays').post(null, payload)
+            return Client.authorizedApiRequest('/print/trays').post(headers, payload)
                     .then(waiter.wait);
         },
 
@@ -33,12 +34,13 @@ var ADSKSpark = ADSKSpark || {};
         prepareTray: function(trayId, generateVisual, progressCallback) {
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
-            var payload = {
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
                 'id': trayId,
                 'generate_visual': !!generateVisual
-            };
+            });
 
-            return Client.authorizedApiRequest('/print/trays/prepare').post(null, payload)
+            return Client.authorizedApiRequest('/print/trays/prepare').post(headers, payload)
                     .then(waiter.wait);
         }
 

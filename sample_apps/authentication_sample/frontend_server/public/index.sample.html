@@ -79,6 +79,21 @@
         <br>
         <div class="container">
             <div class="col-md-6 col-md-offset-3">
+                <div id="test-wrapper-create-tray">
+                    <h2>Spark SDK Create Tray Test</h2>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <button id="tray" class="btn btn-primary">Create Tray</button>
+                        <p>Status:<br>
+                        <pre id="tray-log"></pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
                 <div id="test-wrapper-printer-list">
                     <h2>Spark SDK Printers Test</h2>
 
@@ -120,6 +135,7 @@
         <script type="text/javascript" charset="utf-8" src="PrintDB.js"></script>
         <script type="text/javascript" charset="utf-8" src="Printer.js"></script>
         <script type="text/javascript" charset="utf-8" src="MeshAPI.js"></script>
+        <script type="text/javascript" charset="utf-8" src="TrayAPI.js"></script>
         <script type="text/javascript" charset="utf-8" src="Job.js"></script>
         <script type="text/javascript" charset="utf-8" src="Tasks.js"></script>
         <!-- end spark sdk -->
@@ -149,10 +165,12 @@
              */
             jQuery(function ($) {
                 var MeshAPI = ADSKSpark.MeshAPI;
+                var TrayAPI = ADSKSpark.TrayAPI;
                 var Client  = ADSKSpark.Client;
 
                 var API_URL = 'https://' + API_ROOT + '.spark.autodesk.com/api/v1';
                 var _meshID = null;
+                var _printerTypes = null;
 
                 Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, REFRESH_TOKEN_URL, API_URL);
 
@@ -199,6 +217,7 @@
 
                 $('#printer-types').click(function() {
                     ADSKSpark.PrintDB.getPrinterTypes().then(function(types) {
+                        _printerTypes = types;
                         for( var i=types.length;  --i >= 0; ) {
                             var p = types[i];
                             var report = p.manufacturer + ': <b>' + p.name + '</b> [' + p.technology + ']<br>';
@@ -206,6 +225,7 @@
                         }
                     })
                     .catch( function(error) {
+                        _printerTypes = null;
                         $('#printer-types-list').text(error.message);
                     });
                 });
@@ -260,7 +280,7 @@
                                     }
                                 }
                                 else {
-                                    $('#analyze-log').text('No problems found!');
+                                    $('#analyze-log').append('\nNo problems found!');
                                 }
                             })
                             .catch(function(err) {
@@ -272,6 +292,47 @@
                     }
                     else {
                         $('#analyze-log').append('<b>Import Mesh first, then try analyze</b>\n');
+                    }
+                });
+
+                $('#tray').click(function(event) {
+                    if( _meshID !== null ) {
+                        function createTray() {
+                            var printerType = _printerTypes[0];
+                            var printerTypeId    = printerType.id;
+                            var printerProfileId = printerType.default_profile_id;
+
+                            $('#tray-log').append('<b>Start Tray Create:</b> using printer type: ' + printerTypeId + '...');
+                            function updateProgress(progress) {
+                                var report = '<b>Tray progress:</b> ' + progress + '\n';
+                                $('#tray-log').append(report);
+                            }
+
+                            TrayAPI.createTray(printerTypeId, printerProfileId, [_meshID], null, null, updateProgress)
+                                .then(function(tray) {
+                                    var report = '\n<b>New Tray:</b> ' + tray.id + ' ' + tray.state + ' Ready: ' + tray.ready + '\n';
+                                    $('#tray-log').append(report);
+                                    $('#tray-log').append('Tray has ' + tray.meshes.length + ' meshes.\n');
+                                })
+                                .catch(function(err) {
+                                    var report = '<b>ERROR:</b> ' + err.message + '\n';
+                                    if( err.responseText )
+                                        report += '<b>Response:</b> ' + err.responseText + '\n';
+                                    $('#tray-log').append(report);
+                                });
+                        }
+                        if( _printerTypes === null ) {
+                            ADSKSpark.PrintDB.getPrinterTypes().then(function(types) {
+                                $('#tray-log').append('Fetched printer types...');
+                                _printerTypes = types;
+                                createTray();
+                            });
+                        }
+                        else
+                            createTray();
+                    }
+                    else {
+                        $('#tray-log').append('<b>Import Mesh first, then try create tray</b>\n');
                     }
                 });
 
