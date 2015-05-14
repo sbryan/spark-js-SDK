@@ -12,17 +12,14 @@ var ADSKSpark = ADSKSpark || {};
             [0, 1, 0, 0],
             [0, 0, 1, 0]
         ];
-        var data = {
+        var headers = {'Content-Type': 'application/json'};
+        var payload = JSON.stringify({
             "file_id": fileId.toString(),
             "name": name,
             "transform": transform,
             "generate_visual": !!generateVisual
-        };
-
-        var headers = {
-            'Content-Type' : 'application/json'
-        };
-        return Client.authorizedApiRequest('/geom/meshes/import').post(headers, JSON.stringify(data));
+        });
+        return Client.authorizedApiRequest('/geom/meshes/import').post(headers, payload);
     };
 
     var uploadFileObject = function(file, progressCallback)
@@ -53,31 +50,34 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         transformMesh: function( meshId, transform ) {
-            var payload = {
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
                 id: meshId,
                 transform: transform
-            };
-            return Client.authorizedApiRequest('/geom/meshes/transform').post(null, payload);
+            });
+            return Client.authorizedApiRequest('/geom/meshes/transform').post(headers, payload);
         },
 
         // progressCallback is optional
         analyzeMesh: function( meshId, progressCallback ) {
-            var payload = {
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
                 id: meshId
-            };
+            });
             // TODO: It's possible to get immediate 200 response instead of 202 + task.
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
-            return Client.authorizedApiRequest('/geom/meshes/analyze').post(null, payload)
+            return Client.authorizedApiRequest('/geom/meshes/analyze').post(headers, payload)
                     .then(waiter.wait);
         },
 
         generateVisual: function( meshId, progressCallback ) {
-            var payload = {
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
                 id: meshId
-            };
+            });
             // TODO: It's possible to get immediate 200 response instead of 202 + task.
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
-            return Client.authorizedApiRequest('/geom/meshes/generateVisual').post(null, payload)
+            return Client.authorizedApiRequest('/geom/meshes/generateVisual').post(headers, payload)
                     .then(waiter.wait);
         }
 
