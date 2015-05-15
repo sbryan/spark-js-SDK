@@ -5,16 +5,37 @@ var ADSKSpark = ADSKSpark || {};
 // Based on https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise#Example_using_new_XMLHttpRequest()
 /**
  * @param {String} url - The url for the request.
- * @param {String} [authorization] - If specified, the Authorization header will be set with this value by default.
+ * @param {String|function} [authorization] - If specified, the Authorization header will be set with this value by default.
  * @param {Object} [options] - May have the following options:
  *                              {
  *                                  notJsonResponse
  *                              }
  */
-ADSKSpark.Request = function(url, authorization,options) {
+ADSKSpark.Request = function(url, authorization, options) {
     options = options || {};
 
-    var makeRequest = function(method, headers, data) {
+    // This function returns a Promise that resolves to the authorization header
+    // value. If the 'authorization' parameter is a function, then we call that
+    // function and expect the return value will be a Promise that resolves to the
+    // authorization header; otherwise we resolve to the value of the parameter.
+    //
+    var prepareRequest = function (method, headers, data, authorization) {
+        var promise = new Promise(function (resolve, reject) {
+            if (authorization && typeof authorization === 'function') {
+                authorization().then(function (data) {
+                    resolve(data);
+                });
+            } else {
+                resolve(authorization);
+            }
+        });
+
+        return promise.then(function (authorization) {
+            return makeRequest(method, headers, data, authorization);
+        });
+    };
+
+    var makeRequest = function (method, headers, data, authorization) {
         headers = headers || {};
 
         var payload = '';
@@ -90,16 +111,16 @@ ADSKSpark.Request = function(url, authorization,options) {
 
     return {
         'get': function(headers, data) {
-            return makeRequest('GET', headers, data);
+            return prepareRequest('GET', headers, data, authorization);
         },
         'post': function(headers, data) {
-            return makeRequest('POST', headers, data);
+            return prepareRequest('POST', headers, data, authorization);
         },
         'put': function(headers, data) {
-            return makeRequest('PUT', headers, data);
+            return prepareRequest('PUT', headers, data, authorization);
         },
         'delete': function(headers, data) {
-            return makeRequest('DELETE', headers, data);
+            return prepareRequest('DELETE', headers, data, authorization);
         }
     };
 };

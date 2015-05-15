@@ -173,15 +173,33 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
      */
     Client.authorizedApiRequest = function(endpoint) {
-        var authorization;
-
-        var accessToken = Client.getAccessToken();
-
-        if(accessToken) {
-            authorization = 'Bearer ' + accessToken;
+        function formatAuthHeader(token) {
+            return token ? ('Bearer ' + token.access_token) : null;
         }
 
-        return ADSKSpark.Request(_apiUrl + endpoint, authorization);
+        return ADSKSpark.Request(_apiUrl + endpoint, function () {
+            return new Promise(function (resolve, reject) {
+                var token = JSON.parse(localStorage.getItem(ACCESS_TOKEN_KEY));
+                if (token) {
+
+                    // If the token has an expires_at property and the token
+                    // has expired, then refresh it.
+                    //
+                    var now = Date.now();
+                    if (token.expires_at && now < token.expires_at) {
+                        Client.refreshAccessToken()
+                            .then(function (refreshedToken) {
+                                resolve(formatAuthHeader(refreshedToken));
+                            });
+                    } else {
+                        resolve(formatAuthHeader(token));
+                    }
+
+                } else {
+                    resolve(null);
+                }
+            });
+        });
     };
 
     /**
@@ -190,15 +208,12 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
      */
     Client.authorizedAsGuestApiRequest = function(endpoint) {
-        var authorization;
-
-        return Client.getGuestToken().then(function(guestToken) {
-
-            if (guestToken) {
-                authorization = 'Bearer ' + guestToken;
-            }
-
-            return ADSKSpark.Request(_apiUrl + endpoint, authorization);
+        return ADSKSpark.Request(_apiUrl + endpoint, function () {
+            return new Promise(function (resolve, reject) {
+                Client.getGuestToken().then(function (token) {
+                    resolve(token ? ('Bearer ' + token) : null);
+                });
+            });
         });
     };
 

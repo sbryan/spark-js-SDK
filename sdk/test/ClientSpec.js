@@ -2,13 +2,14 @@ describe('Client', function() {
     'use strict';
 
     var ASC, xhr, requests;
-    var testGuestUrl, testAccessUrl, testApiUrl, testClientId;
+    var testGuestUrl, testAccessUrl, testRefreshUrl, testApiUrl, testClientId;
     var fakeGuestToken, fakeAccessToken;
 
     before(function() {
         ASC = ADSKSpark.Client;
         testGuestUrl = 'http://localhost/guest';
         testAccessUrl = 'http://localhost/access';
+        testRefreshUrl = 'http://localhost/refresh';
         testApiUrl = 'https://localhost';
         testClientId = 'this is not an ID';
 
@@ -27,7 +28,7 @@ describe('Client', function() {
             refresh_token_issued_at: Date.now()
         };
 
-        ASC.initialize(testClientId, testGuestUrl, testAccessUrl, testApiUrl);
+        ASC.initialize(testClientId, testGuestUrl, testAccessUrl, testRefreshUrl, testApiUrl);
     });
 
     beforeEach(function() {

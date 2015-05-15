@@ -20,15 +20,13 @@ var ADSKSpark = ADSKSpark || {};
 		 * @returns {Promise} - A promise that will resolve to all public assets
 		 */
 		getPublicAssetsByConditions: function (conditions) {
-			var conditions = conditions || {};
+			conditions = conditions || {};
 
 			//default limit/offset
 			conditions.limit = conditions.limit && conditions.limit > 0 ? conditions.limit : 48;
 			conditions.offset = conditions.offset && conditions.offset >= 0 ? conditions.offset : 0;
 
-			return Client.authorizedAsGuestApiRequest('/assets').then(function(promise){
-				return promise.get(null, conditions);
-			});
+			return Client.authorizedAsGuestApiRequest('/assets').get(null, conditions);
 		},
 
 		/**
@@ -40,9 +38,7 @@ var ADSKSpark = ADSKSpark || {};
 
 			//Make sure assetId is defined and that it is a number
 			if (!isNaN(assetId)) {
-				return Client.authorizedAsGuestApiRequest('/assets/' + assetId).then(function(promise){
-					return promise.get();
-				});
+				return Client.authorizedAsGuestApiRequest('/assets/' + assetId).get();
 			}
 
 			return Promise.reject(new Error('Proper assetId was not supplied'));
