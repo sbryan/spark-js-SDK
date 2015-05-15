@@ -17,13 +17,14 @@ The authentication server stores your app secret and handles the exchange of the
 API server.
 
 #### Setup
-In the `authentication_server` directory:
-- Copy `config.example.js` to `config.js` 
+In the `authentication_server/nodejs` directory:
+- Create a new file called 'config.js'
+- Copy the contents of `config.example.js` to 'config.js'.
 - Modify `config.js` to include your app's key and secret as instructed in the comments.
 - Run `npm install`. This will install the required node modules for this server.
 
 #### How to Run
-- Run `node server.js` in the `authentication_server` directory to start the server on port 3000.
+- Run `node server.js` in the `authentication_server/nodejs` directory to start the server on port 3000.
 
 ## Frontend Server
 The frontend server is what serves your app. It communicates with your authentication server to get access tokens but for
