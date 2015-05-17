@@ -3,7 +3,8 @@ var ADSKSpark = ADSKSpark || {};
 (function () {
 	'use strict';
 
-	var Client = ADSKSpark.Client;
+	var Client = ADSKSpark.Client,
+		Helpers = ADSKSpark.Helpers;
 
 	/**
 	 * @class
@@ -20,7 +21,7 @@ var ADSKSpark = ADSKSpark || {};
 		getMemberProfile: function (memberId) {
 
 			//Make sure memberId is defined and that it is a number
-			if (!isNaN(memberId)) {
+			if (Helpers.isValidId(memberId)) {
 				return Client.authorizedApiRequest('/members/' + memberId).get();
 			}
 			return Promise.reject(new Error('Proper memberId was not supplied'));

@@ -75,4 +75,20 @@ describe('Helpers', function() {
 		expect(Helpers.jsonToParameters(obj1,filterFunc)).to.equal('foo2=bar2&foo3=bar3');
 
 	});
+
+	it('isValidId should be valid for a number', function () {
+		expect(Helpers.isValidId(2345456)).to.be.ok;
+	});
+
+	it('isValidId should not be valid for string', function () {
+		expect(Helpers.isValidId('some string')).to.not.be.ok;
+	});
+
+	it('isValidId should not be valid for empty param', function () {
+		expect(Helpers.isValidId()).to.not.be.ok;
+	});
+
+	it('isValidId should not be valid for empty string', function () {
+		expect(Helpers.isValidId('')).to.not.be.ok;
+	});
 });

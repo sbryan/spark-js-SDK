@@ -59,20 +59,6 @@ describe('Files', function () {
 
 	});
 
-	it('should reject get file details by fileId for a fileId that is not a number', function () {
-
-		return Files
-			.getFileDetails('a string')
-			.then(function (response) {
-			})
-			.catch(function (error) {
-				expect(error).to.be.an.instanceof(Object);
-				expect(error).to.have.property('message');
-			});
-
-	});
-
-
 	var testUploadedFile = function(isPublic){
 		var fileData = {
 			file: 'file_name.jpg',

@@ -3,7 +3,8 @@ var ADSKSpark = ADSKSpark || {};
 (function () {
 	'use strict';
 
-	var Client = ADSKSpark.Client;
+	var Client = ADSKSpark.Client,
+		Helpers = ADSKSpark.Helpers;
 
 	/**
 	 * @class
@@ -39,7 +40,7 @@ var ADSKSpark = ADSKSpark || {};
 		getPublicAsset: function (assetId) {
 
 			//Make sure assetId is defined and that it is a number
-			if (!isNaN(assetId)) {
+			if (Helpers.isValidId(assetId)) {
 				return Client.authorizedAsGuestApiRequest('/assets/' + assetId).then(function(promise){
 					return promise.get();
 				});
@@ -56,7 +57,7 @@ var ADSKSpark = ADSKSpark || {};
 		getAsset: function (assetId) {
 
 			//Make sure assetId is defined and that it is a number
-			if (!isNaN(assetId)) {
+			if (Helpers.isValidId(assetId)) {
 				return Client.authorizedApiRequest('/assets/' + assetId).get();
 			}
 
@@ -133,7 +134,7 @@ var ADSKSpark = ADSKSpark || {};
 		removeAsset: function (assetId) {
 
 			//Make sure assetId is defined and that it is a number
-			if (!isNaN(assetId)) {
+			if (Helpers.isValidId(assetId)) {
 				return Client.authorizedApiRequest('/assets/' + assetId).delete();
 			}
 			return Promise.reject(new Error('Proper assetId was not supplied'));
@@ -148,7 +149,7 @@ var ADSKSpark = ADSKSpark || {};
 		retrieveAssetThumbnails: function (assetId) {
 
 			//Make sure assetId is defined and that it is a number
-			if (!isNaN(assetId)) {
+			if (Helpers.isValidId(assetId)) {
 
 				return Client.authorizedApiRequest('/assets/' + assetId + '/thumbnails').get();
 
@@ -165,7 +166,7 @@ var ADSKSpark = ADSKSpark || {};
 		retrieveAssetSources: function (assetId) {
 
 			//Make sure assetId is defined and that it is a number
-			if (!isNaN(assetId)) {
+			if (Helpers.isValidId(assetId)) {
 				return Client.authorizedApiRequest('/assets/' + assetId + '/sources').get();
 			}
 
@@ -184,7 +185,7 @@ var ADSKSpark = ADSKSpark || {};
 		createAssetThumbnails: function (assetId, filesArray, async) {
 
 			//Make sure assetId is defined and that it is a number
-			if (!isNaN(assetId)) {
+			if (Helpers.isValidId(assetId)) {
 
 				var thumbnails = filesArray.map(function (file) {
 					return {id: file.id, caption: file.caption || '', description:file.description || '',is_primary:file.is_primary || false};
@@ -211,7 +212,7 @@ var ADSKSpark = ADSKSpark || {};
 		createAssetSources: function (assetId, fileIds) {
 
 			//Make sure assetId is defined and that it is a number
-			if (!isNaN(assetId)) {
+			if (Helpers.isValidId(assetId)) {
 				var params = 'file_ids=' + fileIds;
 				var headers = {'Content-type': 'application/x-www-form-urlencoded'};
 				return Client.authorizedApiRequest('/assets/' + assetId + '/sources').post(headers, params);
@@ -230,7 +231,7 @@ var ADSKSpark = ADSKSpark || {};
 		deleteAssetSources: function (assetId, fileIds) {
 
 			//Make sure assetId is defined and that it is a number
-			if (!isNaN(assetId)) {
+			if (Helpers.isValidId(assetId)) {
 				var params = '?file_ids=' + fileIds;
 				return Client.authorizedApiRequest('/assets/' + assetId + '/sources' + params).delete();
 			}
@@ -247,7 +248,7 @@ var ADSKSpark = ADSKSpark || {};
 		deleteAssetThumbnails: function (assetId, fileIds) {
 
 			//Make sure assetId is defined and that it is a number
-			if (!isNaN(assetId)) {
+			if (Helpers.isValidId(assetId)) {
 
 				var params = '?thumbnail_ids=' + fileIds;
 				return Client.authorizedApiRequest('/assets/' + assetId + '/thumbnails' + params).delete();

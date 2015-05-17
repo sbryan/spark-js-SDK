@@ -3,7 +3,8 @@ var ADSKSpark = ADSKSpark || {};
 (function() {
     'use strict';
 
-    var Client = ADSKSpark.Client;
+    var Client = ADSKSpark.Client,
+        Helpers = ADSKSpark.Helpers;
 
     /**
      * @class
@@ -21,7 +22,7 @@ var ADSKSpark = ADSKSpark || {};
         getFileDetails: function (fileId) {
 
             //Make sure fileId is defined and that it is a number
-            if (!isNaN(fileId)) {
+            if (Helpers.isValidId(fileId)) {
                 return Client.authorizedApiRequest('/files/' + fileId).get();
             }
 

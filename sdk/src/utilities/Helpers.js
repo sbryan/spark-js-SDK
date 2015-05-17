@@ -87,7 +87,15 @@ ADSKSpark.Helpers = function () {
             return keys.map(function (key) {
                 return encodeURIComponent(key) + '=' + encodeURIComponent(json[key]);
             }).join('&');
-        }
+        },
+		/**
+		 * Checks whether some supplied ID that is supposed to be an integer is valid
+		 * @param itemId - Such as assetId or fileId or memberId
+		 * @returns {*|boolean}
+		 */
+		isValidId: function(itemId){
+			return itemId && !isNaN(itemId);
+		}
 	};
 
 	return helpers;
