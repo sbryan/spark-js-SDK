@@ -1,21 +1,18 @@
 ### Spark Print SDK 
 
-This is a prototype client side SDK for the Spark REST APIs, intended to provide a convenient interface for application developers.
-
-This SDK requires a server side implementation of the guest and access tokens. You can find various sample implementations in this repository.
-
-### Objectives
-
-The SDK is intended to provide:
+This is a prototype client side SDK for the Spark REST APIs, providing:
+* A convenient interface for application developers.
 * An abstract layer for the Spark APIs.
-* Higher level functionality by chaining/callbacking various APIs together.
+* High-level functionality by chaining/callbacking APIs together.
 
-####Reference to the APIs
-You can get full reference to the APIs by visiting these URLs:
-* Authentication - https://spark.autodesk.com/developers/reference/authentication
-* Print APIs - https://spark.autodesk.com/developers/reference/print
-* Drive APIs - https://spark.autodesk.com/developers/reference/drive
-* Print firmware APIs - https://spark.autodesk.com/developers/reference/firmware 
+This SDK requires a server side implementation of the guest and access tokens. You can find various sample implementations in this repository such as https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs.
+
+####API Reference
+For full API reference see the following:
+* <b>Authentication</b> - https://spark.autodesk.com/developers/reference/authentication
+* <b>Print APIs</b> - https://spark.autodesk.com/developers/reference/print
+* <b>Drive APIs</b> - https://spark.autodesk.com/developers/reference/drive
+* <b>Print Firmware APIs</b> - https://spark.autodesk.com/developers/reference/firmware 
 
 
 ### Quick start
