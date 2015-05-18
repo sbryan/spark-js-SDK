@@ -1,33 +1,31 @@
 ### Spark Print SDK 
 
-This is a prototype design of a client side SDK for leveraging the Spark REST APIs. It is intended to provide a more convenient interface for application developers.
+This is a prototype client side SDK for the Spark REST APIs, providing:
+* A convenient interface for application developers.
+* An abstract layer for the Spark APIs.
+* High-level functionality by chaining/callbacking APIs together.
 
-This SDK requires a server side implementation of the guest and access tokens. You can find various sample implementations in this repository.
+This SDK requires a server side implementation of the guest and access tokens. You can find various sample implementations in this repository such as https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs.
 
-### Motivation
-
-This SDK is intended to fulfill two main goals:
-* Provide an abstact layer to the Spark APIs
-* Provide a higher level functionality that is achievable only by some methods of chaining/callbacking various APIs together
-
-####Reference to the APIs
-You can get full reference to the APIs by visiting these URLs:
-* Authentication - https://spark.autodesk.com/developers/reference/authentication
-* Print APIs - https://spark.autodesk.com/developers/reference/print
-* Drive APIs - https://spark.autodesk.com/developers/reference/drive
-* Print firmware APIs - https://spark.autodesk.com/developers/reference/firmware 
+####API Reference
+For full API reference see the following:
+* <i>Authentication</i> - https://spark.autodesk.com/developers/reference/authentication
+* <i>Print APIs</i> - https://spark.autodesk.com/developers/reference/print
+* <i>Drive APIs</i> - https://spark.autodesk.com/developers/reference/drive
+* <i>Print Firmware APIs</i> - https://spark.autodesk.com/developers/reference/firmware 
 
 
 ### Quick start
-You can use the lastest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js)
+Get the lastest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
 
-To use the SDK you should include the SDK library in your HTML page right befory the closing </body>.
+To use the SDK:<br> 
+1) Include the SDK library in your HTML page just before closing the body section (`</body>`).
 
 ```HTML
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
 
-Then you would have to initialize the SDK client with your credentials and choose the environment between sandbox and production:
+2) Then you would have to initialize the SDK client with your credentials and choose the environment between sandbox and production:
 
 ```JavaScript
 	ADSKSpark.Client.initialize('',// Your app key
@@ -38,11 +36,7 @@ Then you would have to initialize the SDK client with your credentials and choos
 	);
 ```
 
-The current authentication process is using a server side that handles the fetching of access_token and guest_token. These are required
-so that your application will work. You can utilize one of the server implementations that are supplied in this repository.
-
-
-You can get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html)
+Get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
 #### Sample code
 
