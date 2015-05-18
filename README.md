@@ -1,14 +1,14 @@
 ### Spark Print SDK 
 
-This is a prototype design of a client side SDK for leveraging the Spark REST APIs. It is intended to provide a more convenient interface for application developers.
+This is a prototype client side SDK for the Spark REST APIs, intended to provide a convenient interface for application developers.
 
 This SDK requires a server side implementation of the guest and access tokens. You can find various sample implementations in this repository.
 
-### Motivation
+### Objectives
 
-This SDK is intended to fulfill two main goals:
-* Provide an abstact layer to the Spark APIs
-* Provide a higher level functionality that is achievable only by some methods of chaining/callbacking various APIs together
+The SDK is intended to provide:
+* An abstract layer for the Spark APIs.
+* Higher level functionality by chaining/callbacking various APIs together.
 
 ####Reference to the APIs
 You can get full reference to the APIs by visiting these URLs:
