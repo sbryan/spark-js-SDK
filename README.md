@@ -25,17 +25,18 @@ To use the SDK:<br>
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
 2) In the file /sdk/src/Client.js find the function <i>Client.initialize</i> and then:<br>
-   a. Enter your app's client ID (the app key).<br>
-   b. Enter the URL's of your authentication servers. The SDK requires you to hand authentication on a server, returning an access_token and guest_token. These are required for the SDK to work. See the server implementations supplied in this repository.<Br>
-   c. If you are using the SDK in production, set ADSKSpark.Constants to `ADSKSpark.Constants.API_HOST_PRODUCTION`. If you are using the Sandbox leave it as `ADSKSpark.Constants.API_HOST_SANDBOX`.
+   a. Enter your app's client ID (the app key provided when you registered the app).<br>
+   b. Enter the URL's of your authentication servers: The SDK requires you to call authentication APIs from a server. These URLs are required for the SDK to work. See the server implementations supplied in this repository.<Br>
+   c. Replace apiUrl with the URL prefix of your APIs (such as `https://sandbox.spark.autodesk.com/api/vi`).
 
 ```JavaScript
-	ADSKSpark.Client.initialize('',//clientId - The app key provided when you registered your app.
-			'',// The authentication server URL you use for guest tokens (for example http://example.com/guest_token).
-			'',// The authentication server URL you use for access tokens (for example http://example.com/access_token).
-			'',// The authentication server URL you use for refresh access tokens (for example http://example.com/refresh_token).
-			ADSKSpark.Constants.API_HOST_SANDBOX // api host - API_HOST_PRODUCTION or API_HOST_SANDBOX
-	);
+	 Client.initialize = function(clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, apiUrl) {
+        _clientId = clientId;
+        _guestTokenUrl = guestTokenUrl;
+        _accessTokenUrl = accessTokenUrl;
+        _refreshTokenUrl = refreshTokenUrl;
+        _apiUrl = apiUrl;
+    };
 ```
 
 Get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
