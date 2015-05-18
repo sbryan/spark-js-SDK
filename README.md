@@ -9,22 +9,23 @@ This SDK requires a server side implementation of the guest and access tokens. Y
 
 ####API Reference
 For full API reference see the following:
-* <b>Authentication</b> - https://spark.autodesk.com/developers/reference/authentication
-* <b>Print APIs</b> - https://spark.autodesk.com/developers/reference/print
-* <b>Drive APIs</b> - https://spark.autodesk.com/developers/reference/drive
-* <b>Print Firmware APIs</b> - https://spark.autodesk.com/developers/reference/firmware 
+* <i>Authentication</i> - https://spark.autodesk.com/developers/reference/authentication
+* <i>Print APIs</i> - https://spark.autodesk.com/developers/reference/print
+* <i>Drive APIs</i> - https://spark.autodesk.com/developers/reference/drive
+* <i>Print Firmware APIs</i> - https://spark.autodesk.com/developers/reference/firmware 
 
 
 ### Quick start
-You can use the lastest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js)
+Get the lastest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js)
 
-To use the SDK you should include the SDK library in your HTML page right befory the closing </body>.
+To use the SDK:<br> 
+1. Include the SDK library in your HTML page just before closing the body section "</body>".
 
 ```HTML
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
 
-Then you would have to initialize the SDK client with your credentials and choose the environment between sandbox and production:
+2. Initialize the SDK client credentials and set the environment to sandbox or production:
 
 ```JavaScript
 	ADSKSpark.Client.initialize('',// Your app key
@@ -35,11 +36,11 @@ Then you would have to initialize the SDK client with your credentials and choos
 	);
 ```
 
-The current authentication process is using a server side that handles the fetching of access_token and guest_token. These are required
-so that your application will work. You can utilize one of the server implementations that are supplied in this repository.
+The authentication process is handled server side, fetching an access_token and guest_token. These are required
+for your application to work. You can utilize one of the server implementations supplied in this repository.
 
 
-You can get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html)
+Get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html)
 
 #### Sample code
 
