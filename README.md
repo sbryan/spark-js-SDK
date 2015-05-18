@@ -16,31 +16,29 @@ For full API reference see the following:
 
 
 ### Quick start
-Get the lastest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js)
+Get the lastest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
 
 To use the SDK:<br> 
-1. Include the SDK library in your HTML page just before closing the body section "</body>".
+1) Include the SDK library in your HTML page just before closing the body section (`</body>`).
 
 ```HTML
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
-
-2. Initialize the SDK client credentials and set the environment to sandbox or production:
+2) In the <i>/sdk/src/Client.js</i> file's <i>Client.initialize</i> function:<br>
+   a. Enter app's client ID (the app key).<br>
+   b. Enter the URL's of your authentication servers. 
+   c. If you are using the SDK in production, set ADSKSpark.Constants to <i>ADSKSpark.Constants.API_HOST_PRODUCTION</i>. If you are using the Sandbox leave it as <i>ADSKSpark.Constants.API_HOST_SANDBOX</i>.
 
 ```JavaScript
-	ADSKSpark.Client.initialize('',// Your app key
-			'',// The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
-			'',// The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
-			'',// The refresh access token endpoint that is implemented by your server (i.e. http://example.com/refresh_token)
+	ADSKSpark.Client.initialize('',//clientId - The app key provided when you registered your app.
+			'',// The authentication server URL you use for guest tokens (for example http://example.com/guest_token).
+			'',// The authentication server URL you use for access tokens (for example http://example.com/access_token).
+			'',// The authentication server URL you use for refresh access tokens (for example http://example.com/refresh_token).
 			ADSKSpark.Constants.API_HOST_SANDBOX // api host - API_HOST_PRODUCTION or API_HOST_SANDBOX
 	);
 ```
 
-The authentication process is handled server side, fetching an access_token and guest_token. These are required
-for your application to work. You can utilize one of the server implementations supplied in this repository.
-
-
-Get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html)
+Get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
 #### Sample code
 
