@@ -111,40 +111,42 @@ The other important thing is to stick to the current conventions in this code ba
   - sdk
   -- src
   --- config
-  ---- constants.js
+  ---- Constants.js
   --- utilities
-  ---- request.js
-  ---- paginated.js
+  ---- Helpers.js
+  ---- Request.js
+  ---- Paginated.js
   --- auth
-  ---- client.js
+  ---- Client.js
   --- print
-  ---- print-meta.js
-  ---- print-preparation.js
-  ---- printer-registration.js
-  ---- printer-management.js
-  ---- printer-firmware.js
+  ---- PrintMeta.js
+  ---- PrintPreparation.js
+  ---- PrinterRegistration.js
+  ---- PrinterManagement.js
+  ---- PrinterFirmware.js
   --- drive
-  ---- files.js
-  ---- assets.js
-  ---- members.js
+  ---- Files.js
+  ---- Assets.js
+  ---- Members.js
   -- test
   --- config
-  ---- constants.js
+  ---- ConstantsSpec.js
   --- utilities
-  ---- request.js
-  ---- paginated.js
+  ---- HelpersSpec.js
+  ---- RequestSpec.js
+  ---- PaginatedSpec.js
   --- auth
-  ---- client.js
+  ---- ClientSpec.js
   --- print
-  ---- print-meta.js
-  ---- print-preparation.js
-  ---- printer-registration.js
-  ---- printer-management.js
-  ---- printer-firmware.js
+  ---- PrintMetaSpec.js
+  ---- PrintPreparationSpec.js
+  ---- PrinterRegistrationSpec.js
+  ---- PrinterManagementSpec.js
+  ---- PrinterFirmwareSpec.js
   --- drive
-  ---- files.js
-  ---- assets.js
-  ---- members.js
+  ---- FilesSpec.js
+  ---- AssetsSpec.js
+  ---- MembersSpec.js
   -- sample-apps
   --- authentication_sample
   --- 3d_printer_sample
