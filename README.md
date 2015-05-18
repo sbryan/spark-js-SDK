@@ -24,10 +24,10 @@ To use the SDK:<br>
 ```HTML
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
-2) In the <i>/sdk/src/Client.js</i> file's <i>Client.initialize</i> function:<br>
-   a. Enter app's client ID (the app key).<br>
-   b. Enter the URL's of your authentication servers. 
-   c. If you are using the SDK in production, set ADSKSpark.Constants to <i>ADSKSpark.Constants.API_HOST_PRODUCTION</i>. If you are using the Sandbox leave it as <i>ADSKSpark.Constants.API_HOST_SANDBOX</i>.
+2) In the file /sdk/src/Client.js find the function <i>Client.initialize</i> and then:<br>
+   a. Enter your app's client ID (the app key).<br>
+   b. Enter the URL's of your authentication servers. The SDK requires you to hand authentication on a server, returning an access_token and guest_token. These are required for the SDK to work. See the server implementations supplied in this repository.<Br>
+   c. If you are using the SDK in production, set ADSKSpark.Constants to `ADSKSpark.Constants.API_HOST_PRODUCTION`. If you are using the Sandbox leave it as `ADSKSpark.Constants.API_HOST_SANDBOX`.
 
 ```JavaScript
 	ADSKSpark.Client.initialize('',//clientId - The app key provided when you registered your app.
