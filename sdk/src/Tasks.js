@@ -20,12 +20,12 @@ ADSKSpark.TaskWaiter = function( progressCallback )
         }
         if( taskResponse.status === 'error' )
         {
-            return Promise.reject(taskResponse);
+            return Promise.reject(taskResponse.error);
         }
         if( progressCallback )
             progressCallback( taskResponse.progress );
 
-        console.log("Delay task");
+        // console.log("Delay task");
 
         return new Promise(function(resolve) {
             setTimeout(function() { resolve(); }, _interval);
@@ -35,7 +35,7 @@ ADSKSpark.TaskWaiter = function( progressCallback )
 
     this._pollTask = function()
     {
-        console.log("Poll task");
+        // console.log("Poll task");
         return Client.authorizedApiRequest('/print/tasks/' + _taskId)
                 .get().then(_this._checkTaskResponse);
     };
