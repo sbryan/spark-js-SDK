@@ -334,7 +334,7 @@
                             $('#repair-log').append(report);
                         }
 
-                        MeshAPI.repairMesh(_meshID, updateProgress)
+                        MeshAPI.repairMesh(_meshID, true, updateProgress)
                             .then(function(mesh) {
                                 if( mesh.problems.length > 0 ) {
                                     for( var i=mesh.problems.length; --i >= 0; ) {
@@ -348,6 +348,7 @@
                                     $('#repair-log').append('\nNo problems found!');
                                 }
                                 var report = '\n<b>New Mesh:</b> ' + mesh.id + '\n';
+                                report += '<b>Visual file:</b> ' + mesh.visual_file_id + '\n';
                                 $('#repair-log').append(report);
                             })
                             .catch(function(err) {

@@ -71,11 +71,12 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         // progressCallback is optional
-        repairMesh: function( meshId, progressCallback ) {
+        repairMesh: function( meshId, generateVisual, progressCallback ) {
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({
                 id: meshId,
-                all: true       // TODO: Do we want this as a parameter?
+                all: true,       // TODO: Do we want this as a parameter?
+                generate_visual: !!generateVisual
             });
             // TODO: It's possible to get immediate 200 response instead of 202 + task.
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
