@@ -124,6 +124,21 @@
         <br>
         <div class="container">
             <div class="col-md-6 col-md-offset-3">
+                <div id="test-wrapper-prepare-tray">
+                    <h2>Spark SDK Generate Printable Test</h2>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <button id="printable" class="btn btn-primary">Generate Prinable</button>
+                        <p>Status:<br>
+                        <pre id="printable-log"></pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
                 <div id="test-wrapper-printer-list">
                     <h2>Spark SDK Printers Test</h2>
 
@@ -201,6 +216,7 @@
                 var API_URL = 'https://' + API_ROOT + '.spark.autodesk.com/api/v1';
                 var _meshID = null;
                 var _trayID = null;
+                var _preparedTrayID = null;
                 var _printerTypes = null;
 
                 Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, REFRESH_TOKEN_URL, API_URL);
@@ -415,6 +431,9 @@
 
                         TrayAPI.prepareTray(_trayID, true, updateProgress)
                             .then(function(tray) {
+                                if( tray.ready )
+                                    _preparedTrayID = tray.id;
+
                                 var report = '\n<b>New Tray:</b> ' + tray.id + ' ' + tray.state + ' Ready: ' + tray.ready + '\n';
                                 $('#prepare-log').append(report);
                                 $('#prepare-log').append('Tray has ' + tray.meshes.length + ' meshes.\n');
@@ -428,7 +447,32 @@
                             });
                     }
                     else {
-                        $('#prepare-log').append('<b>Create Tray first, then try prepare.</b>\n');
+                        $('#prepare-log').append('<b>Create Tray first, then try Prepare.</b>\n');
+                    }
+                });
+
+                $('#printable').click(function(event) {
+                    if( _preparedTrayID !== null ) {
+                        $('#printable-log').append('<b>Start Printable:</b> tray: ' + _preparedTrayID + '...');
+                        function updateProgress(progress) {
+                            var report = '<b>Printable progress:</b> ' + progress + '\n';
+                            $('#printable-log').append(report);
+                        }
+
+                        TrayAPI.generatePrintable(_preparedTrayID, updateProgress)
+                            .then(function(result) {
+                                var report = '\n<b>Printable File ID:</b> ' + result.file_id + '\n';
+                                $('#printable-log').append(report);
+                            })
+                            .catch(function(err) {
+                                var report = '<b>ERROR:</b> ' + err.message + '\n';
+                                if( err.responseText )
+                                    report += '<b>Response:</b> ' + err.responseText + '\n';
+                                $('#printable-log').append(report);
+                            });
+                    }
+                    else {
+                        $('#printable-log').append('<b>Prepare Tray first, then try Generate Printable.</b>\n');
                     }
                 });
 

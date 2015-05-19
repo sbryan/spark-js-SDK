@@ -42,6 +42,19 @@ var ADSKSpark = ADSKSpark || {};
 
             return Client.authorizedApiRequest('/print/trays/prepare').post(headers, payload)
                     .then(waiter.wait);
+        },
+
+        // progressCallback is optional
+        generatePrintable: function(trayId, progressCallback) {
+            var waiter = new ADSKSpark.TaskWaiter(progressCallback);
+
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
+                'id': trayId,
+            });
+
+            return Client.authorizedApiRequest('/print/trays/generatePrintable').post(headers, payload)
+                    .then(waiter.wait);
         }
 
     };
