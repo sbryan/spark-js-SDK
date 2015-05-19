@@ -436,12 +436,13 @@
                         if( printers.length === 0 ) {
                             $('#printer-list').append('No Printers Found\n');
                         } else {
-                            for(var i=0; i < printers.length; ++i ) {
-                                report += '<b>Printer[' + printer.id + ']:</b> Name: ' + printer.printer_name
-                                + ' Type: ' + printer.type_id
-                                + ' Status: ' + printer.printer_last_health + '\n';
-                                $('#printer-list').append(report);
-                            }
+                            var report = '';
+                            printers.forEach(function (printer) {
+                                report += '<b>Printer[' + printer.printer_id + ']:</b> Name: ' + printer.printer_name
+                                    + ' Type: ' + printer.type_id
+                                    + ' Status: ' + printer.printer_last_health + '\n';
+                            });
+                            $('#printer-list').html(report);
                         }
                     })
                     .catch( function(error) {
