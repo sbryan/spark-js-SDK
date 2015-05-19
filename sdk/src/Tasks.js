@@ -43,6 +43,9 @@ ADSKSpark.TaskWaiter = function( progressCallback )
 
     this.wait = function(opResult, interval) 
     {
+        if( opResult.httpStatus === 200 )
+            return Promise.resolve(opResult);
+
         interval = interval || 100;
         if( interval < 10 )
             interval = 10;

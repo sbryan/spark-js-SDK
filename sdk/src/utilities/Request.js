@@ -61,14 +61,18 @@ ADSKSpark.Request = function(url, authorization,options) {
 					if (xhr.status !== 204 && !options.notJsonResponse) {
 						response = JSON.parse(xhr.responseText);
 					} else {
-						response = xhr.responseText;
+                        response = {};
+						response.responseText = xhr.responseText;
 					}
+                    response.httpStatus = xhr.status;
+                    response.httpStatusText = xhr.statusText;
 
                     resolve(response);
 
                 } else {
                     var error = new Error(xhr.statusText);
                     error.status = xhr.status;
+                    error.statusText = xhr.statusText;
                     error.responseText = xhr.responseText;
                     reject(error);
                 }
