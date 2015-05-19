@@ -344,9 +344,11 @@
                                     }
                                 }
                                 else {
+                                    _meshID = mesh.id;  // Use this one now.
                                     $('#repair-log').append('\nNo problems found!');
                                 }
                                 var report = '\n<b>New Mesh:</b> ' + mesh.id + '\n';
+                                $('#repair-log').append(report);
                             })
                             .catch(function(err) {
                                 var report = '<b>ERROR:</b> ' + err.message + '\n';
