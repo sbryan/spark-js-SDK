@@ -94,6 +94,21 @@
         <br>
         <div class="container">
             <div class="col-md-6 col-md-offset-3">
+                <div id="test-wrapper-prepare-tray">
+                    <h2>Spark SDK Prepare Tray Test</h2>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <button id="prepare" class="btn btn-primary">Prepare Tray</button>
+                        <p>Status:<br>
+                        <pre id="prepare-log"></pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
                 <div id="test-wrapper-printer-list">
                     <h2>Spark SDK Printers Test</h2>
 
@@ -170,6 +185,7 @@
 
                 var API_URL = 'https://' + API_ROOT + '.spark.autodesk.com/api/v1';
                 var _meshID = null;
+                var _trayID = null;
                 var _printerTypes = null;
 
                 Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, REFRESH_TOKEN_URL, API_URL);
@@ -310,6 +326,7 @@
 
                             TrayAPI.createTray(printerTypeId, printerProfileId, [_meshID], null, null, updateProgress)
                                 .then(function(tray) {
+                                    _trayID = tray.id;
                                     var report = '\n<b>New Tray:</b> ' + tray.id + ' ' + tray.state + ' Ready: ' + tray.ready + '\n';
                                     $('#tray-log').append(report);
                                     $('#tray-log').append('Tray has ' + tray.meshes.length + ' meshes.\n');
@@ -333,6 +350,33 @@
                     }
                     else {
                         $('#tray-log').append('<b>Import Mesh first, then try create tray</b>\n');
+                    }
+                });
+
+                $('#prepare').click(function(event) {
+                    if( _trayID !== null ) {
+                        $('#prepare-log').append('<b>Start Tray Prepare:</b> tray: ' + _trayID + '...');
+                        function updateProgress(progress) {
+                            var report = '<b>Tray progress:</b> ' + progress + '\n';
+                            $('#prepare-log').append(report);
+                        }
+
+                        TrayAPI.prepareTray(_trayID, true, updateProgress)
+                            .then(function(tray) {
+                                var report = '\n<b>New Tray:</b> ' + tray.id + ' ' + tray.state + ' Ready: ' + tray.ready + '\n';
+                                $('#prepare-log').append(report);
+                                $('#prepare-log').append('Tray has ' + tray.meshes.length + ' meshes.\n');
+                                $('#prepare-log').append('Mesh visual: ' + tray.meshes[0].visual_file_id + '\n');
+                            })
+                            .catch(function(err) {
+                                var report = '<b>ERROR:</b> ' + err.message + '\n';
+                                if( err.responseText )
+                                    report += '<b>Response:</b> ' + err.responseText + '\n';
+                                $('#prepare-log').append(report);
+                            });
+                    }
+                    else {
+                        $('#prepare-log').append('<b>Create Tray first, then try prepare.</b>\n');
                     }
                 });
 
