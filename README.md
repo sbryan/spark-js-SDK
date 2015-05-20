@@ -1,6 +1,7 @@
 ### Spark JavaScript SDK
 
 This is a prototype client side SDK for the Spark REST APIs, providing:
+
 * A convenient interface for application developers.
 * An abstract layer for the Spark APIs.
 * High-level functionality by chaining/callbacking APIs together.
@@ -9,6 +10,7 @@ This SDK requires a server side implementation of the guest and access tokens. Y
 
 ####API Reference
 For full API reference see the following:
+
 * <i>Authentication</i> - https://spark.autodesk.com/developers/reference/authentication
 * <i>Print APIs</i> - https://spark.autodesk.com/developers/reference/print
 * <i>Drive APIs</i> - https://spark.autodesk.com/developers/reference/drive
