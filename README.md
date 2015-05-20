@@ -15,7 +15,7 @@ For full API reference see the following:
 * <i>Print Firmware APIs</i> - https://spark.autodesk.com/developers/reference/firmware 
 
 
-### Quick start with the supplied index.html
+### Quick start 1: Using the supplied index.html
 * Get the latest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
 * The full SDK reference is available [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
@@ -26,28 +26,30 @@ For full API reference see the following:
    4. Set the "Callback URL" field on the Spark app to return to the <i>index.html</i> file.<br>
    ![Spark Callback URL entry](https://dp6mb85fgupxl.cloudfront.net/blog-prd-content/uploads/2015/05/x1.png)<br>
 
-###Quick start.
+###Quick Start 2: Using the SDK.
 * Get the latest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
 * The full SDK reference is available [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
-1. <b>Include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
+1) <b>Include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
 ```HTML
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
-2. **After** including the SDK library, the method ADSKSpark.Client.initialize() is used to initialize and setup the SDK:</b> 
+2) **After** including the SDK library, the method ADSKSpark.Client.initialize() must be used to initialize and setup the SDK:</b><br>
+ADSKSpark.Client.initialize() is passed five values:<br>
+a. App Key - A string containing your Spark app's (provided during registration).<br>
+b. Guest token URL - The server URL to which guest token requests will be directed. The SDK requires that authentication APIs are called from a server: The repository in which the SDK is located also contains a node.js implementation of these servers in the <i>authentication_server</i> folder.<br>
+c. Access token URL - The server URL to which access token requests will be directed.<br>
+d. Refresh access token URL - The server URL to which refresh access token requests will be directed.<br>
+e. <i>ADSKSpark.Constants.API_HOST_SANDBOX</i> or <i>ADSKSpark.Constants.API_HOST_PRODUCTION</i>. A constant specifying whether the SDK is running in sandbox or production.
+
       ```ADSKSpark.Client.initialize('',// Your app key
               '',// The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
               '',// The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
               '',// The refresh access token endpoint that is implemented by your server (i.e. http://example.com/refresh_token)
               ADSKSpark.Constants.API_HOST_SANDBOX // api host - API_HOST_PRODUCTION or API_HOST_SANDBOX
       );```
-ADSKSpark.Client.initialize() is passed five values:
-a. App Key - A string containing your Spark app's (provided during registration).|
-b. Guest token URL - The server URL to which guest token requests will be directed. The SDK requires that authentication APIs are called from a server: The repository in which the SDK is located also contains a node.js implementation of these servers in the <i>authentication_server</i> folder.
-c. Access token URL - The server URL to which access token requests will be directed.
-d. Refresh access token URL - The server URL to which refresh access token requests will be directed.
-e. <i>ADSKSpark.Constants.API_HOST_SANDBOX</i> or <i>ADSKSpark.Constants.API_HOST_PRODUCTION</i>. A constant specifying whether the SDK is running in sandbox or production. 
-3. See the Sample Code section below for additional options.
+
+3) See the Sample Code section below for additional options.
 
 #### Sample Code
 
