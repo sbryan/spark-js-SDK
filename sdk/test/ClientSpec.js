@@ -2,14 +2,16 @@ describe('Client', function() {
     'use strict';
 
     var ASC, xhr, requests;
-    var testGuestUrl, testAccessUrl, testApiUrl, testClientId;
+    var testGuestUrl, testAccessUrl, testRefreshUrl, testApiUrl, testRedirectURI,testClientId;
     var fakeGuestToken, fakeAccessToken;
 
     before(function() {
         ASC = ADSKSpark.Client;
         testGuestUrl = 'http://localhost/guest';
         testAccessUrl = 'http://localhost/access';
+        testRefreshUrl = 'http://localhost/refresh';
         testApiUrl = 'https://localhost';
+        testRedirectURI = 'https://localhost/callbackURI';
         testClientId = 'this is not an ID';
 
         fakeGuestToken = {
@@ -27,7 +29,7 @@ describe('Client', function() {
             refresh_token_issued_at: Date.now()
         };
 
-        ASC.initialize(testClientId, testGuestUrl, testAccessUrl, testApiUrl);
+        ASC.initialize(testClientId, testGuestUrl, testAccessUrl, testRefreshUrl, testApiUrl,testRedirectURI);
     });
 
     beforeEach(function() {
@@ -111,7 +113,7 @@ describe('Client', function() {
         // Make sure the request was sent
         requests.length.should.equal(1);
         var xhr = requests[0];
-        xhr.url.should.equal(testAccessUrl + '?code=ACODE');
+        xhr.url.should.equal(testAccessUrl + '?code=ACODE&redirect_uri=' + encodeURIComponent(testRedirectURI));
         xhr.method.should.equal('GET');
 
         // Respond with fake token
