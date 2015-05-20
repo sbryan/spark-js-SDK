@@ -106,20 +106,20 @@ e. **ADSKSpark.Constants.API_HOST_SANDBOX** or **ADSKSpark.Constants.API_HOST_PR
 ```
 
 ### Code Guidelines
-In order to create a coherent code base for current and future code on this SDK, one should try to work according to the guidelines below.
+If you want to propose changes to the SDK,  please try to work according to the following guidelines.
 
 #### General
-As a general approach always try to use JS best practices in your code. You can find a good reference in [Google's JS guidelines](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
+Use JS best practices in your code. See [Google's JS guidelines](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
 
-The other important thing is to stick to the current conventions in this code base. 
+The following conventions are used in this code base. 
 
 #### Structure Guidelines
-* Devide your logic between files - don't hold everything inside a single file. Each file should hold, as far as possible, only one coherent subject that identifies this file (for example - "Print Preparation").
-* Each file should be self sufficient in the sense of scoping, global variables anf poluting the window namespace. 
-* You are advised to apply the [module pattern](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript) to make sure you create a clear distinction between private and public methods.
-* Create a clear separation between the API groups by putting the different module files in main directory (i.e. print-preparation.js should reside in the print directory)
-* Utilities should be in a separate files under the "utilities" directory (i.e. request.js that handles all xhr to API)
-* Consider the next structure as your guideline:
+* Divide your logic between files - Each file should hold, as far as possible, only one coherent subject that identifies it (for example - "Print Preparation").
+* Each file should be self-sufficient in scoping, global variables and poluting the window namespace. 
+* Clearly distinguish between private and public methods using the [module pattern](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript).
+* Separate API groups by putting module files in the main directory (i.e. print-preparation.js should reside in the print directory).
+* Separate utilities under the "utilities" directory (i.e. request.js that handles all xhr to API).
+* Use the following structure:
 ```
   - sdk
   -- src
@@ -176,14 +176,13 @@ The other important thing is to stick to the current conventions in this code ba
   - .gitignore
 ```  
 
-#### Naming conventions
-* File names should follow these conventions:
-  * When a file contains a primary class or object interface the file name should match the class or object name.
-  * Otherwise the author should name the file to describe the contents as best as possible within a reasonable name length.
-  * Use of dashes and underscores in filenames is discouraged. Upper or lower camel case for filenames is preferred.
-* Variables should be camelCase
-* Objects should be in PascalCase
-* Constants should be all cases with underscores between words
+#### Naming Conventions
+* File Names:
+  * Files containing a primary class or object interface: The file name should match the class or object name.
+  * Use upper or lower camel case for file names, not dashes and underscores.
+* Variables should be camelCase.
+* Objects should be in PascalCase.
+* Constants should be all cases with underscores between words.
 
 #### More conventions
 * Use constants instead of string values, for example instead of using this:
@@ -192,13 +191,12 @@ if (response.code === 'error'){
   //do stuff
 }
 ```
-Use
+Use this (define RESPONSE_ERROR_MSG in a separate constants file):
 ```JavaScript
 if (response.code === RESPONSE_ERROR_MSG){
   //do stuff
 }
 ```
-Where you define RESPONSE_ERROR_MSG in a separate constants file.
 
 ### Testing and Packaging
 
@@ -213,7 +211,7 @@ $ bower install
 ```
 
 ### Testing
-See the README.md inside the test folder
+See the README.md inside the test folder.
 
 ### Packaging
 
