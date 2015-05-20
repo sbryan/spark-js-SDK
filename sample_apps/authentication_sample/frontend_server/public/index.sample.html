@@ -536,7 +536,8 @@
                             });
                     }
                     else {
-                        $('#job-log').append('<b>Must specify Printer ID and Profile ID.</b>\n');
+                        $('#job-log').append('<b>Must specify Printer, Profile and Printable IDs.</b>\n');
+                        $('#job-log').append('<b>Use Generate Printable to get a Printable ID.</b>\n');
                     }
                 });
 
@@ -555,7 +556,7 @@
                             });
                     }
                     else {
-                        $('#job-status-log').append('<b>Generate Printable first, then try Create Job.</b>\n');
+                        $('#job-status-log').append('<b>No print job active! Try Create Print Job first.</b>\n');
                     }
                 });
 
