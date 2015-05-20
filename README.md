@@ -15,24 +15,30 @@ For full API reference see the following:
 * <i>Print Firmware APIs</i> - https://spark.autodesk.com/developers/reference/firmware 
 
 
-### Quick start
-Get the latest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
+### Quick start with the supplied index.html
+* Get the latest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
+* Get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
-<h3>To use the SDK:</h3><br> 
-1) <b>Include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
-
-```HTML
-<script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
-```
-2) <b>Setup your index.html file:</b><br>
+<b>Setup the index.html file:</b><br>
    a. Copy the file `/authentication/frontend_server/Public/index.sample.html` to <i>index.html</i>.<br>
-   b. Initialize the <i>APP_KEY</i> variable to the value of your Spark app's App Key (provided during app registration). If you are runnning the SDK in production than you should also change the <i>API_ROOT</i> variable initialization to "api".<br>
+   b. Initialize the <i>APP_KEY</i> variable to the value of your Spark app's App Key (provided during app registration). **If you are runnning the SDK in production** then change the <i>API_ROOT</i> variable initialization to "api".<br>
    c. In the variables GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL (just below APP_KEY), enter the server URLs to which these calls will be redirected. The SDK requires that authentication APIs are called from a server and the repository in which the SDK is located also contains a node.js implementation of these servers in the <i>authentication_server</i> folder.<br> If you use this implmentation \, there is no need to change the provided settings for GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL.<br>
    d. Set the "Callback URL" field on the Spark app to return to the <i>index.html</i> file.<br>
    ![Spark Callback URL entry](https://dp6mb85fgupxl.cloudfront.net/blog-prd-content/uploads/2015/02/x4-1.png)<br>
 
-Get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
+###Quick start.
+* Get the latest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
+* Get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
+1) <b>Include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
+This Quick Start guide assumes you are using the sample index.html provided with the SDK. If you prefer to run the SDK without using this file, you must <b>include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
+
+```HTML
+<script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
+```
+```HTML
+<script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
+```
 #### Sample code
 
 ```HTML
