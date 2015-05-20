@@ -51,6 +51,25 @@ var ADSKSpark = ADSKSpark || {};
             return Client.authorizedApiRequest('/files/upload').post(null, fd);
 
         },
+
+        /**
+         * Download a file from the Spark Drive
+         * @param {String} fileIds - Array of file ids to download
+         * @returns {Promise} - A promise that will resolve to a file
+         */
+        downloadFile: function (fileId, assetId) {
+
+            //Make sure fileId is defined and that it is a number
+            if (Helpers.isValidId(fileId)) {
+
+                var file_id = '?file_ids='+ fileId.toString();
+                var asset_id = '&asset_id='+ assetId;
+
+                return Client.authorizedApiRequest('/files/download' + file_id + asset_id).get();
+            }
+
+           return Promise.reject(new Error('Proper fileId(s) was not supplied'));
+        },
     };
 
 }());
