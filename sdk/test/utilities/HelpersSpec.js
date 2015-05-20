@@ -20,10 +20,8 @@ describe('Helpers', function() {
 	it('should open a popup window', function() {
 		var popup = Helpers.popupWindow('http://google.com',200,200);
 		expect(popup).to.not.equal(null);
-		expect(popup.document).to.have.property('width');
-		expect(popup.document).to.have.property('height');
-		expect(popup.document.width).to.be.above(100);
-		expect(popup.document.height).to.be.above(100);
+		expect(popup).to.have.property('document');
+		expect(popup.document).to.have.property('bgColor');
 	});
 
 	it('should transform parameter strings to array of params', function() {
