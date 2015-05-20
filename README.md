@@ -16,7 +16,7 @@ For full API reference see the following:
 
 
 ### Quick start
-Get the lastest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
+Get the latest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
 
 To use the SDK:<br> 
 1) Include the SDK library in your HTML page just before closing the body section (`</body>`).
@@ -24,8 +24,14 @@ To use the SDK:<br>
 ```HTML
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
-2) In the file /sdk/src/Client.js find the function <i>Client.initialize</i> and then:<br>
-   a. Enter your app's client ID (the app key provided when you registered the app).<br>
+2) Setup your index.html file:
+   a. Copy the file `/authentication/frontend_server/Public/index.sample.html` to <i>index.html</i>. 
+   b. Initialize the <i>APP_KEY</i> variable to the value of your Spark app's App Key (provided during app registration). If you are runnning the SDK in production than you should also change the <i>API_ROOT</i> variable initialization to "api". 
+   c. Set the "Callback URL" field on the Spark app to return to the <i>index.html</i> file.
+   ![Spark Callback URL entry](https://dp6mb85fgupxl.cloudfront.net/blog-prd-content/uploads/2015/02/x4-1.png)
+3) 
+
+   a. Enter the app key provided when you registered the app.<br>
    b. Enter the URL's of your authentication servers: The SDK requires you to call authentication APIs from a server. These URLs are required for the SDK to work. See the server implementations supplied in this repository.<Br>
    c. Replace apiUrl with the URL prefix of your APIs (such as `https://sandbox.spark.autodesk.com/api/vi`).
 
