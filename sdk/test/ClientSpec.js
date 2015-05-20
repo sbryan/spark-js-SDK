@@ -134,4 +134,62 @@ describe('Client', function() {
             ASC.isAccessTokenValid().should.equal(false);
         });
     });
+
+    it('should refresh access token', function() {
+        requests.length.should.equal(0);
+
+        var getAccessTokenSuccessMock = sinon.stub(ASC,'getAccessTokenObject').returns({
+            refresh_token: 'AREFRESHTOKEN'
+        });
+
+        var promise = ASC.refreshAccessToken();
+        promise.should.be.instanceOf(Promise);
+
+        // Make sure the request was sent
+        requests.length.should.equal(1);
+        var xhr = requests[0];
+        xhr.url.should.equal(testRefreshUrl + '?refresh_token=AREFRESHTOKEN');
+        xhr.method.should.equal('GET');
+
+        // Respond with fake token
+        xhr.respond(200, {'Content-Type': 'application/json'}, JSON.stringify(fakeAccessToken));
+
+        // Check promise
+        return promise.then(function(data) {
+            var accessToken = data.access_token;
+
+            Should.exist(accessToken);
+            fakeAccessToken.access_token.should.equal(accessToken);
+            accessToken.should.equal(ASC.getAccessToken());
+
+            // We should now have a valid token
+            ASC.isAccessTokenValid().should.equal(true);
+
+            ASC.logout();
+            ASC.isAccessTokenValid().should.equal(false);
+            getAccessTokenSuccessMock.restore();
+        });
+    });
+
+    it('should reject a refresh access token request when access token is empty', function() {
+        requests.length.should.equal(0);
+
+        var getAccessTokenFailureMock = sinon.stub(ASC,'getAccessTokenObject').returns(null);
+
+        var promise = ASC.refreshAccessToken();
+        promise.should.be.instanceOf(Promise);
+
+        // Make sure no request was sent
+        requests.length.should.equal(0);
+
+		// Check promise
+		return promise
+			.then(function (data) {
+			})
+			.catch(function (error) {
+				expect(error).to.be.an.instanceof(Object);
+				expect(error).to.have.property('message');
+				getAccessTokenFailureMock.restore();
+			});
+	});
 });
