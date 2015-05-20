@@ -1,4 +1,4 @@
-### Spark Print SDK 
+### Spark JavaScript SDK
 
 This is a prototype client side SDK for the Spark REST APIs, providing:
 * A convenient interface for application developers.
