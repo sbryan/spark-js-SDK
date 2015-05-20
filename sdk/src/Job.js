@@ -34,7 +34,7 @@ var ADSKSpark = ADSKSpark || {};
         if (data) {
             var jobs = data.jobs || data.printer_jobs;
             if (Array.isArray(jobs)) {
-                var that = this;
+                var _this = this;
                 jobs.forEach(function (job) {
                     if (!job.printer_id) {
                         job.printer_id = data.printer_id;
@@ -42,7 +42,7 @@ var ADSKSpark = ADSKSpark || {};
                     if (!job.member_id) {
                         job.member_id = data.member_id;
                     }
-                    that.push(new ADSKSpark.Job(job));
+                    _this.push(new ADSKSpark.Job(job));
                 });
             }
         }
@@ -54,10 +54,16 @@ var ADSKSpark = ADSKSpark || {};
      * @constructor
      */
     ADSKSpark.Job = function (data) {
-        this.id = data.job_id;
-        this.printerId = data.printer_id;
-        this.data = data;
         this.status = null;
+        this.progress = 0.0;
+
+        if( data ) {
+            this.id = data.job_id;
+            this.printer_id = data.printer_id;
+            this.status   = data.job_status ? data.job_status.job_status : null;
+            this.progress = data.job_status ? data.job_status.job_progress : 0.0;
+            this.data = data;   // TODO: Just copy all properties over to this?
+        }
     };
 
     ADSKSpark.Job.prototype = {
@@ -69,16 +75,52 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise} - A Promise that will resolve to the status information.
          */
         getStatus: function () {
-            var that = this;
+            if( !this.id )
+                return Promise.reject(new Error("Job does not exist."));
+
+            var _this = this;
             return Client.authorizedApiRequest('/print/jobs/' + this.id)
                 .get()
                 .then(function (data) {
-                    that.status = data;
-                    return data;
+                    _this.status   = data.job_status ? data.job_status.job_status : null;
+                    _this.progress = data.job_status ? data.job_status.job_progress : 0.0;
+                    _this.data = data;  // TODO: Just copy all properties over to this?
+                    return _this;
                 })
                 .catch(function (error) {
-                    that.status = null;
+                    _this.status = null;
                 });
+        },
+
+
+        /**
+         * Create a new print job.
+         * @param {string} printerId
+         * @param {string} profileId
+         * @param {string} printableId
+         * @returns {Promise} - A Promise which resolves to this object with updated contents.
+         */
+        create: function(printerId, profileId, printableId) {
+            if( this.id )
+                return Promise.reject(new Error("Job already exists."));
+
+            var _this = this;
+            function updateJob(data) {
+                _this.id = data.job_id;
+                return _this.getStatus();
+            }
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
+                'printer_id': printerId,
+                'settings': { 'profile_id': profileId},
+                'printable_id': printableId
+            });
+            this.printer_id = printerId;        // Not currently available from server query
+            this.profile_id = profileId;        // Not currently available from server query
+            this.printable_id = printableId;    // Not currently available from server query
+            return Client.authorizedApiRequest('/print/printers/' + printerId + '/jobs')
+                    .post(headers, payload)
+                    .then(updateJob);
         },
 
         /**

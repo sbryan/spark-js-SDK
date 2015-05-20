@@ -139,6 +139,41 @@
         <br>
         <div class="container">
             <div class="col-md-6 col-md-offset-3">
+                <div id="test-wrapper-job">
+                    <h2>Spark SDK Create Print Job Test</h2>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <form id="job-form">
+                              <label>Printer ID: </label><input type="text" id="printerId" name="printerId" class="required"><br>
+                              <label>Profile ID: </label><input type="text" id="profileId" name="profileId" class="required" size=44 value="34F0E39A-9389-42BA-AB5A-4F2CD59C98E4">
+                              <label>Printable ID: </label><input type="text" id="printableId" name="printableId" class="required">
+                        </form>
+                        <button id="job" class="btn btn-primary">Create Print Job</button>
+                        <p>Status:<br>
+                        <pre id="job-log"></pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
+                <div id="test-wrapper-jobs-list">
+                    <h2>Spark SDK Job Status Test</h2>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <button id="job-status" class="btn btn-primary">Get Print Job Status</button>
+                        <p>Status:<br>
+                        <pre id="job-status-log"></pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
                 <div id="test-wrapper-printer-list">
                     <h2>Spark SDK Printers Test</h2>
 
@@ -218,6 +253,8 @@
                 var _trayID = null;
                 var _preparedTrayID = null;
                 var _printerTypes = null;
+                var _printableFileID = null;
+                var _printJob = null;
 
                 Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, REFRESH_TOKEN_URL, API_URL);
 
@@ -386,7 +423,7 @@
                             var printerTypeId    = printerType.id;
                             var printerProfileId = printerType.default_profile_id;
 
-                            $('#tray-log').append('<b>Start Tray Create:</b> using printer type: ' + printerTypeId + '...');
+                            $('#tray-log').append('<b>Start Tray Create:</b> using printer type: ' + printerType.name + '...');
                             function updateProgress(progress) {
                                 var report = '<b>Tray progress:</b> ' + progress + '\n';
                                 $('#tray-log').append(report);
@@ -461,6 +498,8 @@
 
                         TrayAPI.generatePrintable(_preparedTrayID, updateProgress)
                             .then(function(result) {
+                                _printableFileID = result.file_id;
+                                $('#printableId').val(_printableFileID);
                                 var report = '\n<b>Printable File ID:</b> ' + result.file_id + '\n';
                                 $('#printable-log').append(report);
                             })
@@ -473,6 +512,50 @@
                     }
                     else {
                         $('#printable-log').append('<b>Prepare Tray first, then try Generate Printable.</b>\n');
+                    }
+                });
+
+                $('#job').click(function(event) {
+                    var printerId = $('#printerId').val();
+                    var profileId = $('#profileId').val();
+                    var printableId = $('#printableId').val();
+
+                    if( printerId && profileId && printableId ) {
+                        _printJob = new ADSKSpark.Job();
+
+                        _printJob.create(printerId, profileId, printableId)
+                            .then(function(job) {
+                                var report = '<b>Job ID:</b> ' + job.id + ' Status: ' + job.status + ' Progress: ' + job.progress + '\n';
+                                $('#job-log').append(report);
+                            })
+                            .catch(function(err) {
+                                var report = '<b>ERROR:</b> ' + err.message + '\n';
+                                if( err.responseText )
+                                    report += '<b>Response:</b> ' + err.responseText + '\n';
+                                $('#job-log').append(report);
+                            });
+                    }
+                    else {
+                        $('#job-log').append('<b>Must specify Printer ID and Profile ID.</b>\n');
+                    }
+                });
+
+                $('#job-status').click(function(event) {
+                    if( _printJob !== null ) {
+                        _printJob.getStatus()
+                            .then(function(job) {
+                                var report = '<b>Job ID:</b> ' + job.id + ' Status: ' + job.status + ' Progress: ' + job.progress + '\n';
+                                $('#job-status-log').append(report);
+                            })
+                            .catch(function(err) {
+                                var report = '<b>ERROR:</b> ' + err.message + '\n';
+                                if( err.responseText )
+                                    report += '<b>Response:</b> ' + err.responseText + '\n';
+                                $('#job-status-log').append(report);
+                            });
+                    }
+                    else {
+                        $('#job-status-log').append('<b>Generate Printable first, then try Create Job.</b>\n');
                     }
                 });
 
@@ -500,12 +583,13 @@
                         if( jobs.length === 0 ) {
                             $('#job-list').append('No Jobs Found\n');
                         } else {
-                            for(var i=0; i < jobs.length; ++i ) {
+                            var report = '';
+                            jobs.forEach(function(job) {
                                 report += '<b>Job[' + job.id + ']:</b> Printer: ' + job.printer_id
                                 + ' Status: ' + job.status
-                                + ' Date: ' + job.date_time + '\n';
-                                $('#job-list').append(report);
-                            }
+                                + ' Date: ' + job.data.job_date_time + '\n';
+                            });
+                            $('#job-list').html(report);
                         }
                     })
                     .catch( function(error) {
