@@ -62,8 +62,8 @@ var ADSKSpark = ADSKSpark || {};
             //Make sure fileId is defined and that it is a number
             if (Helpers.isValidId(fileId)) {
 
-                var file_id = '?file_ids='+ fileId.toString();
-                var asset_id = '&asset_id='+ assetId;
+                var file_id = '?file_ids=' + fileId.toString();
+                var asset_id = '&asset_id=' + (assetId || '');
 
                 return Client.authorizedApiRequest('/files/download' + file_id + asset_id).get();
             }
