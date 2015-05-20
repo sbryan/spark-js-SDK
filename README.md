@@ -25,11 +25,11 @@ To use the SDK:<br>
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
 2) Setup your index.html file:
-   a. Copy the file `/authentication/frontend_server/Public/index.sample.html` to <i>index.html</i>. 
-   b. Initialize the <i>APP_KEY</i> variable to the value of your Spark app's App Key (provided during app registration). If you are runnning the SDK in production than you should also change the <i>API_ROOT</i> variable initialization to "api". 
-   c. Set the "Callback URL" field on the Spark app to return to the <i>index.html</i> file.
-   ![Spark Callback URL entry](https://dp6mb85fgupxl.cloudfront.net/blog-prd-content/uploads/2015/02/x4-1.png)
-3) 
+   a. Copy the file `/authentication/frontend_server/Public/index.sample.html` to <i>index.html</i>.<br>
+   b. Initialize the <i>APP_KEY</i> variable to the value of your Spark app's App Key (provided during app registration). If you are runnning the SDK in production than you should also change the <i>API_ROOT</i> variable initialization to "api".<br>
+   c. Set the "Callback URL" field on the Spark app to return to the <i>index.html</i> file.<br>
+   ![Spark Callback URL entry](https://dp6mb85fgupxl.cloudfront.net/blog-prd-content/uploads/2015/02/x4-1.png)<br>
+3) xxxxxxx
 
    a. Enter the app key provided when you registered the app.<br>
    b. Enter the URL's of your authentication servers: The SDK requires you to call authentication APIs from a server. These URLs are required for the SDK to work. See the server implementations supplied in this repository.<Br>
