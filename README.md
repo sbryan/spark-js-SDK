@@ -6,7 +6,8 @@ This is a prototype client side SDK for the Spark REST APIs, providing:
 * An abstract layer for the Spark APIs.
 * High-level functionality by chaining/callbacking APIs together.
 
-This SDK requires a server side implementation of the guest and access tokens. You can find various sample implementations in this repository such as https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs.
+This SDK requires a server side implementation of the guest and access tokens. You can find various sample implementations in this
+repository under the server folder.
 
 ####API Reference
 For full API reference see the following:
@@ -26,19 +27,16 @@ To use the SDK:<br>
 ```HTML
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
-2) In the file /sdk/src/Client.js find the function <i>Client.initialize</i> and then:<br>
-   a. Enter your app's client ID (the app key provided when you registered the app).<br>
-   b. Enter the URL's of your authentication servers: The SDK requires you to call authentication APIs from a server. These URLs are required for the SDK to work. See the server implementations supplied in this repository.<Br>
-   c. Replace apiUrl with the URL prefix of your APIs (such as `https://sandbox.spark.autodesk.com/api/vi`).
+
+2) Then you would have to initialize the SDK client with your credentials and choose the environment between sandbox and production:
 
 ```JavaScript
-	 Client.initialize = function(clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, apiUrl) {
-        _clientId = clientId;
-        _guestTokenUrl = guestTokenUrl;
-        _accessTokenUrl = accessTokenUrl;
-        _refreshTokenUrl = refreshTokenUrl;
-        _apiUrl = apiUrl;
-    };
+	ADSKSpark.Client.initialize('',// Your app key
+			'',// The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
+			'',// The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
+			'',// The refresh access token endpoint that is implemented by your server (i.e. http://example.com/refresh_token)
+			ADSKSpark.Constants.API_HOST_SANDBOX // api host - API_HOST_PRODUCTION or API_HOST_SANDBOX
+	);
 ```
 
 Get the full SDK reference [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
@@ -116,40 +114,42 @@ The other important thing is to stick to the current conventions in this code ba
   - sdk
   -- src
   --- config
-  ---- constants.js
+  ---- Constants.js
   --- utilities
-  ---- request.js
-  ---- paginated.js
+  ---- Helpers.js
+  ---- Request.js
+  ---- Paginated.js
   --- auth
-  ---- client.js
+  ---- Client.js
   --- print
-  ---- print-meta.js
-  ---- print-preparation.js
-  ---- printer-registration.js
-  ---- printer-management.js
-  ---- printer-firmware.js
+  ---- PrintMeta.js
+  ---- PrintPreparation.js
+  ---- PrinterRegistration.js
+  ---- PrinterManagement.js
+  ---- PrinterFirmware.js
   --- drive
-  ---- files.js
-  ---- assets.js
-  ---- members.js
+  ---- Files.js
+  ---- Assets.js
+  ---- Members.js
   -- test
   --- config
-  ---- constants.js
+  ---- ConstantsSpec.js
   --- utilities
-  ---- request.js
-  ---- paginated.js
+  ---- HelpersSpec.js
+  ---- RequestSpec.js
+  ---- PaginatedSpec.js
   --- auth
-  ---- client.js
+  ---- ClientSpec.js
   --- print
-  ---- print-meta.js
-  ---- print-preparation.js
-  ---- printer-registration.js
-  ---- printer-management.js
-  ---- printer-firmware.js
+  ---- PrintMetaSpec.js
+  ---- PrintPreparationSpec.js
+  ---- PrinterRegistrationSpec.js
+  ---- PrinterManagementSpec.js
+  ---- PrinterFirmwareSpec.js
   --- drive
-  ---- files.js
-  ---- assets.js
-  ---- members.js
+  ---- FilesSpec.js
+  ---- AssetsSpec.js
+  ---- MembersSpec.js
   -- sample-apps
   --- authentication_sample
   --- 3d_printer_sample
