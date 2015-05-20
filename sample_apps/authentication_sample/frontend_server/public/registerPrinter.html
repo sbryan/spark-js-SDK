@@ -216,12 +216,13 @@
                         if( jobs.length === 0 ) {
                             $('#job-list').append('No Jobs Found\n');
                         } else {
-                            for(var i=0; i < jobs.length; ++i ) {
+                            var report = '';
+                            jobs.forEach(function(job) {
                                 report += '<b>Job[' + job.id + ']:</b> Printer: ' + job.printer_id
                                 + ' Status: ' + job.status
-                                + ' Date: ' + job.date_time + '\n';
-                                $('#job-list').append(report);
-                            }
+                                + ' Date: ' + job.data.job_date_time + '\n';
+                            });
+                            $('#job-list').html(report);
                         }
                     })
                     .catch( function(error) {
