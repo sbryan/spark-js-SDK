@@ -1,6 +1,12 @@
 var ADSKSpark = ADSKSpark || {};
 
 (function() {
+
+    /**
+     * @class Represents a Client
+     * @description - The Client API singleton that allows to call various api methods
+     * See reference - https://spark.autodesk.com/developers/reference/authentication
+     */
     var Client = ADSKSpark.Client = {};
     var Helpers = ADSKSpark.Helpers;
 
@@ -34,7 +40,6 @@ var ADSKSpark = ADSKSpark || {};
 
     /**
      * Initializes the client.
-     *
      * @param {String} clientId - The app key provided when you registered your app.
      * @param {String} guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
      *                                 handle exchanging the client secret for a guest token.

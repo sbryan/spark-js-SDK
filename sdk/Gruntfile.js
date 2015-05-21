@@ -53,11 +53,11 @@ module.exports = function (grunt) {
 		},
 		jsdoc : {
 			dist : {
-				src: ['src/{,*/}*.js', 'test/{,*/}*.js','../README.md'],
+				src: ['src/{,*/}*.js','../README.md'],
 				options: {
 					destination: 'doc',
-					template : 'node_modules/grunt-jsdoc/node_modules/ink-docstrap/template',
-					configure : 'node_modules/grunt-jsdoc/node_modules/ink-docstrap/template/jsdoc.conf.json'
+					template : 'node_modules/ink-docstrap-spark/template',
+					configure : 'node_modules/ink-docstrap-spark/template/jsdoc.conf.json'
 				}
 			}
 		}
