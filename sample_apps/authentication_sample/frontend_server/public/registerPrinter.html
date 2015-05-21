@@ -77,6 +77,25 @@
                 </div>
             </div>
         </div>
+        <br>
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
+                <div id="test-wrapper-job-comment">
+                    <h2>Spark SDK Job Comment Test</h2>
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <form id="register-form">
+                              <label>Job ID: </label><input type="text" id="jobid" name="jobid" class="required" size=44><br>
+                              <label>Comment: </label><input type="text" id="comment" name="comment" class="required" size=100>
+                        </form>
+                        <button id="addcomment" class="btn btn-primary">Update Job Comment</button>
+                        <p>Status:<br>
+                        <pre id="comment-log"></pre>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- /container -->
 
@@ -125,6 +144,7 @@
                 var Client  = ADSKSpark.Client;
 
                 var API_URL = 'https://' + API_ROOT + '.spark.autodesk.com/api/v1';
+                var API_URL = 'http://localhost.autodesk.com:8080';
                 var _meshID = null;
                 var _printerTypes = null;
 
@@ -218,9 +238,11 @@
                         } else {
                             var report = '';
                             jobs.forEach(function(job) {
-                                report += '<b>Job[' + job.id + ']:</b> Printer: ' + job.printer_id
-                                + ' Status: ' + job.status
-                                + ' Date: ' + job.data.job_date_time + '\n';
+                                report += '<b>Job[' + job.id + ']:</b>\n  Printer: ' + job.printer_id
+                                + '  Status: ' + job.status
+                                + '  Date: ' + job.data.job_date_time + '\n';
+                                if( job.data.job_comment )
+                                    report += '  Comment: ' + job.data.job_comment + '\n';
                             });
                             $('#job-list').html(report);
                         }
@@ -228,6 +250,40 @@
                     .catch( function(error) {
                         $('#job-list').text(error.message);
                     });
+                });
+
+                $('#addcomment').click(function() {
+                    var jobID   = $('#jobid').val();
+                    var comment = $('#comment').val();
+
+                    function checkJobID() {
+                        // To check the job ID we create a Job object and then try
+                        // to get its status. The getStatus promise will be rejected
+                        // if the id is not valid:
+                        var printJob = new ADSKSpark.Job();
+                        printJob.id = jobID;
+                        return printJob.getStatus();
+                    }
+
+                    if( !jobID || !comment ) {
+                        $('#comment-log').append('<b>Both Job ID and Comment must be provided.</b>\n');
+                    }
+                    else {
+                        $('#comment-log').append('Checking ID: ' + jobID + '... ');
+                        checkJobID().then(function(job) {
+                            $('#comment-log').append('\nUpdating job: ' + job.id + '... ');
+                            job.updateComment(comment).then(function(job) {
+                                $('#comment-log').append('\nUpdate completed.');
+                                $('#comment-log').append('\njob_comment: ' + job.data.job_comment);
+                            });
+                        })
+                        .catch(function(err) {
+                            var report = '<b>ERROR:</b> ' + err.message + '\n';
+                            if( err.responseText )
+                                report += '<b>Response:</b> ' + err.responseText + '\n';
+                            $('#comment-log').append(report);
+                        });
+                    }
                 });
 
             });

@@ -125,6 +125,27 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
+         * Update the user comment field for this job.
+         * @param {string} printerId
+         * @param {string} profileId
+         * @param {string} printableId
+         * @returns {Promise} - A Promise which resolves to this object with updated contents.
+         */
+        updateComment: function(newComment) {
+            if( !this.id )
+                return Promise.reject(new Error("Unknown job in updateComment."));
+
+            var _this = this;
+            var comment = encodeURIComponent(newComment);
+            return Client.authorizedApiRequest('/print/jobs/' + this.id + '?comment=' + comment)
+                    .put()
+                    .then(function(response) {
+                        console.log("GOT: " + JSON.stringify(response));
+                        return _this.getStatus();
+                    });
+        },
+
+        /**
          * Set a callback for a print job.
          * @param {string} callbackUrl
          * @returns {Promise}
