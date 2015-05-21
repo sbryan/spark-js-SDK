@@ -89,12 +89,13 @@ var ADSKSpark = ADSKSpark || {};
                 })
                 .catch(function (error) {
                     _this.status = null;
+                    throw error;            // Propagate error.
                 });
         },
 
 
         /**
-         * Create a new print job.
+         * Create a new print job. Note, this may also send it immediately to the printer.
          * @param {string} printerId
          * @param {string} profileId
          * @param {string} printableId
