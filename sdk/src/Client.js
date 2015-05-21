@@ -191,11 +191,13 @@ var ADSKSpark = ADSKSpark || {};
     /**
      * Request the API with an access token (if exists)
      * @param endpoint - The API endpoint to query
+     * @param [options] - Additional options that are supported by Request
      *
      * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
      */
-    Client.authorizedApiRequest = function(endpoint) {
+    Client.authorizedApiRequest = function(endpoint,options) {
         var authorization;
+        options = options || {};
 
         var accessToken = Client.getAccessToken();
 
@@ -203,16 +205,19 @@ var ADSKSpark = ADSKSpark || {};
             authorization = 'Bearer ' + accessToken;
         }
 
-        return ADSKSpark.Request(_apiUrl + endpoint, authorization);
+        return ADSKSpark.Request(_apiUrl + endpoint, authorization,options);
     };
 
     /**
      * Request the API with a guest token (if exists)
      * @param endpoint
+     * @param [options] - Additional options that are supported by Request
+     *
      * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
      */
-    Client.authorizedAsGuestApiRequest = function(endpoint) {
+    Client.authorizedAsGuestApiRequest = function(endpoint,options) {
         var authorization;
+        options = options || {};
 
         return Client.getGuestToken().then(function(guestToken) {
 
@@ -220,7 +225,7 @@ var ADSKSpark = ADSKSpark || {};
                 authorization = 'Bearer ' + guestToken;
             }
 
-            return ADSKSpark.Request(_apiUrl + endpoint, authorization);
+            return ADSKSpark.Request(_apiUrl + endpoint, authorization,options);
         });
     };
 

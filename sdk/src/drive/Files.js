@@ -64,7 +64,7 @@ var ADSKSpark = ADSKSpark || {};
                 var payload = {
                     file_ids: fileIds
                 };
-                return Client.authorizedApiRequest('/files/download').get(null, payload);
+                return Client.authorizedApiRequest('/files/download',{notJsonResponse:true}).get(null, payload);
             }
             
             return Promise.reject(new Error('Proper fileId(s) was not supplied'));
@@ -84,7 +84,7 @@ var ADSKSpark = ADSKSpark || {};
                     file_ids: fileIds,
                     asset_id: assetId
                 };
-                return Client.authorizedAsGuestApiRequest('/files/download').then(function(promise){
+                return Client.authorizedAsGuestApiRequest('/files/download',{notJsonResponse:true}).then(function(promise){
                     return promise.get(null, payload);
                 });
             }
