@@ -108,7 +108,7 @@ var ADSKSpark = ADSKSpark || {};
                 return data.access_token;
             }
 
-            return Promise.reject(new Error(data));
+            return Promise.reject(new Error(data.Error));
         });
     };
 
