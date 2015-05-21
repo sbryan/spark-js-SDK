@@ -56,8 +56,16 @@ module.exports = function (grunt) {
 				src: ['src/{,*/}*.js','../README.md'],
 				options: {
 					destination: 'doc',
+					template : 'node_modules/grunt-jsdoc/node_modules/ink-docstrap/template',
+					configure : 'jsdoc-conf/jsdoc-full.conf.json'
+				}
+			},
+			iframe: {
+				src: ['src/{,*/}*.js','../README.md'],
+				options: {
+					destination: 'doc/iframe',
 					template : 'node_modules/ink-docstrap-spark/template',
-					configure : 'node_modules/ink-docstrap-spark/template/jsdoc.conf.json'
+					configure : 'jsdoc-conf/jsdoc-iframe.conf.json'
 				}
 			}
 		}
@@ -89,8 +97,11 @@ module.exports = function (grunt) {
 
 	//run tests through grunt
 	grunt.registerTask('test', function(){
-
 		grunt.task.run(['karma']);
+	});
+
+	grunt.registerTask('doc', function(){
+		grunt.task.run(['jsdoc:dist','jsdoc:iframe']);
 	});
 
 
