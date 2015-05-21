@@ -92,6 +92,21 @@ describe('Helpers', function() {
 		expect(Helpers.isValidId('')).to.not.be.ok;
 	});
 
+	it('isValidId should not be valid for a negative number', function () {
+		expect(Helpers.isValidId(-1232131)).to.not.be.ok;
+	});
+
+	it('isValidId should not be valid for a negative number as a string', function () {
+		expect(Helpers.isValidId('-1232131')).to.not.be.ok;
+	});
+
+	it('isValidId should not be valid for a float', function () {
+		expect(Helpers.isValidId(121321.23)).to.not.be.ok;
+	});
+
+	it('isValidId should not be valid for a float as a string', function () {
+		expect(Helpers.isValidId('121321.23')).to.not.be.ok;
+	});
 
 	it('isValidIds should be valid for a number', function () {
 		expect(Helpers.isValidIds(2345456)).to.be.ok;

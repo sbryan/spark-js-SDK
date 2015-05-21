@@ -96,7 +96,7 @@ var ADSKSpark = ADSKSpark || {};
 		 * @returns {*|boolean}
 		 */
 		isValidId: function (itemId) {
-			return itemId && !isNaN(itemId);
+			return itemId && 0 === itemId % (!isNaN(parseFloat(itemId)) && 0 <= ~~itemId);
 		},
 
 		/**
