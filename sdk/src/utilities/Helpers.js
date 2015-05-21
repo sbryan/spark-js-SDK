@@ -113,16 +113,7 @@ ADSKSpark.Helpers = function () {
 				return false;
 			}
 			for (var i = 0; i < arrayForm.length; i++) {
-				if (!arrayForm[i]) {
-					return false;
-				}
-				if (isNaN(arrayForm[i])){
-					return false;
-				}
-				if (arrayForm[i] !== parseInt(arrayForm[i], 10)){
-					return false;
-				}
-				if (arrayForm[i] < 0){
+				if(!this.isValidId(arrayForm[i])) {
 					return false;
 				}
 			}

@@ -105,14 +105,6 @@ describe('Helpers', function() {
 		expect(Helpers.isValidIds("2345456")).to.be.ok;
 	});
 
-	it('isValidIds should not be valid for negative numbers', function () {
-		expect(Helpers.isValidIds(-100000)).to.not.be.ok;
-	});
-
-	it('isValidIds should not be valid for decimal numbers', function () {
-		expect(Helpers.isValidIds(10.1)).to.not.be.ok;
-	});
-
 	it('isValidIds should not be valid for string which is not comma seperated numbers', function () {
 		expect(Helpers.isValidIds('some string')).to.not.be.ok;
 	});
