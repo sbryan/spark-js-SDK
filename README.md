@@ -5,7 +5,7 @@ This is a prototype client side SDK for the Spark REST APIs, providing:
 * An abstract layer for the Spark APIs.
 * High-level functionality by chaining/callbacking APIs together.
 
-This SDK requires a server side implementation of the guest and access tokens. You can find various sample implementations in this repository such as https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs.
+This SDK requires a server side implementation of the guest, access and refresh tokens. You can find various sample implementations in this repository in the [`server`](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server) folder.
 
 For full API reference see the following:
 * <i>Authentication</i> - https://spark.autodesk.com/developers/reference/authentication
@@ -13,17 +13,18 @@ For full API reference see the following:
 * <i>Drive APIs</i> - https://spark.autodesk.com/developers/reference/drive
 * <i>Print Firmware APIs</i> - https://spark.autodesk.com/developers/reference/firmware 
 
-We have provided two quick start guides, the first uses the sample index.html file provided in GitHub, the second instructs you on how to create your own index.html file.
+We have provided two quick start guides, the first uses the sample index.html file provided in GitHub, the second instructs you on how to create a simple index.html file.
 
-### Quick Start 1: Using the supplied index.html
+### Quick Start 1: Using the supplied [index.html](https://github.com/spark3dp/spark-js-sdk/blob/master/sample_apps/authentication_sample/frontend_server/public/index.sample.html)
 * Get the latest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
 * The full SDK reference is available [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
 <b>Setup the index.html file:</b><br>
    1. Copy the file `/authentication/frontend_server/Public/index.sample.html` to `/authentication/frontend_server/Public/index.sample.html`.<br>
    2. Initialize the <i>APP_KEY</i> variable to the value of your Spark app's App Key (provided during app registration). **If you are runnning the SDK in production** then change the <i>API_ROOT</i> variable initialization to "api".<br>
-   3. In the variables <i>GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL</i> (just below APP_KEY), enter the server URLs to which these calls will be directed. The SDK requires that authentication APIs are called from a server and the repository in which the SDK is located also contains a node.js implementation of these servers in the <i>authentication_server</i> folder.<br> If you use this implmentation \, there is no need to change the provided settings for GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL.<br>
-   4. Set the "Callback URL" field on the Spark app to return to the <i>index.html</i> file.<br>
+   3. In the variables <i>GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL</i> (just below APP_KEY), enter the server URLs (endpoints) to which these calls will be directed. The SDK requires that authentication APIs are called from a server. 
+   4. This repository also contains a node.js that implements these endpoints (located in the <i>authentication_server</i> folder).<br> If you use this implmentation, there is no need to change the provided settings for GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL.<br>
+   5. Set the "Callback URL" field on the Spark app to return to the <i>index.html</i> file.<br>
    ![Spark Callback URL entry](https://dp6mb85fgupxl.cloudfront.net/blog-prd-content/uploads/2015/05/x1.png)<br>
 
 ###Quick Start 2: Initializing the SDK in an index.html file.
@@ -36,13 +37,21 @@ We have provided two quick start guides, the first uses the sample index.html fi
 ```
 2) **After** including the SDK library, the method ADSKSpark.Client.initialize() must be used to initialize and setup the SDK:</b><br>
 ADSKSpark.Client.initialize() is passed five values:<br>
-a. **App Key** - A string containing your Spark app's (provided during registration).<br>
-b. **Guest token URL** - The server URL to which guest token requests will be directed, for example <i>http://example.com/guest_token</i>. The SDK requires that authentication APIs are called from a server: The repository in which the SDK is located also contains a node.js implementation of these servers in the <i>authentication_server</i> folder.<br>
-c. **Access token URL** - The server URL to which access token requests will be directed, for example <i>http://example.com/access_token</i>.<br>
-d. **Refresh access token URL** - The server URL to which refresh access token requests will be directed.<br>
-e. **ADSKSpark.Constants.API_HOST_SANDBOX** or **ADSKSpark.Constants.API_HOST_PRODUCTION** - A constant specifying whether the SDK is running in sandbox or production.
+  * **App Key** - A string containing your Spark app key, provided during registration.
+  * **Guest token URL** - The server URL to which guest token requests will be directed, for example <i>http://example.com/guest_token</i>. The SDK requires that authentication APIs are called from a server.
+  * This repository also contains a node.js that implements these endpoints (located in the <i>authentication_server</i> folder).<br>
+  * **Access token URL** - The server URL to which access token requests will be directed, for example <i>http://example.com/access_token</i>.<br>
+  * **Refresh access token URL** - The server URL to which refresh access token requests will be directed.<br>
+  * **ADSKSpark.Constants.API_HOST_SANDBOX** or **ADSKSpark.Constants.API_HOST_PRODUCTION** - A constant specifying whether the SDK is running in sandbox or production.
 
-      ```ADSKSpark.Client.initialize('<app key>','<guest token URL>','<access token URL>','<refresh access token URL>',ADSKSpark.Constants.API_HOST_SANDBOX);```
+```JavaScript
+ADSKSpark.Client.initialize(
+'<app key>',
+'<guest token URL>',
+'<access token URL>',
+'<refresh access token URL>',
+ADSKSpark.Constants.API_HOST_SANDBOX);
+```
 
 3) See the Sample Code section below for additional options.
 
