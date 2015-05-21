@@ -1,4 +1,4 @@
-### Spark JavaScript SDK
+# Spark JavaScript SDK
 
 This is a web client SDK for the Spark REST APIs, providing:
 

@@ -36,5 +36,5 @@ Where version might be any string.
 
 #### Generate documentation
 ```sh
-$ grunt doc
+$ grunt docs
 ```
