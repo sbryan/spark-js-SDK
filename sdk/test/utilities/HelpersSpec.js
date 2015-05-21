@@ -14,6 +14,8 @@ describe('Helpers', function() {
 		expect(Helpers).to.have.property('transformToAssocArray');
 		expect(Helpers).to.have.property('extractParamsFromURL');
 		expect(Helpers).to.have.property('jsonToParameters');
+		expect(Helpers).to.have.property('isValidId');
+		expect(Helpers).to.have.property('isValidIds');
 
 	});
 
@@ -89,4 +91,39 @@ describe('Helpers', function() {
 	it('isValidId should not be valid for empty string', function () {
 		expect(Helpers.isValidId('')).to.not.be.ok;
 	});
+
+
+	it('isValidIds should be valid for a number', function () {
+		expect(Helpers.isValidIds(2345456)).to.be.ok;
+	});
+
+	it('isValidIds should be valid for a comma seperated string of numbers', function () {
+		expect(Helpers.isValidIds("2345456,1234567,543215")).to.be.ok;
+	});
+
+	it('isValidIds should be valid single string of a number', function () {
+		expect(Helpers.isValidIds("2345456")).to.be.ok;
+	});
+
+	it('isValidIds should not be valid for negative numbers', function () {
+		expect(Helpers.isValidIds(-100000)).to.not.be.ok;
+	});
+
+	it('isValidIds should not be valid for decimal numbers', function () {
+		expect(Helpers.isValidIds(10.1)).to.not.be.ok;
+	});
+
+	it('isValidIds should not be valid for string which is not comma seperated numbers', function () {
+		expect(Helpers.isValidIds('some string')).to.not.be.ok;
+	});
+
+	it('isValidIds should not be valid for empty param', function () {
+		expect(Helpers.isValidIds()).to.not.be.ok;
+	});
+
+	it('isValidIds should not be valid for empty string', function () {
+		expect(Helpers.isValidIds('')).to.not.be.ok;
+	});
+
+
 });
