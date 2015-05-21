@@ -9,7 +9,7 @@ This is a web client SDK for the Spark REST APIs, providing:
 
 This SDK requires:
 * A registered application on [Spark Developer Portal](https://spark.autodesk.com/developers/).
-* A server side implementation of the guest, access and refresh tokens API calls. You can find various sample implementations in this repository in the [`server`](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server) folder.
+* A server side implementation of the guest, access and refresh token API calls. Sample server side implementations are located in this repository in the [`server`](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server) folder.
 
 For full API reference see the following:
 
