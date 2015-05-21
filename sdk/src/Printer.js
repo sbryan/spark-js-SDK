@@ -146,6 +146,7 @@ var ADSKSpark = ADSKSpark || {};
                 })
                 .catch(function (error) {
                     that.status = null;
+                    throw error;
                 });
         },
 
@@ -260,7 +261,7 @@ var ADSKSpark = ADSKSpark || {};
                     return this.waitForCommand(data.task_id, options);
                 })
                 .then(function (data) {
-                     return data;
+                    return data;
                 });
         },
 
