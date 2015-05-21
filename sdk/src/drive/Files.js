@@ -89,7 +89,7 @@ var ADSKSpark = ADSKSpark || {};
                 });
             }
 
-            return Promise.reject(new Error('Proper fileId(s) was not supplied'));
+            return Promise.reject(new Error('Proper fileId(s) or assetId were not supplied'));
         }
     };
 
