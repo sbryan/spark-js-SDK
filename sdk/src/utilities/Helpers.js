@@ -1,16 +1,17 @@
 var ADSKSpark = ADSKSpark || {};
 
-/**
- * @class
- * Our utilities object
- */
-ADSKSpark.Helpers = function () {
+(function() {
 	'use strict';
 
 	/**
-	 * Return the factory object
+	 * @class
+	 * Our utilities object
 	 */
-	var helpers = {
+	ADSKSpark.Helpers = {
+
+		/**
+		 * Return the factory object
+		 */
 
 		/**
 		 * Open window in the center of the screen
@@ -49,7 +50,7 @@ ADSKSpark.Helpers = function () {
 		 */
 		extractParamsFromURL: function (prmstr) {
 			prmstr = prmstr || window.location.search.substr(1);
-			var getParams = prmstr ? helpers.transformToAssocArray(prmstr) : [];
+			var getParams = prmstr ? this.transformToAssocArray(prmstr) : [];
 
 			return getParams;
 		},
@@ -113,14 +114,14 @@ ADSKSpark.Helpers = function () {
 				return false;
 			}
 			for (var i = 0; i < arrayForm.length; i++) {
-				if(!this.isValidId(arrayForm[i])) {
+				if (!this.isValidId(arrayForm[i])) {
 					return false;
 				}
 			}
 			return true;
 		}
+
+
 	};
 
-	return helpers;
-
-}();
+}());
