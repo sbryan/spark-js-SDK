@@ -64,9 +64,21 @@ var ADSKSpark = ADSKSpark || {};
             var payload = JSON.stringify({
                 id: meshId
             });
-            // TODO: It's possible to get immediate 200 response instead of 202 + task.
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
             return Client.authorizedApiRequest('/geom/meshes/analyze').post(headers, payload)
+                    .then(waiter.wait);
+        },
+
+        // progressCallback is optional
+        repairMesh: function( meshId, generateVisual, progressCallback ) {
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
+                id: meshId,
+                all: true,       // TODO: Do we want this as a parameter?
+                generate_visual: !!generateVisual
+            });
+            var waiter = new ADSKSpark.TaskWaiter(progressCallback);
+            return Client.authorizedApiRequest('/geom/meshes/repair').post(headers, payload)
                     .then(waiter.wait);
         },
 
@@ -75,7 +87,6 @@ var ADSKSpark = ADSKSpark || {};
             var payload = JSON.stringify({
                 id: meshId
             });
-            // TODO: It's possible to get immediate 200 response instead of 202 + task.
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
             return Client.authorizedApiRequest('/geom/meshes/generateVisual').post(headers, payload)
                     .then(waiter.wait);

@@ -107,9 +107,6 @@
             // The refresh token endpoint that is implemented by your server (i.e. http://example.com/refresh_token)
             var REFRESH_TOKEN_URL = 'http://localhost:3000/refresh_token';
 
-            APP_KEY = 'EvGjq7G0bC4XLK4NZyLVsK16ZzSuX14l';
-            API_ROOT = 'api-alpha';  
-
             /**
              * Get the code param in URL after returning from Spark Auth flow
              */
@@ -183,8 +180,8 @@
                     }
                     else {
                         $('#reg-log').append('<b>Registering...<\b>');
-                        ADSKSpark.Printer.register(name, code) .then(function(printerId) {
-                                $('#reg-log').append('\nRegistered ID: ' + printerId);
+                        ADSKSpark.Printer.register(name, code) .then(function(printer) {
+                                $('#reg-log').append('\nRegistered ID: ' + printer.printer_id);
                         })
                         .catch(function(err) {
                             var report = '<b>ERROR:</b> ' + err.message + '\n';
@@ -200,12 +197,13 @@
                         if( printers.length === 0 ) {
                             $('#printer-list').append('No Printers Found\n');
                         } else {
-                            for(var i=0; i < printers.length; ++i ) {
-                                report += '<b>Printer[' + printer.id + ']:</b> Name: ' + printer.printer_name
-                                + ' Type: ' + printer.type_id
-                                + ' Status: ' + printer.printer_last_health + '\n';
-                                $('#printer-list').append(report);
-                            }
+                            var report = '';
+                            printers.forEach(function (printer) {
+                                report += '<b>Printer[' + printer.printer_id + ']:</b> Name: ' + printer.printer_name
+                                    + ' Type: ' + printer.type_id
+                                    + ' Status: ' + printer.printer_last_health + '\n';
+                            });
+                            $('#printer-list').html(report);
                         }
                     })
                     .catch( function(error) {
@@ -218,12 +216,13 @@
                         if( jobs.length === 0 ) {
                             $('#job-list').append('No Jobs Found\n');
                         } else {
-                            for(var i=0; i < jobs.length; ++i ) {
+                            var report = '';
+                            jobs.forEach(function(job) {
                                 report += '<b>Job[' + job.id + ']:</b> Printer: ' + job.printer_id
                                 + ' Status: ' + job.status
-                                + ' Date: ' + job.date_time + '\n';
-                                $('#job-list').append(report);
-                            }
+                                + ' Date: ' + job.data.job_date_time + '\n';
+                            });
+                            $('#job-list').html(report);
                         }
                     })
                     .catch( function(error) {

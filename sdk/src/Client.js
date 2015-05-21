@@ -1,6 +1,12 @@
 var ADSKSpark = ADSKSpark || {};
 
 (function() {
+
+    /**
+     * @class Represents a Client
+     * @description - The Client API singleton that allows to call various api methods
+     * See reference - https://spark.autodesk.com/developers/reference/authentication
+     */
     var Client = ADSKSpark.Client = {};
     var Helpers = ADSKSpark.Helpers;
 
@@ -12,6 +18,7 @@ var ADSKSpark = ADSKSpark || {};
     var _guestTokenUrl = '';
     var _accessTokenUrl = '';
     var _refreshTokenUrl = '';
+    var _redirectUri = '';
 
     /**
      * Gets an access_token and stores it in localStorage, afterwards returns a promise that resolves to the guest token.
@@ -33,7 +40,6 @@ var ADSKSpark = ADSKSpark || {};
 
     /**
      * Initializes the client.
-     *
      * @param {String} clientId - The app key provided when you registered your app.
      * @param {String} guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
      *                                 handle exchanging the client secret for a guest token.
@@ -43,13 +49,15 @@ var ADSKSpark = ADSKSpark || {};
      *                                  should call the refresh token api (extend the expiry time) and return a new valid
      *                                  access token.
      * @param {String} apiUrl - The URL of the spark api. (Ex. https://sandbox.spark.autodesk.com/api/vi)
+     * @param {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
      */
-    Client.initialize = function(clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, apiUrl) {
+    Client.initialize = function(clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, apiUrl, redirectUri) {
         _clientId = clientId;
         _guestTokenUrl = guestTokenUrl;
         _accessTokenUrl = accessTokenUrl;
         _refreshTokenUrl = refreshTokenUrl;
         _apiUrl = apiUrl;
+        _redirectUri = redirectUri;
     };
 
     /**
@@ -58,9 +66,17 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {String} - The URL.
      */
     Client.getLoginRedirectUrl = function() {
-        return _apiUrl + '/oauth/authorize' +
+
+        var apiRedirectUrl = _apiUrl + '/oauth/authorize' +
             "?response_type=code" +
             "&client_id=" + _clientId;
+
+        if (_redirectUri){
+            apiRedirectUrl += "&redirect_uri=" + _redirectUri;
+        }
+
+        return apiRedirectUrl;
+
     };
 
     /**
@@ -77,7 +93,13 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {Promise} - A promise that resolves to the access token.
      */
     Client.completeLogin = function(code) {
-        return ADSKSpark.Request(_accessTokenUrl).get(undefined, {code: code}).then(function(data) {
+        var params = {code:code};
+
+        if (_redirectUri){
+            params.redirect_uri = _redirectUri;
+        }
+
+        return ADSKSpark.Request(_accessTokenUrl).get(undefined, params).then(function(data) {
             if (data && data.expires_in && data.access_token) {
                 var now = Date.now();
                 data.expires_at = now + parseInt(data.expires_in) * 1000;
