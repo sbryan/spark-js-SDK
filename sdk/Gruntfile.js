@@ -48,7 +48,7 @@ module.exports = function (grunt) {
 			}
 		},
 		jshint: {
-			all: ['Gruntfile.js', 'src/{,*/}*.js'],
+			src: ['Gruntfile.js', 'src/{,*/}*.js'],
 			tests: 'test/{,*/}*.js'
 		},
 		jsdoc : {
@@ -91,7 +91,7 @@ module.exports = function (grunt) {
 		var buildVersion = version ? version : pkg.version;
 
 		grunt.config.set('version', buildVersion);
-		grunt.task.run(['jshint','karma','uglify']);
+		grunt.task.run(['jshint:src','karma','uglify']);
 	});
 
 
@@ -100,7 +100,7 @@ module.exports = function (grunt) {
 		grunt.task.run(['karma']);
 	});
 
-	grunt.registerTask('doc', function(){
+	grunt.registerTask('docs', function(){
 		grunt.task.run(['jsdoc:dist','jsdoc:iframe']);
 	});
 
