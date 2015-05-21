@@ -52,24 +52,28 @@ var ADSKSpark = ADSKSpark || {};
 
         },
 
+
         /**
          * Download a file from the Spark Drive
-         * @param {String} fileIds - Array of file ids to download
-         * @returns {Promise} - A promise that will resolve to a file
+         * @param {String} fileIds - Comma separated list of file IDs to download
+         * @param {String} assetId - Optional argument. If you are not the file owner
+         *                           (the file was uploaded by a different Spark member).
+         * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
          */
-        downloadFile: function (fileId, assetId) {
+        downloadFile: function (fileIds, assetId) {
 
             //Make sure fileId is defined and that it is a number
-            if (Helpers.isValidId(fileId)) {
-
-                var file_id = '?file_ids=' + fileId.toString();
-                var asset_id = '&asset_id=' + (assetId || '');
-
-                return Client.authorizedApiRequest('/files/download' + file_id + asset_id).get();
+            if (Helpers.isValidIds(fileIds)) {
+                var headers = {'Content-Type': 'application/json'};
+                var payload = JSON.stringify({
+                    'file_ids': fileIds,
+                    'asset_id': (assetId || '')
+                });
+                return Client.authorizedApiRequest('/files/download?').get(headers, payload);
             }
-
-           return Promise.reject(new Error('Proper fileId(s) was not supplied'));
-        },
+            
+            return Promise.reject(new Error('Proper fileId(s) was not supplied'));
+        }
     };
 
 }());

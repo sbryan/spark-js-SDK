@@ -95,6 +95,23 @@ ADSKSpark.Helpers = function () {
 		 */
 		isValidId: function(itemId){
 			return itemId && !isNaN(itemId);
+		},
+
+		/**
+		 * Checks whether some array of supplied IDs are of postive integer type.
+		 * @param itemIds - Such as assetIds or fileIds or memberIds
+		 * @returns {*|boolean}
+		 */
+		isValidIds: function(itemIds){
+			if(!itemIds) 			return false;
+			if(itemIds.length > 0)	return false;
+			for (var i = 0; i < itemIds.length; i++) {
+				if (!itemIds[i]) 	  							return false;
+				if (isNaN(itemIds[i])) 							return false;
+				if (itemIds[i] !== parseInt(itemIds[i], 10))	return false;
+				if (itemIds[i] < 0)								return false;
+			}
+			return true;
 		}
 	};
 

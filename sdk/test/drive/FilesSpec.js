@@ -38,6 +38,7 @@ describe('Files', function () {
 		expect(Files).to.exist;
 		expect(Files).to.have.property('getFileDetails');
 		expect(Files).to.have.property('uploadFile');
+		expect(Files).to.have.property('downloadFile');
 
 	});
 
@@ -90,5 +91,22 @@ describe('Files', function () {
 
 	it('should be able to upload a public file', function () {
 		testUploadedFile(true);
+	});
+
+	it('should be able to download a file', function () {
+
+		//mock
+		mockedAuthorizedRequest.withArgs('/files/download?').returns({
+			get: function (headers, fileData) {
+				return Promise.resolve(fakeFileRespPrivate);
+			}
+		});
+
+		return Files.downloadFile(fakeFileRespPrivate.files[0].file_id).then(function (response) {
+			expect(response).to.have.property('files');
+			expect(response.files[0]).to.have.property('file_id', fakeFileRespPrivate.files[0].file_id);
+			expect(response.files[0]).to.have.property('name', fakeFileRespPrivate.files[0].name);
+			expect(response.files[0]).to.have.property('public_url', fakeFileRespPrivate.files[0].public_url);
+		});
 	});
 });
