@@ -52,9 +52,9 @@ describe('Files', function () {
 
 		return Files.getFileDetails(fakeFileRespPrivate.files[0].file_id).then(function (response) {
 			expect(response).to.have.property('files');
-			expect(response.files[0]).to.have.property('file_id', fakeFileRespPrivate.files.file_id);
-			expect(response.files[0]).to.have.property('name', fakeFileRespPrivate.files.name);
-			expect(response.files[0]).to.have.property('public_url', fakeFileRespPrivate.files.public_url);
+			expect(response.files[0]).to.have.property('file_id', fakeFileRespPrivate.files[0].file_id);
+			expect(response.files[0]).to.have.property('name', fakeFileRespPrivate.files[0].name);
+			expect(response.files[0]).to.have.property('public_url', fakeFileRespPrivate.files[0].public_url);
 		});
 
 	});
@@ -78,9 +78,9 @@ describe('Files', function () {
 
 		return Files.uploadFile(fileData).then(function (response) {
 			expect(response).to.have.property('files');
-			expect(response.files[0]).to.have.property('file_id', fakeFileRespPrivate.files.file_id);
-			expect(response.files[0]).to.have.property('name', fakeFileRespPrivate.files.name);
-			expect(response.files[0]).to.have.property('public_url', fakeFileRespPrivate.files.public_url);
+			expect(response.files[0]).to.have.property('file_id', fakeFileRespPrivate.files[0].file_id);
+			expect(response.files[0]).to.have.property('name', fakeFileRespPrivate.files[0].name);
+			expect(response.files[0]).to.have.property('public_url', fakeFileRespPrivate.files[0].public_url);
 		});
 	};
 
