@@ -106,7 +106,7 @@ ADSKSpark.Helpers = function () {
 			// var postiveInt = /^\d+$;
 			if(!itemIds)                   return false;
 			var arrayForm = itemIds.toString().split(',');
-			if(arrayForm.length == 0)      return false;
+			if(arrayForm.length === 0)      return false;
 			for (var i = 0; i < arrayForm.length; i++) {
 				if (!arrayForm[i])                                    return false;
 				if (isNaN(arrayForm[i]))                              return false;
