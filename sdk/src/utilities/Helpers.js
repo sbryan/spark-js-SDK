@@ -103,13 +103,15 @@ ADSKSpark.Helpers = function () {
 		 * @returns {*|boolean}
 		 */
 		isValidIds: function(itemIds){
-			if(!itemIds) 			return false;
-			if(itemIds.length > 0)	return false;
-			for (var i = 0; i < itemIds.length; i++) {
-				if (!itemIds[i]) 	  							return false;
-				if (isNaN(itemIds[i])) 							return false;
-				if (itemIds[i] !== parseInt(itemIds[i], 10))	return false;
-				if (itemIds[i] < 0)								return false;
+			// var postiveInt = /^\d+$;
+			if(!itemIds)                   return false;
+			var arrayForm = itemIds.toString().split(',');
+			if(arrayForm.length == 0)      return false;
+			for (var i = 0; i < arrayForm.length; i++) {
+				if (!arrayForm[i])                                    return false;
+				if (isNaN(arrayForm[i]))                              return false;
+				if (arrayForm[i] != parseInt(arrayForm[i], 10))       return false;
+				if (arrayForm[i] < 0)                                 return false;
 			}
 			return true;
 		}
