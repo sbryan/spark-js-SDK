@@ -21,7 +21,7 @@ var ADSKSpark = ADSKSpark || {};
 		 * @returns {Promise} - A promise that will resolve to all public assets
 		 */
 		getPublicAssetsByConditions: function (conditions) {
-			var conditions = conditions || {};
+			conditions = conditions || {};
 
 			//default limit/offset
 			conditions.limit = conditions.limit && conditions.limit > 0 ? conditions.limit : 48;
