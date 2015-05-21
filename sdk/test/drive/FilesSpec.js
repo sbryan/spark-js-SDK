@@ -96,7 +96,7 @@ describe('Files', function () {
 	it('should be able to download a file', function () {
 
 		//mock
-		mockedAuthorizedRequest.withArgs('/files/download?').returns({
+		mockedAuthorizedRequest.withArgs('/files/download').returns({
 			get: function (headers, fileData) {
 				return Promise.resolve(fakeFileRespPrivate);
 			}

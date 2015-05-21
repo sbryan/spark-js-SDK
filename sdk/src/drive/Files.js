@@ -69,7 +69,7 @@ var ADSKSpark = ADSKSpark || {};
                     'file_ids': fileIds,
                     'asset_id': (assetId || '')
                 });
-                return Client.authorizedApiRequest('/files/download?').get(headers, payload);
+                return Client.authorizedApiRequest('/files/download').get(headers, payload);
             }
             
             return Promise.reject(new Error('Proper fileId(s) was not supplied'));
