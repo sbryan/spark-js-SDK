@@ -138,7 +138,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         getStatus: function () {
             var that = this;
-            return Client.authorizedApiRequest('/print/printers/' + this.printer_id)
+            return Client.authorizedApiRequest('/print/printers/status/' + this.printer_id)
                 .get()
                 .then(function (data) {
                     that.status = data;
