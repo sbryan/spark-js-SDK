@@ -13,6 +13,7 @@ Install Node.js and then:
 ```sh
 $ sudo npm -g install grunt-cli karma bower
 $ npm install
+$ bower install
 ```
 ### Grunt tasks that are provided in this SDK
 #### Testing ####
