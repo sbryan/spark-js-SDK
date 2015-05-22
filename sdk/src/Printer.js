@@ -72,8 +72,8 @@ var ADSKSpark = ADSKSpark || {};
      * @constructor
      */
     ADSKSpark.Printer = function (data) {
-        this.printer_id = data.printer_id || data.id;
-        this.printer_name = data.printer_name || data.name;
+        this.printer_id = this.id = data.printer_id || data.id;
+        this.printer_name = this.name = data.printer_name || data.name;
         this.firmware = data.firmware;
         this.type_id = data.type_id;
         this.is_primary = data.is_primary;
