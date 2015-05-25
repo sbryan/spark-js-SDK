@@ -27,7 +27,8 @@ module.exports = function(config) {
       'src/Printer.js',
       'src/*.js',
       'test/{,*/}*Spec.js',
-      'test/mocks/{,*/}*.json'
+      'test/mocks/{,*/}*.json',
+      {pattern: 'test/mocks/*.jpg', watched: false, included: false, served: true}
     ],
 
 
