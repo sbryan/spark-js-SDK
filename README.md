@@ -44,7 +44,7 @@ ADSKSpark.Client.initialize(
 '<app key>', //A string containing your Spark app key, provided during registration.
 '<guest token URL>', //The server URL to which guest token requests will be directed.
 '<access token URL>', //The server URL to which access token requests will be directed.
-'<refresh access token URL>', //
+'<refresh access token URL>', //The server URL to which refresh access token requests will be directed.
 ADSKSpark.Constants.API_HOST_SANDBOX // Change "SANDBOX" to "PRODUCTION" if you are running in production.
 );
 ```
