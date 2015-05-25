@@ -17,8 +17,7 @@ For full API reference see the following:
 
 We have provided two quick start guides, the first uses the sample index.html file provided in GitHub, the second instructs you on how to create a simple index.html file.
 
-### Quick Start 1: Using the supplied [index.html](https://github.com/spark3dp/spark-js-sdk/blob/master/sample_apps/authentication_sample/frontend_server/public/index.sample.html)
-* Get the latest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
+### Quick Start 1: Using the supplied [index.sample.html](https://github.com/spark3dp/spark-js-sdk/blob/master/sample_apps/authentication_sample/frontend_server/public/index.sample.html)
 * The full SDK reference is available [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
 <b>Setup the index.html file:</b><br>
