@@ -111,7 +111,7 @@ var ADSKSpark = ADSKSpark || {};
 		updateAsset: function (asset) {
 
 			//Make sure assetId is defined and that it is valid
-			if (!isNaN(asset.assetId)) {
+			if (Helpers.isValidId(asset.assetId)) {
 
 				var assetId = asset.assetId;
 
