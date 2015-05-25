@@ -81,14 +81,17 @@
         <div class="container">
             <div class="col-md-6 col-md-offset-3">
                 <div id="test-wrapper-job-comment">
-                    <h2>Spark SDK Job Comment Test</h2>
+                    <h2>Spark SDK Job Status Test</h2>
 
                     <div class="col-md-10 col-md-offset-1">
-                        <form id="register-form">
+                        <form id="comment-form">
                               <label>Job ID: </label><input type="text" id="jobid" name="jobid" class="required" size=44><br>
-                              <label>Comment: </label><input type="text" id="comment" name="comment" class="required" size=100>
+                              <label>Status:&nbsp;</label><input type="radio" id="status" name="status" value="success" checked/> Success
+                                                          <input type="radio" id="status" name="status" value="failed"/> Failure<br>
+                              <label>Comment: </label><input type="text" id="comment" name="comment" class="required" size=100><br>
+                              <label>MyAppData: </label><input type="text" id="custom" name="custom" class="required" size=100>
                         </form>
-                        <button id="addcomment" class="btn btn-primary">Update Job Comment</button>
+                        <button id="addcomment" class="btn btn-primary">Update Job Status</button>
                         <p>Status:<br>
                         <pre id="comment-log"></pre>
                         </p>
@@ -144,6 +147,7 @@
                 var Client  = ADSKSpark.Client;
 
                 var API_URL = 'https://' + API_ROOT + '.spark.autodesk.com/api/v1';
+
                 var _meshID = null;
                 var _printerTypes = null;
 
@@ -242,6 +246,8 @@
                                 + '  Date: ' + job.data.job_date_time + '\n';
                                 if( job.data.job_comment )
                                     report += '  Comment: ' + job.data.job_comment + '\n';
+                                if( job.data.job_custom_data )
+                                    report += '  Custom: ' + JSON.stringify(job.data.job_custom_data) + '\n';
                             });
                             $('#job-list').html(report);
                         }
@@ -253,7 +259,12 @@
 
                 $('#addcomment').click(function() {
                     var jobID   = $('#jobid').val();
+                    var status  = $('input[name=status]:checked', '#comment-form').val();
                     var comment = $('#comment').val();
+                    var custom  = {
+                        'myAppData': $('#custom').val(),
+                        'Fu': 'bar'
+                    };
 
                     function checkJobID() {
                         // To check the job ID we create a Job object and then try
@@ -271,9 +282,11 @@
                         $('#comment-log').append('Checking ID: ' + jobID + '... ');
                         checkJobID().then(function(job) {
                             $('#comment-log').append('\nUpdating job: ' + job.id + '... ');
-                            job.updateComment(comment).then(function(job) {
+                            job.updateStatus(status, comment, custom).then(function(job) {
                                 $('#comment-log').append('\nUpdate completed.');
+                                $('#comment-log').append('\njob_status: ' + job.status);
                                 $('#comment-log').append('\njob_comment: ' + job.data.job_comment);
+                                $('#comment-log').append('\njob_custom_data: ' + JSON.stringify(job.data.job_custom_data));
                             });
                         })
                         .catch(function(err) {

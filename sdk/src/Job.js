@@ -96,9 +96,9 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * Create a new print job. Note, this may also send it immediately to the printer.
-         * @param {string} printerId
-         * @param {string} profileId
-         * @param {string} printableId
+         * @param {string} - printerId
+         * @param {string} - profileId
+         * @param {string} - printableId
          * @returns {Promise} - A Promise which resolves to this object with updated contents.
          */
         create: function(printerId, profileId, printableId) {
@@ -125,20 +125,30 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
-         * Update the user comment field for this job.
-         * @param {string} printerId
-         * @param {string} profileId
-         * @param {string} printableId
+         * Update the job status and comment with optional custom data for this job.
+         * @param {string} newStatus - job status string. Must be either "success" or "failed".
+         * @param {string} newComment - comment string 
+         * @param {object} [customData] - custom application data to be saved with this job.
          * @returns {Promise} - A Promise which resolves to this object with updated contents.
          */
-        updateComment: function(newComment) {
+        updateStatus: function(newStatus, newComment, customData) {
             if( !this.id )
-                return Promise.reject(new Error("Unknown job in updateComment."));
+                return Promise.reject(new Error("Unknown job in updateStatus."));
+
+            newStatus = newStatus.toLowerCase();
+            if( newStatus !== "success" && newStatus !== "failed" )
+                return Promise.reject(new Error("Invalid job status in updateStatus."));
 
             var _this = this;
-            var comment = encodeURIComponent(newComment);
-            return Client.authorizedApiRequest('/print/jobs/' + this.id + '?comment=' + comment)
-                    .put()
+            var urlStatus  = encodeURIComponent(newStatus);
+            var urlComment = encodeURIComponent(newComment);
+            var headers, payload;
+            if( customData ) {
+                var headers = {'Content-Type': 'application/json'};
+                var payload = JSON.stringify(customData);
+            }
+            return Client.authorizedApiRequest('/print/jobs/' + this.id + '?status=' + urlStatus + '&comment=' + urlComment)
+                    .put(headers, payload)
                     .then(function(response) {
                         console.log("GOT: " + JSON.stringify(response));
                         return _this.getStatus();
