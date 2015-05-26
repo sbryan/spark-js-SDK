@@ -1,3 +1,6 @@
+/**
+ * @namespace
+ */
 var ADSKSpark = ADSKSpark || {};
 
 (function () {
