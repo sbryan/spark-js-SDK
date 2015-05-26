@@ -10,7 +10,7 @@ var ADSKSpark = ADSKSpark || {};
 
     /**
      * @class ADSKSpark.TrayAPI
-     * @description - ADSKSpark.TrayAPI is a singleton object providing interface methods for invoking the Tray related operation available
+     * @description - ADSKSpark.TrayAPI is a singleton object providing interface methods for invoking the Tray related operations available
      * in the Spark REST API. There is no need to construct this object and its static methods can be invoked simply as: ADSKSpark.TrayAPI.methodName(...).
      * See reference - https://spark.autodesk.com/developers/reference/print
      */

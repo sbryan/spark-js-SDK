@@ -36,7 +36,7 @@ var ADSKSpark = ADSKSpark || {};
 
     /**
      * @class ADSKSpark.MeshAPI
-     * @description - ADSKSpark.MeshAPI is a singleton object providing interface methods for invoking the Mesh related operation available
+     * @description - ADSKSpark.MeshAPI is a singleton object providing interface methods for invoking the Mesh related operations available
      * in the Spark REST API. There is no need to construct this object and its static methods can be invoked simply as: ADSKSpark.MeshAPI.methodName(...).
      * See reference - https://spark.autodesk.com/developers/reference/print
      */
@@ -71,7 +71,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {Object} file - A single file upload object from a DOM FileUpload list.
          * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
          *
-         * @returns {Promise} - A Promise which resolves to a list of file upload results. The first entry in the resulting list should be fthe File resource information for this upload. See https://spark.autodesk.com/developers/reference/drive
+         * @returns {Promise} - A Promise which resolves to a list of file upload results. The first entry in the resulting list should be the File resource information for this upload. See https://spark.autodesk.com/developers/reference/drive
          */
         uploadFile: function(file, progressCallback) {
             return uploadFileObject(file, progressCallback);
