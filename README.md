@@ -46,14 +46,16 @@ The SDK requires that authentication API requests are called from a server. For 
 
 ```JavaScript
 ADSKSpark.Client.initialize(
-'<app key>', //A string containing your Spark app key, provided during registration.
-'<guest token URL>', //The server URL to which guest token requests will be directed, for example http://example.com/guest_token. The SDK requires that authentication APIs are called from a server.
-'<access token URL>', //The server URL to which access token requests will be directed, for example http://example.com/access_token.
-'<refresh access token URL>', //The server URL to which refresh access token requests will be directed.
-ADSKSpark.Constants.API_HOST_SANDBOX // ADSKSpark.Constants.API_HOST_SANDBOX or ADSKSpark.Constants.API_HOST_PRODUCTION - A constant specifying whether the SDK is running in sandbox or production.
+  '<app key>', //A string containing your Spark app key, provided during registration.
+  '<guest token URL>', //The server URL to which guest token requests will be directed, for example http://example.com/guest_token. The SDK requires that authentication APIs are called from a server.
+  '<access token URL>', //The server URL to which access token requests will be directed, for example http://example.com/access_token.
+  '<refresh access token URL>', //The server URL to which refresh access token requests will be directed.
+  ADSKSpark.Constants.API_HOST_SANDBOX, // ADSKSpark.Constants.API_HOST_SANDBOX or ADSKSpark.Constants.API_HOST_PRODUCTION - A constant specifying whether the SDK is running in sandbox or production.
+  '<redirect uri>' // (Optional) The redirect URI for the auth service (i.e. http://example.com/callback), in cases where it is different than the one that was set for your app's Callback URL 
+)
 ```
 
-This repository also contains a node.js that implements these endpoints (located in the <i>authentication_server</i> folder).<br>
+This repository also contains sample node.js code that implements these endpoints (located in the <i>authentication_server</i> folder).<br>
 
 * See the Sample Code section below for additional options.
 
@@ -77,7 +79,8 @@ This repository also contains a node.js that implements these endpoints (located
               '',// The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
               '',// The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
               '',// The refresh access token endpoint that is implemented by your server (i.e. http://example.com/refresh_token)
-              ADSKSpark.Constants.API_HOST_SANDBOX // api host - API_HOST_PRODUCTION or API_HOST_SANDBOX
+              ADSKSpark.Constants.API_HOST_SANDBOX, // api host - API_HOST_PRODUCTION or API_HOST_SANDBOX
+              '' // (Optional) The redirect URI for the auth service (i.e. http://example.com/callback), in cases where it is different than the one that was set for your app's Callback URL 
       );
 
       	/**
