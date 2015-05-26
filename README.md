@@ -25,10 +25,10 @@ We have provided two quick start guides, the first uses the sample index.html fi
 * The full SDK reference is available [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
 ####Setup the index.html file:
-1. Copy the file `/authentication/frontend_server/Public/index.sample.html` to `/authentication/frontend_server/Public/index.sample.html`.
+1. Copy the file `/authentication/frontend_server/Public/index.sample.html` to `/authentication/frontend_server/Public/index.html`.
 2. Initialize the <i>APP_KEY</i> variable to the value of your Spark app's App Key (provided during app registration). **If you are runnning the SDK in production** then change the <i>API_ROOT</i> variable initialization to "api".
 3. In the variables <i>GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL</i> (just below APP_KEY), enter the server URLs (endpoints) to which these calls will be directed. The SDK requires that authentication APIs are called from a server.
-4. This repository also contains a node.js that implements these endpoints (located in the <i>authentication_server</i> folder).<br> If you use this implmentation, there is no need to change the provided settings for GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL.
+4. This repository also contains sample node.js code that implements these endpoints (located in the <i>authentication_server</i> folder).<br> If you use this implmentation, there is no need to change the provided settings for GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL.
 5. Set the "Callback URL" field on the Spark app to return to the <i>index.html</i> file.<br>
    ![Spark Callback URL entry](https://dp6mb85fgupxl.cloudfront.net/blog-prd-content/uploads/2015/05/x1.png)<br>
 
