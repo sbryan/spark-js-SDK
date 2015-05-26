@@ -72,7 +72,7 @@ var ADSKSpark = ADSKSpark || {};
 		 * @description - Get logged in user assets
 		 * @param {Object} params - limit/offset/sort/filter options.
 		 * @returns {Promise} - A promise that will resolve to an object that contains a property "assets"
-		 * 				that holds an array of assets.
+		 * that holds an array of assets.
 		 */
 		getMyAssets: function (params) {
 
