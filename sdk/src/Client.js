@@ -167,7 +167,7 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise} - A promise that resolves to the access token object.
          */
         refreshAccessToken: function () {
-            var accessTokenObj = Client.getAccessTokenObject();
+            var accessTokenObj = this.getAccessTokenObject();
 
             if (accessTokenObj) {
                 var refreshToken = accessTokenObj.refresh_token;
@@ -196,7 +196,7 @@ var ADSKSpark = ADSKSpark || {};
             var authorization;
             options = options || {};
 
-            var accessToken = Client.getAccessToken();
+            var accessToken = this.getAccessToken();
 
             if (accessToken) {
                 authorization = 'Bearer ' + accessToken;
@@ -216,7 +216,7 @@ var ADSKSpark = ADSKSpark || {};
             var authorization;
             options = options || {};
 
-            return Client.getGuestToken().then(function (guestToken) {
+            return this.getGuestToken().then(function (guestToken) {
 
                 if (guestToken) {
                     authorization = 'Bearer ' + guestToken;
@@ -230,7 +230,7 @@ var ADSKSpark = ADSKSpark || {};
          * @description - Open an auth window
          */
         openLoginWindow: function () {
-            Helpers.popupWindow(Client.getLoginRedirectUrl(), 350, 600);
+            Helpers.popupWindow(this.getLoginRedirectUrl(), 350, 600);
         }
     };
 
