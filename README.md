@@ -20,23 +20,23 @@ We have provided two quick start guides, the first uses the sample index.html fi
 ### Quick Start 1: Using the supplied [index.sample.html](https://github.com/spark3dp/spark-js-sdk/blob/master/sample_apps/authentication_sample/frontend_server/public/index.sample.html)
 * The full SDK reference is available [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
-<b>Setup the index.html file:</b><br>
-   1. Copy the file `/authentication/frontend_server/Public/index.sample.html` to `/authentication/frontend_server/Public/index.sample.html`.<br>
-   2. Initialize the <i>APP_KEY</i> variable to the value of your Spark app's App Key (provided during app registration). **If you are runnning the SDK in production** then change the <i>API_ROOT</i> variable initialization to "api".<br>
-   3. In the variables <i>GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL</i> (just below APP_KEY), enter the server URLs (endpoints) to which these calls will be directed. The SDK requires that authentication APIs are called from a server.<br>
-   4. This repository also contains a node.js that implements these endpoints (located in the <i>authentication_server</i> folder).<br> If you use this implmentation, there is no need to change the provided settings for GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL.<br>
-   5. Set the "Callback URL" field on the Spark app to return to the <i>index.html</i> file.<br>
+####Setup the index.html file:
+1. Copy the file `/authentication/frontend_server/Public/index.sample.html` to `/authentication/frontend_server/Public/index.sample.html`.
+2. Initialize the <i>APP_KEY</i> variable to the value of your Spark app's App Key (provided during app registration). **If you are runnning the SDK in production** then change the <i>API_ROOT</i> variable initialization to "api".
+3. In the variables <i>GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL</i> (just below APP_KEY), enter the server URLs (endpoints) to which these calls will be directed. The SDK requires that authentication APIs are called from a server.
+4. This repository also contains a node.js that implements these endpoints (located in the <i>authentication_server</i> folder).<br> If you use this implmentation, there is no need to change the provided settings for GUEST_TOKEN_URL, ACCESS_TOKEN_URL and REFRESH_TOKEN_URL.
+5. Set the "Callback URL" field on the Spark app to return to the <i>index.html</i> file.<br>
    ![Spark Callback URL entry](https://dp6mb85fgupxl.cloudfront.net/blog-prd-content/uploads/2015/05/x1.png)<br>
 
 ###Quick Start 2: Initializing the SDK in an index.html file.
 * Get the latest published version of the SDK [here](https://code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js).
 * The full SDK reference is available [here](http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html).
 
-1) <b>Include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
+* <b>Include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
 ```HTML
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
-2) **After** including the SDK library, the method ADSKSpark.Client.initialize() must be used to initialize and setup the SDK:</b><br>
+* **After** including the SDK library, the method ADSKSpark.Client.initialize() must be used to initialize and setup the SDK:</b><br>
 The SDK requires that authentication API requests are called from a server. For example the guest token URL could be <i>http://example.com/guest_token</i>. 
 
 ```JavaScript
@@ -49,7 +49,7 @@ ADSKSpark.Constants.API_HOST_SANDBOX // Change "SANDBOX" to "PRODUCTION" if you 
 );
 ```
 
-3) See the Sample Code section below for additional options.
+* See the Sample Code section below for additional options.
 
 #### Sample Code
 
@@ -124,40 +124,42 @@ The following conventions are used in this code base.
   - sdk
   -- src
   --- config
-  ---- constants.js
+  ---- Constants.js
   --- utilities
-  ---- request.js
-  ---- paginated.js
+  ---- Helpers.js
+  ---- Request.js
+  ---- Paginated.js
   --- auth
-  ---- client.js
+  ---- Client.js
   --- print
-  ---- print-meta.js
-  ---- print-preparation.js
-  ---- printer-registration.js
-  ---- printer-management.js
-  ---- printer-firmware.js
+  ---- PrintMeta.js
+  ---- PrintPreparation.js
+  ---- PrinterRegistration.js
+  ---- PrinterManagement.js
+  ---- PrinterFirmware.js
   --- drive
-  ---- files.js
-  ---- assets.js
-  ---- members.js
+  ---- Files.js
+  ---- Assets.js
+  ---- Members.js
   -- test
   --- config
-  ---- constants.js
+  ---- ConstantsSpec.js
   --- utilities
-  ---- request.js
-  ---- paginated.js
+  ---- HelpersSpec.js
+  ---- RequestSpec.js
+  ---- PaginatedSpec.js
   --- auth
-  ---- client.js
+  ---- ClientSpec.js
   --- print
-  ---- print-meta.js
-  ---- print-preparation.js
-  ---- printer-registration.js
-  ---- printer-management.js
-  ---- printer-firmware.js
+  ---- PrintMetaSpec.js
+  ---- PrintPreparationSpec.js
+  ---- PrinterRegistrationSpec.js
+  ---- PrinterManagementSpec.js
+  ---- PrinterFirmwareSpec.js
   --- drive
-  ---- files.js
-  ---- assets.js
-  ---- members.js
+  ---- FilesSpec.js
+  ---- AssetsSpec.js
+  ---- MembersSpec.js
   -- sample-apps
   --- authentication_sample
   --- 3d_printer_sample
