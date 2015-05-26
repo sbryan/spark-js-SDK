@@ -144,8 +144,8 @@ var ADSKSpark = ADSKSpark || {};
             var urlComment = encodeURIComponent(newComment);
             var headers, payload;
             if( customData ) {
-                var headers = {'Content-Type': 'application/json'};
-                var payload = JSON.stringify(customData);
+                headers = {'Content-Type': 'application/json'};
+                payload = JSON.stringify(customData);
             }
             return Client.authorizedApiRequest('/print/jobs/' + this.id + '?status=' + urlStatus + '&comment=' + urlComment)
                     .put(headers, payload)
