@@ -1,0 +1,46 @@
+{
+  "thumbnails":[
+    {
+      "caption":"foo",
+      "description":"bar",
+      "file_id":17203846,
+      "thumb_path_prefix":"http://static .spark.autodesk.com/Images/FullPreview/nopicture",
+      "is_primary":false
+    },
+    {
+      "caption":"fghfgh",
+      "description":"vnvbn",
+      "file_id":17203845,
+      "thumb_path_prefix":"http://static.spark.autodesk.com/Images/FullPreview /nopicture",
+      "is_primary":true
+    },
+    {
+      "caption":"caption2",
+      "description":"foobar2",
+      "file_id":17203760,
+      "thumb_path_prefix":"http://static.spark.autodesk.com/Images/FullPreview/nopicture",
+      "is_primary":false
+    },
+    {
+      "caption":"new api",
+      "description":"new",
+      "file_id":17203851,
+      "thumb_path_prefix":"http://static.spark.autodesk.com/Images /FullPreview/nopicture",
+      "is_primary":false
+    },
+    {
+      "caption":"",
+      "description":"",
+      "file_id":17203761,
+      "thumb_path_prefix":"http://static.spark.autodesk.com/Images/FullPreview/nopicture",
+      "is_primary":false
+    },
+    {
+      "caption":"",
+      "description":"",
+      "file_id":17203848,
+      "thumb_path_prefix":"http://static.spark.autodesk.com/Images/FullPreview/nopicture",
+      "is_primary":false
+    }
+  ]
+}

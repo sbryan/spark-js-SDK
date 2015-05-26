@@ -1,3 +1,6 @@
+/**
+ * @namespace
+ */
 var ADSKSpark = ADSKSpark || {};
 
 (function() {
@@ -31,11 +34,28 @@ var ADSKSpark = ADSKSpark || {};
         return Client.authorizedApiRequest('/files/upload').post(null, formData);
     };
 
-    // The Mesh API singleton.
-    //
+    /**
+     * @class ADSKSpark.MeshAPI
+     * @description - ADSKSpark.MeshAPI is a singleton object providing interface methods for invoking the Mesh related operation available
+     * in the Spark REST API.
+     * See reference - https://spark.autodesk.com/developers/reference/print
+     */
     ADSKSpark.MeshAPI = {
 
-        // progressCallback is optional
+        /**
+         * @method importMesh
+         * @memberOf ADSKSpark.MeshAPI
+         * @description - Convert a previously uploaded file to a Spark Mesh Resource.
+         * Input files must be converted to mesh objects in order to analyze
+         * and prepare them for printing.
+         * @param {number} fileId - The Spark Drive Id of the previously uploaded data file.
+         * @param {string} name - A user defined name for this mesh resource.
+         * @param {boolean} [generateVisual] - Optional flag requesting that a Bolt file be generated for visualization purposes.
+         * @param {Array} [transform] - Optional transform to be applied to this mesh. This should be an array containing the three rows of an affine transformation. The default value is the identity transform: [ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ] ].
+         * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+         *
+         * @returns {Promise} - A Promise which resolves to a Mesh Resource Object.
+         */
         importMesh: function(fileId, name, generateVisual, transform, progressCallback) {
 
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
@@ -44,12 +64,29 @@ var ADSKSpark = ADSKSpark || {};
                     .then(waiter.wait);
         },
 
-        // progressCallback is optional (not implemented yet)
+        /**
+         * @method uploadFile
+         * @memberOf ADSKSpark.MeshAPI
+         * @description -  A convenience interface to the Spark Drive upload mechanism for uploading a single file.
+         * @param {Object} file - A single file upload object from a DOM FileUpload list.
+         * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+         *
+         * @returns {Promise} - A Promise which resolves to a list of file upload results. The first entry in the resulting list should be fthe File resource information for this upload. See https://spark.autodesk.com/developers/reference/drive
+         */
         uploadFile: function(file, progressCallback) {
             return uploadFileObject(file, progressCallback);
         },
 
+        /**
+         * @method transformMesh
+         * @memberOf ADSKSpark.MeshAPI
+         * @description - Modify the transform applied to a Spark Mesh Resource.
+         * @param {Array} transform - Optional transform to be applied to this mesh. This should be an array containing the three rows of an affine transformation. The default value is the identity transform: [ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ] ].
+         *
+         * @returns {Object} - A new Spark Mesh Resource with the modified transform.
+         */
         transformMesh: function( meshId, transform ) {
+            // TODO: This needs generateVisual option (even though transforms are not applied to visuals).
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({
                 id: meshId,
@@ -58,7 +95,15 @@ var ADSKSpark = ADSKSpark || {};
             return Client.authorizedApiRequest('/geom/meshes/transform').post(headers, payload);
         },
 
-        // progressCallback is optional
+        /**
+         * @method analyzeMesh
+         * @memberOf ADSKSpark.MeshAPI
+         * @description - Perform a printable analysis on a given Spark Mesh Resource.
+         * @param {String} meshId - The Id associated with an existing Spark Mesh Resource.
+         * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+         *
+         * @returns {Promise} - A Promise which resolves to the input Mesh Resource with analysis results available in the "problems" property. See https://spark.autodesk.com/developers/reference/print
+         */
         analyzeMesh: function( meshId, progressCallback ) {
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({
@@ -69,7 +114,16 @@ var ADSKSpark = ADSKSpark || {};
                     .then(waiter.wait);
         },
 
-        // progressCallback is optional
+        /**
+         * @method repairMesh
+         * @memberOf ADSKSpark.MeshAPI
+         * @description - Perform all possible mesh repair operations on a given Spark Mesh Resource.
+         * @param {String} meshId - The Id associated with an existing Spark Mesh Resource.
+         * @param {boolean} [generateVisual] - Optional flag requesting that a Bolt file be generated for visualization purposes.
+         * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+         *
+         * @returns {Promise} - A Promise which resolves to a new Mesh Resource with possible repairs applied. See https://spark.autodesk.com/developers/reference/print
+         */
         repairMesh: function( meshId, generateVisual, progressCallback ) {
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({
@@ -82,6 +136,15 @@ var ADSKSpark = ADSKSpark || {};
                     .then(waiter.wait);
         },
 
+        /**
+         * @method generateVisual
+         * @memberOf ADSKSpark.MeshAPI
+         * @description - Request the generation of a Bolt visualization file for a given Spark Mesh Resource.
+         * @param {String} meshId - The Id associated with an existing Spark Mesh Resource.
+         * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+         *
+         * @returns {Promise} - A Promise which resolves to the input Mesh Resource with a visual_file_id property added.
+         */
         generateVisual: function( meshId, progressCallback ) {
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({

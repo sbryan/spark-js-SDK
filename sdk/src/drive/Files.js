@@ -21,7 +21,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         getFileDetails: function (fileId) {
 
-            //Make sure fileId is defined and that it is a number
+            //Make sure fileId is defined and that it is valid
             if (Helpers.isValidId(fileId)) {
                 return Client.authorizedApiRequest('/files/' + fileId).get();
             }
@@ -51,6 +51,46 @@ var ADSKSpark = ADSKSpark || {};
             return Client.authorizedApiRequest('/files/upload').post(null, fd);
 
         },
+
+        /**
+         * Download user's file(s) from the Spark Drive
+         * @param {String} fileIds - Comma separated list of file IDs to download
+         * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
+         */
+        downloadFile: function (fileIds) {
+
+            //Make sure fileId is defined and that it is valid
+            if (Helpers.isValidIds(fileIds)) {
+                var payload = {
+                    file_ids: fileIds
+                };
+                return Client.authorizedApiRequest('/files/download',{notJsonResponse:true}).get(null, payload);
+            }
+            
+            return Promise.reject(new Error('Proper fileId(s) was not supplied'));
+        },
+
+        /**
+         * Download a file from the Spark Drive that was uploaded by other user
+         * @param {String} fileIds - Comma separated list of file IDs to download
+         * @param {String} assetId - AssetId to which this file belongs
+         * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
+         */
+        downloadPublicFile: function (fileIds, assetId) {
+
+            //Make sure fileIds and assetId are defined and that they are valid
+            if (Helpers.isValidIds(fileIds) && Helpers.isValidId(assetId)) {
+                var payload = {
+                    file_ids: fileIds,
+                    asset_id: assetId
+                };
+                return Client.authorizedAsGuestApiRequest('/files/download',{notJsonResponse:true}).then(function(promise){
+                    return promise.get(null, payload);
+                });
+            }
+
+            return Promise.reject(new Error('Proper fileId(s) or assetId were not supplied'));
+        }
     };
 
 }());

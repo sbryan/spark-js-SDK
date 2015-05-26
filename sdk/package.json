@@ -1,12 +1,23 @@
 {
   "name": "autodesk-spark-sdk",
-  "version": "0.0.1",
+  "description": "A web client SDK for the Spark REST APIs, providing a convenient interface for application developers, an abstract layer for the Spark APIs and a high-level functionality by chaining/callbacking APIs together",
+  "homepage": "http://code.spark.autodesk.com/autodesk-spark-sdk/docs/v1/index.html",
+  "version": "0.0.2",
   "author": "Autodesk, Inc.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/spark3dp/spark-js-sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/spark3dp/spark-js-sdk/issues"
+  },
   "license": "Apache 2.0",
   "scripts": {
     "test": "karma start karma.conf.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "inc-docstrup-spark": "spark-developer/custom-docstrap"
+  },
   "devDependencies": {
     "chai": "^2.3.0",
     "grunt": "^0.4.5",
@@ -17,12 +28,13 @@
     "karma": "^0.12.31",
     "karma-chrome-launcher": "^0.1.8",
     "karma-firefox-launcher": "^0.1.4",
+    "karma-html2js-preprocessor": "~0.1",
     "karma-mocha": "^0.1.10",
     "karma-mocha-reporter": "^1.0.2",
     "karma-phantomjs-launcher": "^0.1.4",
-
-    "karma-html2js-preprocessor": "~0.1",
+    "karma-phantomjs2-launcher": "^0.1.6",
     "karma-sinon": "^1.0.4",
+    "phantomjs2": "^2.0.0",
     "should": "4.6.3",
     "sinon": "^1.14.1",
     "time-grunt": "^0.3.1"

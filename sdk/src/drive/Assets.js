@@ -21,7 +21,7 @@ var ADSKSpark = ADSKSpark || {};
 		 * @returns {Promise} - A promise that will resolve to all public assets
 		 */
 		getPublicAssetsByConditions: function (conditions) {
-			var conditions = conditions || {};
+			conditions = conditions || {};
 
 			//default limit/offset
 			conditions.limit = conditions.limit && conditions.limit > 0 ? conditions.limit : 48;
@@ -39,7 +39,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		getPublicAsset: function (assetId) {
 
-			//Make sure assetId is defined and that it is a number
+			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
 				return Client.authorizedAsGuestApiRequest('/assets/' + assetId).then(function(promise){
 					return promise.get();
@@ -56,7 +56,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		getAsset: function (assetId) {
 
-			//Make sure assetId is defined and that it is a number
+			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
 				return Client.authorizedApiRequest('/assets/' + assetId).get();
 			}
@@ -78,7 +78,7 @@ var ADSKSpark = ADSKSpark || {};
 
 				var memberId = accessTokenObj.spark_member_id;
 
-				//Make sure memberId is defined and that it is a number
+				//Make sure memberId is defined and that it is valid
 				if (!isNaN(memberId)) {
 					return Client.authorizedApiRequest('/members/' + memberId + '/assets').get(null, params);
 				}
@@ -110,8 +110,8 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		updateAsset: function (asset) {
 
-			//Make sure assetId is defined and that it is a number
-			if (!isNaN(asset.assetId)) {
+			//Make sure assetId is defined and that it is valid
+			if (Helpers.isValidId(asset.assetId)) {
 
 				var assetId = asset.assetId;
 
@@ -133,7 +133,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		removeAsset: function (assetId) {
 
-			//Make sure assetId is defined and that it is a number
+			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
 				return Client.authorizedApiRequest('/assets/' + assetId).delete();
 			}
@@ -148,7 +148,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		retrieveAssetThumbnails: function (assetId) {
 
-			//Make sure assetId is defined and that it is a number
+			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
 
 				return Client.authorizedApiRequest('/assets/' + assetId + '/thumbnails').get();
@@ -165,7 +165,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		retrieveAssetSources: function (assetId) {
 
-			//Make sure assetId is defined and that it is a number
+			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
 				return Client.authorizedApiRequest('/assets/' + assetId + '/sources').get();
 			}
@@ -184,7 +184,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		createAssetThumbnails: function (assetId, filesArray, async) {
 
-			//Make sure assetId is defined and that it is a number
+			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
 
 				var thumbnails = filesArray.map(function (file) {
@@ -211,7 +211,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		createAssetSources: function (assetId, fileIds) {
 
-			//Make sure assetId is defined and that it is a number
+			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
 				var params = 'file_ids=' + fileIds;
 				var headers = {'Content-type': 'application/x-www-form-urlencoded'};
@@ -230,7 +230,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		deleteAssetSources: function (assetId, fileIds) {
 
-			//Make sure assetId is defined and that it is a number
+			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
 				var params = '?file_ids=' + fileIds;
 				return Client.authorizedApiRequest('/assets/' + assetId + '/sources' + params).delete();
@@ -247,7 +247,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		deleteAssetThumbnails: function (assetId, fileIds) {
 
-			//Make sure assetId is defined and that it is a number
+			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
 
 				var params = '?thumbnail_ids=' + fileIds;

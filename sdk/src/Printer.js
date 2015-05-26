@@ -72,8 +72,8 @@ var ADSKSpark = ADSKSpark || {};
      * @constructor
      */
     ADSKSpark.Printer = function (data) {
-        this.printer_id = data.printer_id || data.id;
-        this.printer_name = data.printer_name || data.name;
+        this.printer_id = this.id = data.printer_id || data.id;
+        this.printer_name = this.name = data.printer_name || data.name;
         this.firmware = data.firmware;
         this.type_id = data.type_id;
         this.is_primary = data.is_primary;
@@ -138,7 +138,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         getStatus: function () {
             var that = this;
-            return Client.authorizedApiRequest('/print/printers/' + this.printer_id)
+            return Client.authorizedApiRequest('/print/printers/status/' + this.printer_id)
                 .get()
                 .then(function (data) {
                     that.status = data;
@@ -146,6 +146,7 @@ var ADSKSpark = ADSKSpark || {};
                 })
                 .catch(function (error) {
                     that.status = null;
+                    throw error;
                 });
         },
 
@@ -260,7 +261,7 @@ var ADSKSpark = ADSKSpark || {};
                     return this.waitForCommand(data.task_id, options);
                 })
                 .then(function (data) {
-                     return data;
+                    return data;
                 });
         },
 
@@ -343,12 +344,15 @@ var ADSKSpark = ADSKSpark || {};
          */
         setMemberRole: function (secondaryMemberId, isPrinterScoped, isJobScoped) {
             if (this.is_primary) {
-                return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/member_role')
-                    .post(null, {
+                var headers = {'Content-Type': 'application/json'},
+                    payload = JSON.stringify({
                         secondary_member_id: secondaryMemberId,
                         is_printer_scoped: isPrinterScoped,
                         is_job_scoped: isJobScoped
                     });
+
+                return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/member_role')
+                    .post(headers, payload);
             }
             return Promise.reject(new Error('not printer owner'));
         },
@@ -356,12 +360,17 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * Generate a registration code for this printer.
          * @param {string} secondaryMemberEmail
-         * @returns {Promise}
+         * @returns {Promise} A promise that resolves to the registration code.
          */
         generateRegistrationCode: function (secondaryMemberEmail) {
             if (this.is_primary) {
+                var headers = {'Content-Type': 'application/json'},
+                    payload = JSON.stringify({secondary_member_email: secondaryMemberEmail});
                 return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/secondary_registration')
-                    .post(null, {secondary_member_email: secondaryMemberEmail});
+                    .post(headers, payload)
+                    .then(function (data) {
+                        return data.registration_code;
+                    });
             }
             return Promise.reject(new Error('not printer owner'));
         },
@@ -385,12 +394,10 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise}
          */
         unregister: function (secondaryMemberId) {
-            var params;
-            if (secondaryMemberId) {
-                params = {secondary_member_id: secondaryMemberId};
-            }
+            var headers = {'Content-Type': 'application/json'},
+                payload = secondaryMemberId ? JSON.stringify({secondary_member_id: secondaryMemberId}) : null;
             return Client.authorizedApiRequest('/print/printers/' + this.printer_id)
-                .delete(null, params);
+                .delete(headers, payload);
         },
 
         /**
@@ -415,13 +422,15 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise}
          */
         createJob: function (printableId, printableUrl, settings, callbackUrl) {
-            return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/jobs')
-                .post(null, {
+            var headers = {'Content-Type': 'application/json'},
+                payload = JSON.stringify({
                     printable_id: printableId,
                     printable_url: printableUrl,
                     settings: settings,
                     callback_url: callbackUrl
                 });
+            return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/jobs')
+                .post(headers, payload);
         },
 
         /**
@@ -430,9 +439,11 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise}
          */
         startJob: function (job) {
-            var jobId = (job instanceof ADSKSpark.Job) ? job.id : job;
+            var jobId = (job instanceof ADSKSpark.Job) ? job.id : job,
+                headers = {'Content-Type': 'application/json'},
+                payload = JSON.stringify({job_id: jobId});
             return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/jobs')
-                .put(null, {job_id: jobId});
+                .put(headers, payload);
         }
     };
 

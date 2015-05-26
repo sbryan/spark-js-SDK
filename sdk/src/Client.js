@@ -1,6 +1,12 @@
 var ADSKSpark = ADSKSpark || {};
 
 (function() {
+
+    /**
+     * @class Represents a Client
+     * @description - The Client API singleton that allows to call various api methods
+     * See reference - https://spark.autodesk.com/developers/reference/authentication
+     */
     var Client = ADSKSpark.Client = {};
     var Helpers = ADSKSpark.Helpers;
 
@@ -34,7 +40,6 @@ var ADSKSpark = ADSKSpark || {};
 
     /**
      * Initializes the client.
-     *
      * @param {String} clientId - The app key provided when you registered your app.
      * @param {String} guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
      *                                 handle exchanging the client secret for a guest token.
@@ -103,7 +108,7 @@ var ADSKSpark = ADSKSpark || {};
                 return data.access_token;
             }
 
-            return Promise.reject(new Error(data));
+            return Promise.reject(new Error(data.Error));
         });
     };
 
@@ -186,11 +191,13 @@ var ADSKSpark = ADSKSpark || {};
     /**
      * Request the API with an access token (if exists)
      * @param endpoint - The API endpoint to query
+     * @param [options] - Additional options that are supported by Request
      *
      * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
      */
-    Client.authorizedApiRequest = function(endpoint) {
+    Client.authorizedApiRequest = function(endpoint,options) {
         var authorization;
+        options = options || {};
 
         var accessToken = Client.getAccessToken();
 
@@ -198,16 +205,19 @@ var ADSKSpark = ADSKSpark || {};
             authorization = 'Bearer ' + accessToken;
         }
 
-        return ADSKSpark.Request(_apiUrl + endpoint, authorization);
+        return ADSKSpark.Request(_apiUrl + endpoint, authorization,options);
     };
 
     /**
      * Request the API with a guest token (if exists)
      * @param endpoint
+     * @param [options] - Additional options that are supported by Request
+     *
      * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
      */
-    Client.authorizedAsGuestApiRequest = function(endpoint) {
+    Client.authorizedAsGuestApiRequest = function(endpoint,options) {
         var authorization;
+        options = options || {};
 
         return Client.getGuestToken().then(function(guestToken) {
 
@@ -215,7 +225,7 @@ var ADSKSpark = ADSKSpark || {};
                 authorization = 'Bearer ' + guestToken;
             }
 
-            return ADSKSpark.Request(_apiUrl + endpoint, authorization);
+            return ADSKSpark.Request(_apiUrl + endpoint, authorization,options);
         });
     };
 
