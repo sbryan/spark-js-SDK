@@ -137,7 +137,7 @@ The following conventions are used in this code base.
   --- auth
   ---- Client.js
   --- print
-  ---- PrintMeta.js
+  ---- PrintDefinitions.js
   ---- PrintPreparation.js
   ---- PrinterRegistration.js
   ---- PrinterManagement.js
