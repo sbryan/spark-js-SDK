@@ -37,7 +37,7 @@ var ADSKSpark = ADSKSpark || {};
     /**
      * @class ADSKSpark.MeshAPI
      * @description - ADSKSpark.MeshAPI is a singleton object providing interface methods for invoking the Mesh related operation available
-     * in the Spark REST API.
+     * in the Spark REST API. There is no need to construct this object and its static methods can be invoked simply as: ADSKSpark.MeshAPI.methodName(...).
      * See reference - https://spark.autodesk.com/developers/reference/print
      */
     ADSKSpark.MeshAPI = {
