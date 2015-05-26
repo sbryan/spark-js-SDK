@@ -50,7 +50,7 @@ var ADSKSpark = ADSKSpark || {};
 
     /**
      * A print job.
-     * @param {Object} data - JSON data.
+     * @param {Object} [data] - JSON data returned from Job status or list query. If omitted an empty Job object is constructed which can subsequently be used to invoke the "create" method.
      * @constructor
      */
     ADSKSpark.Job = function (data) {
@@ -72,7 +72,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * Get the status of a print job.
-         * @returns {Promise} - A Promise that will resolve to the status information.
+         * @returns {Promise} - A Promise that will resolve to this object with updated status information.
          */
         getStatus: function () {
             if( !this.id )
@@ -96,10 +96,11 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * Create a new print job. Note, this may also send it immediately to the printer.
-         * @param {string} - printerId
-         * @param {string} - profileId
-         * @param {string} - printableId
+         * @param {string} printerId - Spark Id of the target printer.
+         * @param {string} profileId - Spark Printer Profile Id to be used for this print job.
+         * @param {string} printableId - Spark Drive Id of the printable file.
          * @returns {Promise} - A Promise which resolves to this object with updated contents.
+         * @see {@link ADSKSpark.TrayAPI.generatePrintable}
          */
         create: function(printerId, profileId, printableId) {
             if( this.id )
