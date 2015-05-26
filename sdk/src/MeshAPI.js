@@ -45,7 +45,7 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @method importMesh
          * @memberOf ADSKSpark.MeshAPI
-         * Convert a previously uploaded file to a Spark Mesh Resource.
+         * @description - Convert a previously uploaded file to a Spark Mesh Resource.
          * Input files must be converted to mesh objects in order to analyze
          * and prepare them for printing.
          * @param {number} fileId - The Spark Drive Id of the previously uploaded data file.
@@ -67,7 +67,7 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @method uploadFile
          * @memberOf ADSKSpark.MeshAPI
-         * A convenience interface to the Spark Drive upload mechanism for uploading a single file.
+         * @description -  A convenience interface to the Spark Drive upload mechanism for uploading a single file.
          * @param {Object} file - A single file upload object from a DOM FileUpload list.
          * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
          *
@@ -80,7 +80,7 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @method transformMesh
          * @memberOf ADSKSpark.MeshAPI
-         * Modify the transform applied to a Spark Mesh Resource.
+         * @description - Modify the transform applied to a Spark Mesh Resource.
          * @param {Array} transform - Optional transform to be applied to this mesh. This should be an array containing the three rows of an affine transformation. The default value is the identity transform: [ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ] ].
          *
          * @returns {Object} - A new Spark Mesh Resource with the modified transform.
@@ -98,7 +98,7 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @method analyzeMesh
          * @memberOf ADSKSpark.MeshAPI
-         * Perform a printable analysis on a given Spark Mesh Resource.
+         * @description - Perform a printable analysis on a given Spark Mesh Resource.
          * @param {String} meshId - The Id associated with an existing Spark Mesh Resource.
          * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
          *
@@ -117,7 +117,7 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @method repairMesh
          * @memberOf ADSKSpark.MeshAPI
-         * Perform all possible mesh repair operations on a given Spark Mesh Resource.
+         * @description - Perform all possible mesh repair operations on a given Spark Mesh Resource.
          * @param {String} meshId - The Id associated with an existing Spark Mesh Resource.
          * @param {boolean} [generateVisual] - Optional flag requesting that a Bolt file be generated for visualization purposes.
          * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
@@ -139,7 +139,7 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @method generateVisual
          * @memberOf ADSKSpark.MeshAPI
-         * Request the generation of a Bolt visualization file for a given Spark Mesh Resource.
+         * @description - Request the generation of a Bolt visualization file for a given Spark Mesh Resource.
          * @param {String} meshId - The Id associated with an existing Spark Mesh Resource.
          * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
          *
