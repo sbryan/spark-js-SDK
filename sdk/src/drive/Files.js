@@ -18,7 +18,7 @@ var ADSKSpark = ADSKSpark || {};
     ADSKSpark.Files = {
 
         /**
-         * Get the details for a specific file
+         * @description - Get the details for a specific file
          * @param {String} fileId - The ID of the file
          * @returns {Promise} - A promise that will resolve to an a file
          */
@@ -33,7 +33,7 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
-         * Upload a file to Spark Drive
+         * @description - Upload a file to Spark Drive
          * @param fileData - The file object to upload - has the form of:
          *                          file: The actual file data that is passed in the body
          *                          unzip: Should we treat the upload as a zip of multiple files
@@ -56,7 +56,7 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
-         * Download user's file(s) from the Spark Drive
+         * @description - Download user's file(s) from the Spark Drive
          * @param {String} fileIds - Comma separated list of file IDs to download
          * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
          */
@@ -74,7 +74,7 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
-         * Download a file from the Spark Drive that was uploaded by other user
+         * @description - Download a file from the Spark Drive that was uploaded by other user
          * @param {String} fileIds - Comma separated list of file IDs to download
          * @param {String} assetId - AssetId to which this file belongs
          * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)

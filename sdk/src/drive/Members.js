@@ -18,7 +18,7 @@ var ADSKSpark = ADSKSpark || {};
 	ADSKSpark.Members = {
 
 		/**
-		 * Gets member profile by memberId
+		 * @description - Gets member profile by memberId
 		 * @returns {Promise} - A promise that will resolve to a member object
 		 */
 		getMemberProfile: function (memberId) {
@@ -32,7 +32,7 @@ var ADSKSpark = ADSKSpark || {};
 
 
 		/**
-		 * Gets logged in member profile
+		 * @description - Gets logged in member profile
 		 * @returns {Promise} - A promise that will resolve to current logged in member object
 		 */
 		getMyProfile: function () {

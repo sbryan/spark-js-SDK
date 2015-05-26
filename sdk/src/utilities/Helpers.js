@@ -5,21 +5,16 @@ var ADSKSpark = ADSKSpark || {};
 
 	/**
 	 * @class
-	 * Our utilities object
+	 * @description - Our helpers object
 	 */
 	ADSKSpark.Helpers = {
 
 		/**
-		 * Return the factory object
-		 */
-
-		/**
-		 * Open window in the center of the screen
-		 * @param url
-		 * @param title
-		 * @param w
-		 * @param h
-		 * @returns {*}
+		 * @description - Open window in the center of the screen
+		 * @param url - The URL to open in a window
+		 * @param w - Width of the window
+		 * @param h - Height of the window
+		 * @returns {*} - The window.open object
 		 */
 		popupWindow: function (url, w, h) {
 			var left = (screen.width / 2) - (w / 2);
@@ -28,12 +23,12 @@ var ADSKSpark = ADSKSpark || {};
 		},
 
 		/**
-		 * Transform parameter strings to array of params
-		 * @param prmstr
-		 * @returns {{}}
+		 * @description - Transform parameter strings to array of params
+		 * @param {String} prmstr - The GET query string
+		 * @returns {Array} - Associative array of parameters
 		 */
 		transformToAssocArray: function (prmstr) {
-			var params = {};
+			var params = [];
 			if (prmstr) {
 				var prmarr = prmstr.split("&");
 				for (var i = 0; i < prmarr.length; i++) {
@@ -45,8 +40,9 @@ var ADSKSpark = ADSKSpark || {};
 		},
 
 		/**
-		 * Extract params from URL
-		 * @returns {{}}
+		 * @description - Extract params from URL
+		 * @param {String} prmstr - The GET query string
+		 * @returns {Array} - URL parameters
 		 */
 		extractParamsFromURL: function (prmstr) {
 			prmstr = prmstr || window.location.search.substr(1);
@@ -56,7 +52,7 @@ var ADSKSpark = ADSKSpark || {};
 		},
 
 		/**
-		 * Convert some json to an encoded parameter string.
+		 * @description - Convert some json to an encoded parameter string.
 		 * For example {k1: v1, k2: v2} -> 'k1=v1&k2=v2'.
 		 * @param {Object} json.
 		 * @param {function|string[]|string} [filter] Optional json key filter.
@@ -91,7 +87,7 @@ var ADSKSpark = ADSKSpark || {};
 			}).join('&');
 		},
 		/**
-		 * Checks whether some supplied ID that is supposed to be an integer is valid
+		 * @description - Checks whether some supplied ID that is supposed to be an integer is valid
 		 * @param itemId - Such as assetId or fileId or memberId
 		 * @returns {*|boolean}
 		 */
@@ -100,7 +96,7 @@ var ADSKSpark = ADSKSpark || {};
 		},
 
 		/**
-		 * Checks whether some array of supplied IDs are of postive integer type.
+		 * @description - Checks whether some array of supplied IDs are of postive integer type.
 		 * @param itemIds - Such as assetIds or fileIds or memberIds
 		 * @returns {*|boolean}
 		 */
