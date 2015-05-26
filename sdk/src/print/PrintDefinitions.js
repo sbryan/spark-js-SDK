@@ -6,7 +6,7 @@ var ADSKSpark = ADSKSpark || {};
 	// The printDB singleton.
 	// TODO: Should we cache results?
 	// TODO: There is a way to make this object's properties immutable. Is that something we would want to do?
-	ADSKSpark.PrintDefinitions = {
+	ADSKSpark.PrintDB = {
 		/**
 		 * @param {String} [typeId] - The type ID. If not specified, return all printer types.
 		 * @returns {Promise} - A promise that will resolve with a list of printer types.
@@ -41,4 +41,3 @@ var ADSKSpark = ADSKSpark || {};
 		}
 	};
 }());
-
