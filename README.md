@@ -1,23 +1,19 @@
 # Spark JavaScript SDK
 
-This is a web client SDK for the Spark REST APIs, providing:
+### Overview
+This is a web client SDK for the Spark REST APIs. For API reference and a general introduction see our [documentation](spark.autodesk.com/developers/reference/).
 
-* A convenient interface for application developers.
-* An abstract layer for the Spark APIs.
-* High-level functionality by chaining/callbacking APIs together.
-
-The SDK requires that authentication API requests are called from a server. For example the guest token URL could be <i>http://example.com/guest_token</i>.
-This repository contains sample node.js code that implements these calls (located in the [authentication_server](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs) folder).
+This client-side implementation of the Spark APIs, includes a small server-side requirement to handle authentication APIs. Node.js code that implements the server-side calls is located in the repoistory's [authentication_server](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs) folder.
 
 
-###Quick Start
-* <b>Include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
+### Installation
+1. <b>Include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
 
 ```HTML
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
 
-* After including the SDK library, the method ADSKSpark.Client.initialize() must be used to initialize and setup the SDK:<br>
+2. After including the SDK library, use the method ADSKSpark.Client.initialize() to initialize the SDK:<br>
 
 ```JavaScript
 ADSKSpark.Client.initialize(
@@ -49,11 +45,11 @@ ADSKSpark.Client.initialize(
     <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
     <script>
       ADSKSpark.Client.initialize('',// Your app key
-              '',// The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
-              '',// The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
-              '',// The refresh access token endpoint that is implemented by your server (i.e. http://example.com/refresh_token)
+              '',// The guest token endpoint implemented by your server (i.e. http://example.com/guest_token)
+              '',// The access token endpoint implemented by your server (i.e. http://example.com/access_token)
+              '',// The refresh access token endpoint implemented by your server (i.e. http://example.com/refresh_token)
               ADSKSpark.Constants.API_HOST_SANDBOX, // api host - API_HOST_PRODUCTION or API_HOST_SANDBOX
-              '' // (Optional) The redirect URI for the auth service (i.e. http://example.com/callback), in cases where it is different than the one that was set for your app's Callback URL 
+              '' // (Optional) The redirect URI for the auth service (i.e. http://example.com/callback), if it is different to the one that was set for your app's Callback URL 
       );
 
       	/**
@@ -87,13 +83,7 @@ ADSKSpark.Client.initialize(
 </html>
 ```
 
-### Prerequsites
+### Requirements
 * A registered application on [Spark Developer Portal](https://spark.autodesk.com/developers/).
 * A server side implementation of the guest, access and refresh token API calls. Sample server side implementations are located in this repository in the [nodejs server](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs) folder.
 
-### API reference
-
-* <i>Authentication</i> - https://spark.autodesk.com/developers/reference/authentication
-* <i>Print APIs</i> - https://spark.autodesk.com/developers/reference/print
-* <i>Drive APIs</i> - https://spark.autodesk.com/developers/reference/drive
-* <i>Print Firmware APIs</i> - https://spark.autodesk.com/developers/reference/firmware
