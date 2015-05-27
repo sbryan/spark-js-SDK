@@ -69,7 +69,9 @@
                     <h2>Spark SDK Jobs Test</h2>
 
                     <div class="col-md-10 col-md-offset-1">
-                        <button id="jobs" class="btn btn-primary">Get Users Print Jobs</button>
+                        <button id="jobs" class="btn btn-primary">Get Users Print Jobs</button><br>
+                        <button id="pjobs" class="btn btn-primary">Get Printer Jobs</button>
+                          <label> Printer ID: </label><input type="text" id="printerid" name="printerid" class="required" size=12><br>
                         <p>Status:<br>
                         <pre id="job-list"></pre>
                         </p>
@@ -255,6 +257,36 @@
                     .catch( function(error) {
                         $('#job-list').text(error.message);
                     });
+                });
+
+                $('#pjobs').click(function() {
+                    var printerID   = $('#printerid').val();
+                    $('#job-list').text('');
+                    if( !printerID ) {
+                        $('#job-list').append('<b>Printer ID must be provided.</b>\n');
+                    }
+                    else {
+                        ADSKSpark.Jobs.getPrinter(printerID).then(function(jobs) {
+                            if( jobs.length === 0 ) {
+                                $('#job-list').append('No Jobs Found\n');
+                            } else {
+                                var report = '';
+                                jobs.forEach(function(job) {
+                                    report += '<b>Job[' + job.id + ']:</b>\n  Printer: ' + job.printer_id
+                                    + '  Status: ' + job.status
+                                    + '  Date: ' + job.data.job_date_time + '\n';
+                                    if( job.data.job_comment )
+                                        report += '  Comment: ' + job.data.job_comment + '\n';
+                                    if( job.data.job_custom_data )
+                                        report += '  Custom: ' + JSON.stringify(job.data.job_custom_data) + '\n';
+                                });
+                                $('#job-list').html(report);
+                            }
+                        })
+                        .catch( function(error) {
+                            $('#job-list').text(error.message);
+                        });
+                    }
                 });
 
                 $('#addcomment').click(function() {

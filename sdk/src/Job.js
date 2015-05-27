@@ -17,12 +17,27 @@ var ADSKSpark = ADSKSpark || {};
 
     /**
      * Get jobs registered to a member.
-     * @param {Object} headers - Optional list of request header properties.
-     * @param {Object} params - limit/offset/sort/filter options.
+     * @param {Object} [headers] - Optional list of request header properties.
+     * @param {Object} [params] - limit/offset/sort/filter options.
      * @returns {Promise} - A promise that will resolve to an array of jobs.
      */
     ADSKSpark.Jobs.get = function (headers, params) {
         return Client.authorizedApiRequest('/print/jobs')
+            .get(headers, params)
+            .then(function (data) {
+                return new ADSKSpark.Jobs(data);
+            });
+    };
+
+    /**
+     * Get jobs registered to a printer.
+     * @param {String} string - Spark Printer Id.
+     * @param {Object} [headers] - Optional list of request header properties.
+     * @param {Object} [params] - limit/offset/sort/filter options.
+     * @returns {Promise} - A promise that will resolve to an array of jobs.
+     */
+    ADSKSpark.Jobs.getPrinter = function (printerId, headers, params) {
+        return Client.authorizedApiRequest('/print/printers/' + printerId.toString() + '/jobs')
             .get(headers, params)
             .then(function (data) {
                 return new ADSKSpark.Jobs(data);
