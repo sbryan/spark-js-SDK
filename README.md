@@ -7,13 +7,13 @@ This client-side implementation of the Spark APIs, includes a small server-side 
 
 
 ### Installation
-1. <b>Include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
+1) <b>Include the SDK library in your HTML page</b> just before closing the body section (`</body>`).
 
 ```HTML
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
 ```
 
-2. After including the SDK library, use the method ADSKSpark.Client.initialize() to initialize the SDK:<br>
+2) After including the SDK library, use the method ADSKSpark.Client.initialize() to initialize the SDK:<br>
 
 ```JavaScript
 ADSKSpark.Client.initialize(
