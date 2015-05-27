@@ -6,8 +6,8 @@ This is a web client SDK for the Spark REST APIs, providing:
 * An abstract layer for the Spark APIs.
 * High-level functionality by chaining/callbacking APIs together.
 
-
-This repository also contains sample node.js code that implements these endpoints (located in the <i>authentication_server</i> folder).
+The SDK requires that authentication API requests are called from a server. For example the guest token URL could be <i>http://example.com/guest_token</i>.
+This repository contains sample node.js code that implements these calls (located in the [authentication_server](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs) folder).
 
 
 ###Quick Start
@@ -18,7 +18,6 @@ This repository also contains sample node.js code that implements these endpoint
 ```
 
 * After including the SDK library, the method ADSKSpark.Client.initialize() must be used to initialize and setup the SDK:<br>
-The SDK requires that authentication API requests are called from a server. For example the guest token URL could be <i>http://example.com/guest_token</i>.
 
 ```JavaScript
 ADSKSpark.Client.initialize(
