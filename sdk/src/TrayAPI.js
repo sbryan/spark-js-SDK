@@ -34,18 +34,18 @@ var ADSKSpark = ADSKSpark || {};
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             var headers = {'Content-Type': 'application/json'};
-            var payload = JSON.stringify({
+            var payload = {
                 'printer_type_id': printerTypeId,
                 'profile_id': printerProfileId,
                 'mesh_ids': meshIds
-            });
+            };
             if( meshAttrs )
                 payload.mesh_attrs = meshAttrs;
 
             if( defaultMaterialId )
                 payload.default_material_id = defaultMaterialId;
     
-            return Client.authorizedApiRequest('/print/trays').post(headers, payload)
+            return Client.authorizedApiRequest('/print/trays').post(headers, JSON.stringify(payload))
                     .then(waiter.wait);
         },
 
