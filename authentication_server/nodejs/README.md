@@ -10,7 +10,7 @@ This server implements required [Spark OAuth2.0](https://spark.autodesk.com/deve
 All endpoints are accessible through `http://your-server-url:3000/the_endpoint` where `the_endpoint` is one of the end points above.
 
 ###To run the server
-* Copy config.example.js to config.js and enter your [app key and app secret](https://spark.autodesk.com/developers/reference/introduction/tutorials/register-an-app). 
+* Copy config.example.js to config.js and enter your [app key and app secret](https://spark.autodesk.com/developers/myApps). 
 * [Install nodejs and npm](https://docs.npmjs.com/getting-started/installing-node)
 * Run:
 ```sh
