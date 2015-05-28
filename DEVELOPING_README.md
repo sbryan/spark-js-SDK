@@ -1,6 +1,6 @@
 # Spark JavaScript SDK
 ### Code Guidelines
-Please following these guidelines when proposing code additions to the Spark open-source SDK.
+Please follow these guidelines when proposing code additions to the Spark open-source SDK.
 
 Use JS best practices. See [Google's JS guidelines](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
 
