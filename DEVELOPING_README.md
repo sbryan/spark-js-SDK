@@ -1,11 +1,10 @@
 # Spark JavaScript SDK
 ### Code Guidelines
-If you want to propose changes to the SDK, please try to follow these guidelines.
+Please following these guidelines when proposing code additions to the Spark open-source SDK.
 
-#### General
-Use JS best practices in your code. See [Google's JS guidelines](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
+Use JS best practices. See [Google's JS guidelines](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
 
-The following conventions are used in this code base. 
+The following conventions are used in this code base: 
 
 #### Structure Guidelines
 * Divide your logic between files - Each file should hold one coherent subject that identifies it (for example - "Print Preparation").
@@ -80,7 +79,7 @@ The following conventions are used in this code base.
 * Objects should be in PascalCase.
 * Constants should be all cases with underscores between words.
 
-#### More conventions
+#### Constants
 * Use constants instead of string values, for example instead of using this:
 ```JavaScript
 if (response.code === 'error'){
