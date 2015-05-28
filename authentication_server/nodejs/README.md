@@ -1,6 +1,6 @@
 Spark NodeJS server
 ===================
-This server implements required Spark OAuth2.0 endpoints:
+This server implements required [Spark OAuth2.0](https://spark.autodesk.com/developers/reference/authentication) endpoints:
 
 * Access token callback endpoint - `/access_token`
 * Guest token callback endpoint - `/guest_token`
