@@ -85,5 +85,5 @@ ADSKSpark.Client.initialize(
 
 ### Requirements
 * A registered application on [Spark Developer Portal](https://spark.autodesk.com/developers/).
-* A server side implementation of the guest, access and refresh token API calls. Sample server side implementations are located in this repository in the [nodejs server](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs) folder.
+* A server side implementation of the guest, access and refresh token API calls. Sample server side implementations are located in the [nodejs server](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs) folder.
 
