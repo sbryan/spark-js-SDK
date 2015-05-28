@@ -25,7 +25,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {Array} meshIds - a list of Spark Mesh resource Id's specifying which meshes are to be printed.
          * @param {Object} [meshAttrs] - an optional map indexed by Mesh Id containing objects with boolean flag properties for tray preparation options. The three properties for each mesh all default to true: { "reposition": true, "reorient": true, "support": true } and indicate whether the corresponding mesh can be automatically positioned, reoriented and have supports generated.
          * @param {String} [defaultMaterialId] - The Spark Material resource Id to be used for this print. If not specified the default from the printer type definition will be used.
-         * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+         * @param {Function} [progressCallback] - Optional function to be invoked when progress updates are available. The function is passed a numeric value in the range [0, 1].
          *
          * @returns {Promise} - A Promise which resolves to a new Tray Resource Object.
          */
@@ -55,7 +55,7 @@ var ADSKSpark = ADSKSpark || {};
          * @description - Prepare a given tray for printing by possibly repairing, positioning, orienting and generating supports for all meshes in the Tray. This operation creates a new Tray resource and new Mesh resources for each of the modified meshes in the tray.
          * @param {String} trayId - The Id associated with an existing Spark Tray Resource.
          * @param {boolean} [generateVisual] - Optional flag requesting that a Bolt visualization file be generated for each of the new Mesh resources in the new tray.
-         * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+         * @param {Function} [progressCallback] - Optional function to be invoked when progress updates are available. The function is passed a numeric value in the range [0, 1].
          *
          * @returns {Promise} - A Promise which resolves to the new Tray Resource.
          */
@@ -77,7 +77,7 @@ var ADSKSpark = ADSKSpark || {};
          * @memberOf ADSKSpark.TrayAPI
          * @description - Request the creation of a printable file from an existing Spark Tray resource. The specified tray must have been successfully prepared for this operation to succeed.
          * @param {String} trayId - The Id associated with an existing Spark Tray Resource.
-         * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+         * @param {Function} [progressCallback] - Optional function to be invoked when progress updates are available. The function is passed a numeric value in the range [0, 1].
          *
          * @returns {Promise} - A Promise which resolves to an object containing a Spark Drive "file_id" property.
          */
