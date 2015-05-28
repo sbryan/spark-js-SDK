@@ -1,18 +1,17 @@
 # Spark JavaScript SDK
 ### Code Guidelines
-If you want to propose changes to the SDK,  please try to work according to the following guidelines.
+Please follow these guidelines when proposing code additions to the Spark open-source SDK.
 
-#### General
-Use JS best practices in your code. See [Google's JS guidelines](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
+Use JS best practices. See [Google's JS guidelines](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
 
-The following conventions are used in this code base. 
+The following conventions are used in this code base: 
 
 #### Structure Guidelines
-* Divide your logic between files - Each file should hold, as far as possible, only one coherent subject that identifies it (for example - "Print Preparation").
-* Each file should be self-sufficient in scoping, global variables and poluting the window namespace. 
+* Divide your logic between files - Each file should hold one coherent subject that identifies it (for example - "Print Preparation").
+* Each file should be self-sufficient in scoping, global variables and populating the window namespace. 
 * Clearly distinguish between private and public methods using the [module pattern](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript).
-* Separate API groups by putting module files in the main directory (i.e. print-preparation.js should reside in the print directory).
-* Separate utilities under the "utilities" directory (i.e. request.js that handles all xhr to API).
+* Separate API groups by putting module files in the main directory (for example print-preparation.js resides in the print directory).
+* Place utilities in the "utilities" directory (for example _request.js_ that handles all xhr to API).
 * Use the following structure:
 ```
   - sdk
@@ -80,7 +79,7 @@ The following conventions are used in this code base.
 * Objects should be in PascalCase.
 * Constants should be all cases with underscores between words.
 
-#### More conventions
+#### Constants
 * Use constants instead of string values, for example instead of using this:
 ```JavaScript
 if (response.code === 'error'){
