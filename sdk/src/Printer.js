@@ -275,8 +275,12 @@ var ADSKSpark = ADSKSpark || {};
             params = params || {};
             params.command = command;
 
+			var headers = {'Content-Type': 'application/json'};
+
+			var params = JSON.stringify(params);
+
             return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/command')
-                .post(null, params)
+                .post(headers, params)
                 .then(function (data) {
                     return data;
                 });
