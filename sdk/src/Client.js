@@ -200,16 +200,17 @@ var ADSKSpark = ADSKSpark || {};
                 return token ? ('Bearer ' + token.access_token) : null;
             }
 
+
             return ADSKSpark.Request(_apiUrl + endpoint, function () {
-                return new Promise(function (resolve, reject) {
+                return new Promise(function (resolve) {
                     var token = JSON.parse(localStorage.getItem(ACCESS_TOKEN_KEY));
                     if (token) {
-
                         // If the token has an expires_at property and the token
                         // has expired, then refresh it.
                         //
                         var now = Date.now();
-                        if (token.expires_at && now < token.expires_at) {
+
+                        if (token.expires_at && now > token.expires_at) {
                             _this.refreshAccessToken()
                                 .then(function (refreshedToken) {
                                     resolve(formatAuthHeader(refreshedToken));
