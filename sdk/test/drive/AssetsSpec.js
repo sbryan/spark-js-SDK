@@ -108,8 +108,7 @@ describe('Assets', function () {
 				return Promise.resolve(fakeAssetGetResponse);
 			}
 		});
-
-		var foo = Assets.getAsset(assetId);
+		
 		return Assets.getAsset(assetId).then(function (response) {
 			expect(response).to.have.property('asset_id', assetId);
 			expect(response).to.have.deep.property('artist.artist_id', fakeAssetGetResponse.artist.artist_id);
