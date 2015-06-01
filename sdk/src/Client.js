@@ -193,6 +193,7 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
          */
         authorizedApiRequest: function (endpoint, options) {
+            var _this = this;
             options = options || {};
 
             function formatAuthHeader(token) {
@@ -209,7 +210,7 @@ var ADSKSpark = ADSKSpark || {};
                         //
                         var now = Date.now();
                         if (token.expires_at && now < token.expires_at) {
-                            this.refreshAccessToken()
+                            _this.refreshAccessToken()
                                 .then(function (refreshedToken) {
                                     resolve(formatAuthHeader(refreshedToken));
                                 });
