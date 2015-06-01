@@ -81,12 +81,24 @@ var ADSKSpark = ADSKSpark || {};
 				var memberId = accessTokenObj.spark_member_id;
 
 				//default limit/offset
-				params.limit = params.limit && params.limit > 0 ? params.limit : listDefaultLimit;
-				params.offset = params.offset && params.offset >= 0 ? params.offset : 0;
+				var defaultParams = {
+					limit:listDefaultLimit,
+					offset: 0
+				}
+
+				if (params && params.limit && params.limit <= 0){
+					delete(params.limit);
+				}
+
+				if (params && params.offset && params.offset < 0){
+					delete(params.offset);
+				}
+
+				var passedParams = Helpers.mergeObjects(defaultParams,params);
 
 				//Make sure memberId is defined and that it is valid
 				if (Helpers.isValidId(memberId)) {
-					return Client.authorizedApiRequest('/members/' + memberId + '/assets').get(null, params);
+					return Client.authorizedApiRequest('/members/' + memberId + '/assets').get(null, passedParams);
 				}
 			}
 

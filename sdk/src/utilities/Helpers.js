@@ -121,6 +121,22 @@ var ADSKSpark = ADSKSpark || {};
 				}
 			}
 			return true;
+		},
+		/**
+		 * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
+		 * @param obj1
+		 * @param obj2
+		 * @returns {Object} obj3 a new object based on obj1 and obj2
+		 */
+		mergeObjects: function (obj1, obj2) {
+			var obj3 = {};
+			for (var attrname1 in obj1) {
+				obj3[attrname1] = obj1[attrname1];
+			}
+			for (var attrname2 in obj2) {
+				obj3[attrname2] = obj2[attrname2];
+			}
+			return obj3;
 		}
 
 
