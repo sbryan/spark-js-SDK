@@ -32,9 +32,7 @@ var ADSKSpark = ADSKSpark || {};
 			conditions.limit = conditions.limit && conditions.limit > 0 ? conditions.limit : listDefaultLimit;
 			conditions.offset = conditions.offset && conditions.offset >= 0 ? conditions.offset : 0;
 
-			return Client.authorizedAsGuestApiRequest('/assets').then(function(promise){
-				return promise.get(null, conditions);
-			});
+			return Client.authorizedAsGuestApiRequest('/assets').get(null, conditions);
 		},
 
 		/**
@@ -44,12 +42,8 @@ var ADSKSpark = ADSKSpark || {};
 		 * @returns {Promise} - A promise that will resolve to an asset
 		 */
 		getPublicAsset: function(assetId) {
-
-			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
-				return Client.authorizedAsGuestApiRequest('/assets/' + assetId).then(function(promise){
-					return promise.get();
-				});
+				return Client.authorizedAsGuestApiRequest('/assets/' + assetId).get();
 			}
 
 			return Promise.reject(new Error('Proper assetId was not supplied'));
