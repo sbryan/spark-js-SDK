@@ -1,9 +1,13 @@
+/**
+ * @namespace
+ */
 var ADSKSpark = ADSKSpark || {};
 
 (function() {
     'use strict';
 
-    var Client = ADSKSpark.Client;
+    var Client = ADSKSpark.Client,
+        Helpers = ADSKSpark.Helpers;
 
     /**
      * @class
@@ -14,14 +18,14 @@ var ADSKSpark = ADSKSpark || {};
     ADSKSpark.Files = {
 
         /**
-         * Get the details for a specific file
+         * @description - Get the details for a specific file
          * @param {String} fileId - The ID of the file
          * @returns {Promise} - A promise that will resolve to an a file
          */
         getFileDetails: function (fileId) {
 
-            //Make sure fileId is defined and that it is a number
-            if (!isNaN(fileId)) {
+            //Make sure fileId is defined and that it is valid
+            if (Helpers.isValidId(fileId)) {
                 return Client.authorizedApiRequest('/files/' + fileId).get();
             }
 
@@ -29,7 +33,7 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
-         * Upload a file to Spark Drive
+         * @description - Upload a file to Spark Drive
          * @param fileData - The file object to upload - has the form of:
          *                          file: The actual file data that is passed in the body
          *                          unzip: Should we treat the upload as a zip of multiple files
@@ -50,6 +54,64 @@ var ADSKSpark = ADSKSpark || {};
             return Client.authorizedApiRequest('/files/upload').post(null, fd);
 
         },
+
+        /**
+         * @description - Download user's file(s) from the Spark Drive
+         * @param {String} fileIds - Comma separated list of file IDs to download
+         * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
+         */
+        downloadFile: function (fileIds) {
+
+            //Make sure fileId is defined and that it is valid
+            if (Helpers.isValidIds(fileIds)) {
+                var payload = {
+                    file_ids: fileIds
+                };
+                return Client.authorizedApiRequest('/files/download',{notJsonResponse:true}).get(null, payload);
+            }
+            
+            return Promise.reject(new Error('Proper fileId(s) was not supplied'));
+        },
+
+        /**
+         * @description - Download a file from the Spark Drive that was uploaded by other user
+         * @param {String} fileIds - Comma separated list of file IDs to download
+         * @param {String} assetId - AssetId to which this file belongs
+         * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
+         */
+        downloadPublicFile: function (fileIds, assetId) {
+
+            //Make sure fileIds and assetId are defined and that they are valid
+            if (Helpers.isValidIds(fileIds) && Helpers.isValidId(assetId)) {
+                var payload = {
+                    file_ids: fileIds,
+                    asset_id: assetId
+                };
+                return Client.authorizedAsGuestApiRequest('/files/download',{notJsonResponse:true}).then(function(promise){
+                    return promise.get(null, payload);
+                });
+            }
+
+            return Promise.reject(new Error('Proper fileId(s) or assetId were not supplied'));
+        },
+
+        /**
+         * @description - Get a URL for downloading the user's file(s) from the Spark Drive
+         * @param {String} fileIds - Comma separated list of file IDs to download
+         * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
+         */
+        downloadFileByURL: function (fileIds) {
+
+            //Make sure fileId is defined and that it is valid
+            if (Helpers.isValidIds(fileIds)) {
+                var payload = {
+                    file_ids: fileIds
+                };
+                return Client.authorizedApiRequest('/files/download/path').get(null, payload);
+            }
+            
+            return Promise.reject(new Error('Proper fileId(s) was not supplied'));
+        }
     };
 
 }());

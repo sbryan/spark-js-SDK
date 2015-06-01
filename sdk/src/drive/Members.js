@@ -1,9 +1,13 @@
+/**
+ * @namespace
+ */
 var ADSKSpark = ADSKSpark || {};
 
 (function () {
 	'use strict';
 
-	var Client = ADSKSpark.Client;
+	var Client = ADSKSpark.Client,
+		Helpers = ADSKSpark.Helpers;
 
 	/**
 	 * @class
@@ -14,13 +18,13 @@ var ADSKSpark = ADSKSpark || {};
 	ADSKSpark.Members = {
 
 		/**
-		 * Gets member profile by memberId
+		 * @description - Gets member profile by memberId
 		 * @returns {Promise} - A promise that will resolve to a member object
 		 */
 		getMemberProfile: function (memberId) {
 
 			//Make sure memberId is defined and that it is a number
-			if (!isNaN(memberId)) {
+			if (Helpers.isValidId(memberId)) {
 				return Client.authorizedApiRequest('/members/' + memberId).get();
 			}
 			return Promise.reject(new Error('Proper memberId was not supplied'));
@@ -28,7 +32,7 @@ var ADSKSpark = ADSKSpark || {};
 
 
 		/**
-		 * Gets logged in member profile
+		 * @description - Gets logged in member profile
 		 * @returns {Promise} - A promise that will resolve to current logged in member object
 		 */
 		getMyProfile: function () {

@@ -35,11 +35,17 @@ app.use(function(req, res, next) {
 // Access token service
 // See API reference - https://spark.autodesk.com/developers/reference/authentication?deeplink=%2Freference%2Foauth-2.0%2Faccess-token
 app.get('/access_token', function(req, res){
-    var code = req.query.code;
 
-    var url = API_SERVER + '/oauth/accesstoken',
-        params = "code=" + code + "&grant_type=authorization_code&response_type=code",
-        contentLength = params.length,
+    var code = req.query.code,
+        redirect_uri = req.query.redirect_uri,
+        url = API_SERVER + '/oauth/accesstoken',
+        params = "code=" + code + "&grant_type=authorization_code&response_type=code";
+
+    if (redirect_uri){
+        params += "&redirect_uri=" +  redirect_uri;
+    }
+
+    var contentLength = params.length,
         headers = {
             'Authorization': 'Basic ' + toBase64(config.APP_KEY + ':' + config.APP_SECRET),
             'Content-Type' : 'application/x-www-form-urlencoded',

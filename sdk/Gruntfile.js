@@ -44,18 +44,28 @@ module.exports = function (grunt) {
 			unit: {
 				configFile: 'karma.conf.js',
 				singleRun: true,
-				browsers: ['PhantomJS']
+				browsers: ['PhantomJS2']
 			}
 		},
 		jshint: {
-			all: ['Gruntfile.js', 'src/{,*/}*.js'],
+			src: ['Gruntfile.js', 'src/{,*/}*.js'],
 			tests: 'test/{,*/}*.js'
 		},
 		jsdoc : {
 			dist : {
-				src: ['src/{,*/}*.js', 'test/{,*/}*.js'],
+				src: ['src/{,*/}*.js','../README.md'],
 				options: {
-					destination: 'doc'
+					destination: 'doc',
+					template : 'node_modules/grunt-jsdoc/node_modules/ink-docstrap/template',
+					configure : 'jsdoc-conf/jsdoc-full.conf.json'
+				}
+			},
+			iframe: {
+				src: ['src/{,*/}*.js','../README.md'],
+				options: {
+					destination: 'doc/iframe',
+					template : 'node_modules/ink-docstrap-spark/template',
+					configure : 'jsdoc-conf/jsdoc-iframe.conf.json'
 				}
 			}
 		}
@@ -81,14 +91,17 @@ module.exports = function (grunt) {
 		var buildVersion = version ? version : pkg.version;
 
 		grunt.config.set('version', buildVersion);
-		grunt.task.run(['jshint','karma','uglify']);
+		grunt.task.run(['jshint:src','karma','uglify']);
 	});
 
 
 	//run tests through grunt
 	grunt.registerTask('test', function(){
-
 		grunt.task.run(['karma']);
+	});
+
+	grunt.registerTask('docs', function(){
+		grunt.task.run(['jsdoc:dist','jsdoc:iframe']);
 	});
 
 

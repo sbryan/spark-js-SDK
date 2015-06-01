@@ -1,6 +1,12 @@
+/**
+ * @namespace
+ */
 var ADSKSpark = ADSKSpark || {};
 
-//Various Spark constants
+/**
+ * @description - Various Spark constants
+ */
+
 ADSKSpark.Constants = function () {
 	'use strict';
 
