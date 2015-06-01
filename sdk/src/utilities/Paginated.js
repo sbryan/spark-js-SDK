@@ -1,6 +1,7 @@
 var ADSKSpark = ADSKSpark || {};
 
-(function () {
+(function() {
+    'use strict';
     var Client = ADSKSpark.Client;
 
     /**
@@ -8,7 +9,7 @@ var ADSKSpark = ADSKSpark || {};
      * @param {Object} data - JSON data.
      * @constructor
      */
-    ADSKSpark.Paginated = function (data) {
+    ADSKSpark.Paginated = function(data) {
         this.parse(data);
     };
 
@@ -19,7 +20,7 @@ var ADSKSpark = ADSKSpark || {};
      * Return true if the previous link is valid.
      * @returns {boolean}
      */
-    ADSKSpark.Paginated.prototype.hasPrev = function () {
+    ADSKSpark.Paginated.prototype.hasPrev = function() {
         return this.data && !!this.data._link_prev;
     };
 
@@ -28,7 +29,7 @@ var ADSKSpark = ADSKSpark || {};
      * Updates this object with the new items.
      * @returns {Promise} - A Promise that will resolve to an array of items.
      */
-    ADSKSpark.Paginated.prototype.prev = function () {
+    ADSKSpark.Paginated.prototype.prev = function() {
         if (this.data) {
             var linkPrev = this.data._link_prev,
                 that = this;
@@ -36,7 +37,7 @@ var ADSKSpark = ADSKSpark || {};
             if (linkPrev) {
                 return Client.authorizedApiRequest(linkPrev)
                     .get()
-                    .then(function (data) {
+                    .then(function(data) {
                         that.parse(data);
                         return that;
                     });
@@ -49,7 +50,7 @@ var ADSKSpark = ADSKSpark || {};
      * Return true if the next link is valid.
      * @returns {boolean}
      */
-    ADSKSpark.Paginated.prototype.hasNext = function () {
+    ADSKSpark.Paginated.prototype.hasNext = function() {
         return this.data && !!this.data._link_next;
     };
 
@@ -58,7 +59,7 @@ var ADSKSpark = ADSKSpark || {};
      * Updates this object with the new items.
      * @returns {Promise} - A Promise that will resolve to an array of items.
      */
-    ADSKSpark.Paginated.prototype.next = function () {
+    ADSKSpark.Paginated.prototype.next = function() {
         if (this.data) {
             var linkNext = this.data._link_next,
                 that = this;
@@ -66,7 +67,7 @@ var ADSKSpark = ADSKSpark || {};
             if (linkNext) {
                 return Client.authorizedApiRequest(linkNext)
                     .get()
-                    .then(function (data) {
+                    .then(function(data) {
                         that.parse(data);
                         return that;
                     });
@@ -75,7 +76,7 @@ var ADSKSpark = ADSKSpark || {};
         return Promise.reject(new Error('no next link'));
     };
 
-    ADSKSpark.Paginated.prototype.parse = function (data) {
+    ADSKSpark.Paginated.prototype.parse = function(data) {
         this.splice(0, this.length);
         this.data = data;
     };

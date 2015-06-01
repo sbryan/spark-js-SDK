@@ -1,3 +1,5 @@
+'use strict';
+
 var ADSKSpark = ADSKSpark || {};
 
 
@@ -9,21 +11,20 @@ ADSKSpark.TaskWaiter = function( progressCallback )
 
     this._checkTaskResponse = function(taskResponse)
     {
-        var delayPromise;
+        //var delayPromise;
 
         console.log("Task status: ", taskResponse.status, "progress:", taskResponse.progress);
 
-        if( taskResponse.status === 'done' )
-        {
+        if( taskResponse.status === 'done' ) {
             var result = taskResponse.result;
             return result;
         }
-        if( taskResponse.status === 'error' )
-        {
+        if( taskResponse.status === 'error' ){
             return Promise.reject(taskResponse.error);
         }
-        if( progressCallback )
-            progressCallback( taskResponse.progress );
+        if( progressCallback ) {
+            progressCallback(taskResponse.progress);
+        }
 
         // console.log("Delay task");
 
@@ -43,12 +44,14 @@ ADSKSpark.TaskWaiter = function( progressCallback )
 
     this.wait = function(opResult, interval) 
     {
-        if( opResult.httpStatus === 200 )
+        if( opResult.httpStatus === 200 ) {
             return Promise.resolve(opResult);
+        }
 
         interval = interval || 100;
-        if( interval < 10 )
+        if( interval < 10 ) {
             interval = 10;
+        }
 
         _taskId = opResult.id; // or is it body.id ?
         _interval = interval;

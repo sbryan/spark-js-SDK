@@ -4,6 +4,7 @@
 var ADSKSpark = ADSKSpark || {};
 
 (function() {
+    'use strict';
     var Client = ADSKSpark.Client;
     var _meshCounter = 0;
 
@@ -25,7 +26,7 @@ var ADSKSpark = ADSKSpark || {};
         return Client.authorizedApiRequest('/geom/meshes/import').post(headers, payload);
     };
 
-    var uploadFileObject = function(file, progressCallback)
+    var uploadFileObject = function(file)
     {
         var formData = new FormData();
         formData.append(file.name, file);

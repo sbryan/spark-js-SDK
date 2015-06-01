@@ -3,7 +3,7 @@
  */
 var ADSKSpark = ADSKSpark || {};
 
-(function () {
+(function() {
 	'use strict';
 
 	var Client = ADSKSpark.Client,
@@ -19,9 +19,10 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Gets member profile by memberId
+		 * @memberOf ADSKSpark.Members
 		 * @returns {Promise} - A promise that will resolve to a member object
 		 */
-		getMemberProfile: function (memberId) {
+		getMemberProfile: function(memberId) {
 
 			//Make sure memberId is defined and that it is a number
 			if (Helpers.isValidId(memberId)) {
@@ -33,9 +34,10 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Gets logged in member profile
+		 * @memberOf ADSKSpark.Members
 		 * @returns {Promise} - A promise that will resolve to current logged in member object
 		 */
-		getMyProfile: function () {
+		getMyProfile: function() {
 			return Client.authorizedApiRequest('/members').get();
 
 		}

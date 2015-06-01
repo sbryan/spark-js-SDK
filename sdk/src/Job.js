@@ -1,6 +1,7 @@
 var ADSKSpark = ADSKSpark || {};
 
-(function () {
+(function() {
+    'use strict';
     var Client = ADSKSpark.Client;
 
     /**
@@ -8,7 +9,7 @@ var ADSKSpark = ADSKSpark || {};
      * @param {Object} data - JSON data.
      * @constructor
      */
-    ADSKSpark.Jobs = function (data) {
+    ADSKSpark.Jobs = function(data) {
         ADSKSpark.Paginated.call(this, data);
     };
 
@@ -21,36 +22,36 @@ var ADSKSpark = ADSKSpark || {};
      * @param {Object} [params] - limit/offset/sort/filter options.
      * @returns {Promise} - A promise that will resolve to an array of jobs.
      */
-    ADSKSpark.Jobs.get = function (headers, params) {
+    ADSKSpark.Jobs.get = function(headers, params) {
         return Client.authorizedApiRequest('/print/jobs')
             .get(headers, params)
-            .then(function (data) {
+            .then(function(data) {
                 return new ADSKSpark.Jobs(data);
             });
     };
 
     /**
      * Get jobs registered to a printer.
-     * @param {String} string - Spark Printer Id.
+     * @param {String} printerId - Spark Printer Id.
      * @param {Object} [headers] - Optional list of request header properties.
      * @param {Object} [params] - limit/offset/sort/filter options.
      * @returns {Promise} - A promise that will resolve to an array of jobs.
      */
-    ADSKSpark.Jobs.getPrinter = function (printerId, headers, params) {
-        return Client.authorizedApiRequest('/print/printers/' + printerId.toString() + '/jobs')
+    ADSKSpark.Jobs.getPrinter = function(printerId, headers, params) {
+        return Client.authorizedApiRequest('/print/printers/' + printerId + '/jobs')
             .get(headers, params)
-            .then(function (data) {
+            .then(function(data) {
                 return new ADSKSpark.Jobs(data);
             });
     };
 
-    ADSKSpark.Jobs.prototype.parse = function (data) {
+    ADSKSpark.Jobs.prototype.parse = function(data) {
         ADSKSpark.Paginated.prototype.parse.call(this, data);
         if (data) {
             var jobs = data.jobs || data.printer_jobs;
             if (Array.isArray(jobs)) {
                 var _this = this;
-                jobs.forEach(function (job) {
+                jobs.forEach(function(job) {
                     if (!job.printer_id) {
                         job.printer_id = data.printer_id;
                     }
@@ -68,7 +69,7 @@ var ADSKSpark = ADSKSpark || {};
      * @param {Object} [data] - JSON data returned from Job status or list query. If omitted an empty Job object is constructed which can subsequently be used to invoke the "create" method.
      * @constructor
      */
-    ADSKSpark.Job = function (data) {
+    ADSKSpark.Job = function(data) {
         this.status = null;
         this.progress = 0.0;
 
@@ -89,20 +90,21 @@ var ADSKSpark = ADSKSpark || {};
          * Get the status of a print job.
          * @returns {Promise} - A Promise that will resolve to this object with updated status information.
          */
-        getStatus: function () {
-            if( !this.id )
+        getStatus: function() {
+            if( !this.id ) {
                 return Promise.reject(new Error("Job does not exist."));
+            }
 
             var _this = this;
             return Client.authorizedApiRequest('/print/jobs/' + this.id)
                 .get()
-                .then(function (data) {
+                .then(function(data) {
                     _this.status   = data.job_status ? data.job_status.job_status : null;
                     _this.progress = data.job_status ? data.job_status.job_progress : 0.0;
                     _this.data = data;  // TODO: Just copy all properties over to this?
                     return _this;
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     _this.status = null;
                     throw error;            // Propagate error.
                 });
@@ -118,8 +120,9 @@ var ADSKSpark = ADSKSpark || {};
          * @see {@link ADSKSpark.TrayAPI.generatePrintable}
          */
         create: function(printerId, profileId, printableId) {
-            if( this.id )
+            if( this.id ) {
                 return Promise.reject(new Error("Job already exists."));
+            }
 
             var _this = this;
             function updateJob(data) {
@@ -148,12 +151,14 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise} - A Promise which resolves to this object with updated contents.
          */
         updateStatus: function(newStatus, newComment, customData) {
-            if( !this.id )
+            if( !this.id ) {
                 return Promise.reject(new Error("Unknown job in updateStatus."));
+            }
 
             newStatus = newStatus.toLowerCase();
-            if( newStatus !== "success" && newStatus !== "failed" )
+            if( newStatus !== "success" && newStatus !== "failed" ) {
                 return Promise.reject(new Error("Invalid job status in updateStatus."));
+            }
 
             var _this = this;
             var urlStatus  = encodeURIComponent(newStatus);
@@ -176,7 +181,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {string} callbackUrl
          * @returns {Promise}
          */
-        setCallback: function (callbackUrl) {
+        setCallback: function(callbackUrl) {
             return Client.authorizedApiRequest('/print/jobs/' + this.id + '/register')
                 .post(null, {callback_url: callbackUrl});
         }

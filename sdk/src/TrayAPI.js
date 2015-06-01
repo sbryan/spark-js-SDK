@@ -4,8 +4,9 @@
 var ADSKSpark = ADSKSpark || {};
 
 (function() {
+    'use strict';
     var Client = ADSKSpark.Client;
-    var _meshCounter = 0;
+    //var _meshCounter = 0;
 
 
     /**
@@ -39,11 +40,13 @@ var ADSKSpark = ADSKSpark || {};
                 'profile_id': printerProfileId,
                 'mesh_ids': meshIds
             };
-            if( meshAttrs )
+            if( meshAttrs ) {
                 payload.mesh_attrs = meshAttrs;
+            }
 
-            if( defaultMaterialId )
+            if( defaultMaterialId ) {
                 payload.default_material_id = defaultMaterialId;
+            }
     
             return Client.authorizedApiRequest('/print/trays').post(headers, JSON.stringify(payload))
                     .then(waiter.wait);

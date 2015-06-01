@@ -1,6 +1,7 @@
 var ADSKSpark = ADSKSpark || {};
 
 (function() {
+    'use strict';
 
     var Helpers = ADSKSpark.Helpers;
 
@@ -48,7 +49,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {String} apiUrl - The URL of the spark api. (Ex. https://sandbox.spark.autodesk.com/api/vi)
          * @param {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
          */
-        initialize: function (clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, apiUrl, redirectUri) {
+        initialize: function(clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, apiUrl, redirectUri) {
             _clientId = clientId;
             _guestTokenUrl = guestTokenUrl;
             _accessTokenUrl = accessTokenUrl;
@@ -62,7 +63,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {String} - The URL.
          */
-        getLoginRedirectUrl: function () {
+        getLoginRedirectUrl: function() {
 
             var apiRedirectUrl = _apiUrl + '/oauth/authorize' +
                 "?response_type=code" +
@@ -79,7 +80,7 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @description - Clears access token that had been stored in localStorage
          */
-        logout: function () {
+        logout: function() {
             localStorage.removeItem(ACCESS_TOKEN_KEY);
         },
 
@@ -89,14 +90,14 @@ var ADSKSpark = ADSKSpark || {};
          * @param {String} code - The code that was returned after the user signed in. {@see ADSKSpark.Client#login}
          * @returns {Promise} - A promise that resolves to the access token.
          */
-        completeLogin: function (code) {
+        completeLogin: function(code) {
             var params = {code: code};
 
             if (_redirectUri) {
                 params.redirect_uri = _redirectUri;
             }
 
-            return ADSKSpark.Request(_accessTokenUrl).get(undefined, params).then(function (data) {
+            return ADSKSpark.Request(_accessTokenUrl).get(undefined, params).then(function(data) {
                 if (data && data.expires_in && data.access_token) {
                     var now = Date.now();
                     data.expires_at = now + parseInt(data.expires_in) * 1000;
@@ -114,7 +115,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Boolean} - True if the access token exists and has not expired. Otherwise, false.
          */
-        isAccessTokenValid: function () {
+        isAccessTokenValid: function() {
             var accessToken = JSON.parse(localStorage.getItem(ACCESS_TOKEN_KEY));
             var now = Date.now();
 
@@ -126,7 +127,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {?String} - The access token or null if not found.
          */
-        getAccessTokenObject: function () {
+        getAccessTokenObject: function() {
             var accessToken = JSON.parse(localStorage.getItem(ACCESS_TOKEN_KEY));
 
             return (accessToken && accessToken.access_token) ? accessToken : null;
@@ -137,7 +138,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {?String} - The access token or null if not found.
          */
-        getAccessToken: function () {
+        getAccessToken: function() {
             var accessToken = JSON.parse(localStorage.getItem(ACCESS_TOKEN_KEY));
 
             return (accessToken && accessToken.access_token) ? accessToken.access_token : null;
@@ -150,7 +151,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A promise that resolves to the guest token.
          */
-        getGuestToken: function () {
+        getGuestToken: function() {
             var guestToken = JSON.parse(localStorage.getItem(GUEST_TOKEN_KEY));
             var now = Date.now();
             if (guestToken && guestToken.expires_at && guestToken.expires_at > now) {
@@ -166,14 +167,14 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A promise that resolves to the access token object.
          */
-        refreshAccessToken: function () {
+        refreshAccessToken: function() {
             var accessTokenObj = this.getAccessTokenObject();
 
             if (accessTokenObj) {
                 var refreshToken = accessTokenObj.refresh_token;
                 return ADSKSpark.Request(_refreshTokenUrl)
                     .get(null, {refresh_token: refreshToken})
-                    .then(function (data) {
+                    .then(function(data) {
                         var now = Date.now();
                         data.expires_at = now + parseInt(data.expires_in) * 1000;
                         localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
@@ -192,7 +193,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
          */
-        authorizedApiRequest: function (endpoint, options) {
+        authorizedApiRequest: function(endpoint, options) {
             var authorization;
             options = options || {};
 
@@ -212,11 +213,11 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
          */
-        authorizedAsGuestApiRequest: function (endpoint, options) {
+        authorizedAsGuestApiRequest: function(endpoint, options) {
             var authorization;
             options = options || {};
 
-            return this.getGuestToken().then(function (guestToken) {
+            return this.getGuestToken().then(function(guestToken) {
 
                 if (guestToken) {
                     authorization = 'Bearer ' + guestToken;
@@ -229,7 +230,7 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @description - Open an auth window
          */
-        openLoginWindow: function () {
+        openLoginWindow: function() {
             Helpers.popupWindow(this.getLoginRedirectUrl(), 350, 600);
         }
     };

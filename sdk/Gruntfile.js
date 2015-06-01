@@ -49,7 +49,9 @@ module.exports = function (grunt) {
 		},
 		jshint: {
 			src: ['Gruntfile.js', 'src/{,*/}*.js'],
-			tests: 'test/{,*/}*.js'
+			options:{
+				jshintrc: '.jshintrc'
+			}
 		},
 		jsdoc : {
 			dist : {
@@ -101,7 +103,7 @@ module.exports = function (grunt) {
 	});
 
 	grunt.registerTask('docs', function(){
-		grunt.task.run(['jsdoc:dist','jsdoc:iframe']);
+		grunt.task.run(['jshint:src','karma','jsdoc:dist','jsdoc:iframe']);
 	});
 
 
