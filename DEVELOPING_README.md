@@ -2,16 +2,14 @@
 ### Code Guidelines
 Please follow these guidelines when proposing code additions to the Spark open-source SDK.
 
-Use JS best practices. See [Google's JS guidelines](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
-
 The following conventions are used in this code base: 
 
 #### Structure Guidelines
 * Divide your logic between files - Each file should hold one coherent subject that identifies it (for example - "Print Preparation").
 * Each file should be self-sufficient in scoping, global variables and populating the window namespace. 
 * Clearly distinguish between private and public methods using the [module pattern](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript).
-* Separate API groups by putting module files in the main directory (for example print-preparation.js resides in the print directory).
-* Place utilities in the "utilities" directory (for example _request.js_ that handles all xhr to API).
+* Separate API groups by putting module files in the main directory (for example printPreparation.js resides in the print directory).
+* Place utilities in the "utilities" directory (for example Request.js that handles all xhr to API).
 * Use the following structure:
 ```
   - sdk

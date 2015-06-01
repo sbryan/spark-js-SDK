@@ -1,9 +1,10 @@
 var ADSKSpark = ADSKSpark || {};
 
-// A wrapper for XHR requests that returns a promise.
-// Usage: ADSKSpark.Request('http://alpha.spark.autodesk.com/api/v1/printDB/printers').get([headers[, data]]).then(...);
-// Based on https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise#Example_using_new_XMLHttpRequest()
 /**
+ * @description // A wrapper for XHR requests that returns a promise.
+ // Usage: ADSKSpark.Request('http://alpha.spark.autodesk.com/api/v1/printDB/printers').get([headers[, data]]).then(...);
+ // Based on https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise#Example_using_new_XMLHttpRequest()
+ * @memberOf ADSKSpark
  * @param {String} url - The url for the request.
  * @param {String|function} [authorization] - If specified, the Authorization header will be set with this value by default.
  * @param {Object} [options] - May have the following options:
@@ -98,7 +99,7 @@ ADSKSpark.Request = function(url, authorization, options) {
                     reject(error);
                 }
             };
-            xhr.onerror = function(e) {
+            xhr.onerror = function() {
                 // Why can we not get more info about what the error was?
                 // See: https://xhr.spec.whatwg.org/#suggested-names-for-events-using-the-progressevent-interface
                 // console.log('XHR error type: ' + e.type);

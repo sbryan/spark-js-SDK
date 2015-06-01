@@ -3,11 +3,12 @@
  */
 var ADSKSpark = ADSKSpark || {};
 
-(function () {
+(function() {
 	'use strict';
 
 	var Client = ADSKSpark.Client,
-		Helpers = ADSKSpark.Helpers;
+		Helpers = ADSKSpark.Helpers,
+		listDefaultLimit = 48;
 
 	/**
 	 * @class
@@ -20,14 +21,15 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Get public assets - requires only a guest token
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Object} conditions - Various conditions for the query
 		 * @returns {Promise} - A promise that will resolve to all public assets
 		 */
-		getPublicAssetsByConditions: function (conditions) {
+		getPublicAssetsByConditions: function(conditions) {
 			conditions = conditions || {};
 
 			//default limit/offset
-			conditions.limit = conditions.limit && conditions.limit > 0 ? conditions.limit : 48;
+			conditions.limit = conditions.limit && conditions.limit > 0 ? conditions.limit : listDefaultLimit;
 			conditions.offset = conditions.offset && conditions.offset >= 0 ? conditions.offset : 0;
 
 			return Client.authorizedAsGuestApiRequest('/assets').get(null, conditions);
@@ -35,11 +37,11 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Get a specific asset
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Number} assetId - The ID of the asset
 		 * @returns {Promise} - A promise that will resolve to an asset
 		 */
-		getPublicAsset: function (assetId) {
-			//Make sure assetId is defined and that it is a number
+		getPublicAsset: function(assetId) {
 			if (Helpers.isValidId(assetId)) {
 				return Client.authorizedAsGuestApiRequest('/assets/' + assetId).get();
 			}
@@ -49,10 +51,11 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Get a specific asset
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Number} assetId - The ID of the asset
 		 * @returns {Promise} - A promise that will resolve to an asset
 		 */
-		getAsset: function (assetId) {
+		getAsset: function(assetId) {
 
 			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
@@ -65,19 +68,24 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Get logged in user assets
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Object} params - limit/offset/sort/filter options.
 		 * @returns {Promise} - A promise that will resolve to an object that contains a property "assets"
 		 * that holds an array of assets.
 		 */
-		getMyAssets: function (params) {
+		getMyAssets: function(params) {
 
 			if (Client.isAccessTokenValid()) {
 				var accessTokenObj = Client.getAccessTokenObject();
 
 				var memberId = accessTokenObj.spark_member_id;
 
+				//default limit/offset
+				params.limit = params.limit && params.limit > 0 ? params.limit : listDefaultLimit;
+				params.offset = params.offset && params.offset >= 0 ? params.offset : 0;
+
 				//Make sure memberId is defined and that it is valid
-				if (!isNaN(memberId)) {
+				if (Helpers.isValidId(memberId)) {
 					return Client.authorizedApiRequest('/members/' + memberId + '/assets').get(null, params);
 				}
 			}
@@ -88,10 +96,11 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Create a new asset for a logged in user
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Object} asset - Asset data - title, description, tags etc
 		 * @returns {Promise} - A promise that will resolve to a success/failure asset
 		 */
-		createAsset: function (asset) {
+		createAsset: function(asset) {
 
 			//construct the full params
 			var params = ADSKSpark.Helpers.jsonToParameters(asset);
@@ -103,10 +112,11 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Update an asset for a logged in user
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Object} asset - The asset we want to update, make sure that this object has an assetId property
 		 * @returns {Promise} - A promise that will resolve to a success/failure asset
 		 */
-		updateAsset: function (asset) {
+		updateAsset: function(asset) {
 
 			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(asset.assetId)) {
@@ -126,10 +136,11 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Remove an asset for a logged in user
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Number} assetId - The ID of the asset
 		 * @returns {Promise} - A promise that will resolve to an empty body with a proper success/failure response
 		 */
-		removeAsset: function (assetId) {
+		removeAsset: function(assetId) {
 
 			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
@@ -140,10 +151,11 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Retrieve all thumbnails for an asset
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Number} assetId - The ID of the asset
 		 * @returns {Promise} - A promise that will resolve to an object that has a "thumbnails" property that is an array of asset thumbnails
 		 */
-		retrieveAssetThumbnails: function (assetId) {
+		retrieveAssetThumbnails: function(assetId) {
 
 			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
@@ -156,10 +168,11 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Retrieve all sources (3d model files) for an asset
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Number} assetId - The ID of the asset
 		 * @returns {Promise} - A promise that will resolve to an object that has a "sources" property that is an array of asset sources
 		 */
-		retrieveAssetSources: function (assetId) {
+		retrieveAssetSources: function(assetId) {
 
 			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
@@ -173,17 +186,18 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Create asset thumbnail(s)
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Number} assetId - The asset ID for which the thumbnails are created
 		 * @param {Array} filesArray - The files that are attached to this asset, they come in the form of [{id:"id",caption:"caption",description,"description",is_primary:true/false}]
 		 * @param {Boolean} async - Whether thumbnails should be generated asynchronously to save system resources.
 		 * @returns {Promise} - A promise that will resolve to an asset thumbnails object
 		 */
-		createAssetThumbnails: function (assetId, filesArray, async) {
+		createAssetThumbnails: function(assetId, filesArray, async) {
 
 			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
 
-				var thumbnails = filesArray.map(function (file) {
+				var thumbnails = filesArray.map(function(file) {
 					return {id: file.id, caption: file.caption || '', description:file.description || '',is_primary:file.is_primary || false};
 				});
 				async = async || false;
@@ -201,11 +215,12 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Create asset source(s)
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Number} assetId - The asset ID for which the thumbnails are created
 		 * @param {String} fileIds - The file ids that are attached to this asset, separated by comma i.e. 123456,258242
 		 * @returns {Promise} - A promise that will resolve to an asset sources object
 		 */
-		createAssetSources: function (assetId, fileIds) {
+		createAssetSources: function(assetId, fileIds) {
 
 			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
@@ -220,11 +235,12 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Remove sources from an asset for a logged in user
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Number} assetId - The ID of the asset
 		 * @param {String} fileIds - String of file ids to delete from asset
 		 * @returns {Promise} - A promise that will resolve to an empty body with a proper success/failure response
 		 */
-		deleteAssetSources: function (assetId, fileIds) {
+		deleteAssetSources: function(assetId, fileIds) {
 
 			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {
@@ -237,11 +253,12 @@ var ADSKSpark = ADSKSpark || {};
 
 		/**
 		 * @description - Remove thumbnails from an asset for a logged in user
+		 * @memberOf ADSKSpark.Assets
 		 * @param {Number} assetId - The ID of the asset
 		 * @param {String} fileIds - Array of file ids to delete from asset
 		 * @returns {Promise} - A promise that will resolve to an empty body with a proper success/failure response
 		 */
-		deleteAssetThumbnails: function (assetId, fileIds) {
+		deleteAssetThumbnails: function(assetId, fileIds) {
 
 			//Make sure assetId is defined and that it is valid
 			if (Helpers.isValidId(assetId)) {

@@ -19,10 +19,11 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Get the details for a specific file
+         * @memberOf ADSKSpark.Members
          * @param {String} fileId - The ID of the file
          * @returns {Promise} - A promise that will resolve to an a file
          */
-        getFileDetails: function (fileId) {
+        getFileDetails: function(fileId) {
 
             //Make sure fileId is defined and that it is valid
             if (Helpers.isValidId(fileId)) {
@@ -34,13 +35,14 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Upload a file to Spark Drive
+         * @memberOf ADSKSpark.Members
          * @param fileData - The file object to upload - has the form of:
          *                          file: The actual file data that is passed in the body
          *                          unzip: Should we treat the upload as a zip of multiple files
          *                          public: If it has full public URL for everyone's access
          * @returns {Promise} - A promise that will resolve to a file object response
          */
-        uploadFile: function (fileData) {
+        uploadFile: function(fileData) {
 
             var fd = new FormData();
             fd.append("file", fileData.file);
@@ -57,10 +59,11 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Download user's file(s) from the Spark Drive
+         * @memberOf ADSKSpark.Members
          * @param {String} fileIds - Comma separated list of file IDs to download
          * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
          */
-        downloadFile: function (fileIds) {
+        downloadFile: function(fileIds) {
 
             //Make sure fileId is defined and that it is valid
             if (Helpers.isValidIds(fileIds)) {
@@ -75,11 +78,12 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Download a file from the Spark Drive that was uploaded by other user
+         * @memberOf ADSKSpark.Members
          * @param {String} fileIds - Comma separated list of file IDs to download
          * @param {String} assetId - AssetId to which this file belongs
          * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
          */
-        downloadPublicFile: function (fileIds, assetId) {
+        downloadPublicFile: function(fileIds, assetId) {
 
             //Make sure fileIds and assetId are defined and that they are valid
             if (Helpers.isValidIds(fileIds) && Helpers.isValidId(assetId)) {
@@ -97,10 +101,11 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Get a URL for downloading the user's file(s) from the Spark Drive
+         * @memberOf ADSKSpark.Members
          * @param {String} fileIds - Comma separated list of file IDs to download
          * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
          */
-        downloadFileByURL: function (fileIds) {
+        downloadFileByURL: function(fileIds) {
 
             //Make sure fileId is defined and that it is valid
             if (Helpers.isValidIds(fileIds)) {
