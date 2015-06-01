@@ -54,6 +54,52 @@ describe('Assets', function () {
 		expect(Assets).to.have.property('deleteAssetSources');
 		expect(Assets).to.have.property('deleteAssetThumbnails');
 	});
+
+	it('should retrieve public assets successfully', function () {
+		//mock
+		mockedGuestAuthorizedRequest.withArgs('/assets').returns({
+			get: function () {
+				return Promise.resolve(fakeAssetsGetResponse);
+			}
+		});
+
+		return Assets.getPublicAssetsByConditions().then(function (response) {
+			expect(response).to.have.property('count', 23);
+			expect(response).to.have.property('assets');
+			expect(response.assets).to.have.length(23);
+		});
+
+	});
+
+	it('should get a public asset successfully', function () {
+		var assetId = 1474495;
+		//mock
+		mockedGuestAuthorizedRequest.withArgs('/assets/' + assetId).returns({
+			get: function () {
+				return Promise.resolve(fakeAssetGetResponse);
+			}
+		});
+
+		return Assets.getPublicAsset(assetId).then(function (response) {
+			expect(response).to.have.property('asset_id', assetId);
+			expect(response).to.have.deep.property('artist.artist_id', fakeAssetGetResponse.artist.artist_id);
+			expect(response).to.have.property('thumbnails');
+			expect(response.thumbnails).to.have.length(6);
+		});
+	});
+
+	it('should reject getPublicAsset by assetId for an assetId that is not a number', function () {
+		return Assets
+			.getPublicAsset('a string')
+			.then(function (response) {
+			})
+			.catch(function (error) {
+				expect(error).to.be.an.instanceof(Object);
+				expect(error).to.have.property('message');
+			});
+
+	});
+
 	it('should get a user\'s asset successfully', function () {
 		var assetId = 1474495;
 		//mock
@@ -63,6 +109,7 @@ describe('Assets', function () {
 			}
 		});
 
+		var foo = Assets.getAsset(assetId);
 		return Assets.getAsset(assetId).then(function (response) {
 			expect(response).to.have.property('asset_id', assetId);
 			expect(response).to.have.deep.property('artist.artist_id', fakeAssetGetResponse.artist.artist_id);
