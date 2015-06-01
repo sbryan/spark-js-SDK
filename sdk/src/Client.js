@@ -237,7 +237,7 @@ var ADSKSpark = ADSKSpark || {};
             var _this = this;
             options = options || {};
             return ADSKSpark.Request(_apiUrl + endpoint, function () {
-                return new Promise(function (resolve, reject) {
+                return new Promise(function (resolve) {
                     _this.getGuestToken().then(function (token) {
                         resolve(token ? ('Bearer ' + token) : null);
                     });

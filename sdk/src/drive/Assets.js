@@ -84,7 +84,7 @@ var ADSKSpark = ADSKSpark || {};
 				var defaultParams = {
 					limit:listDefaultLimit,
 					offset: 0
-				}
+				};
 
 				if (params && params.limit && params.limit <= 0){
 					delete(params.limit);

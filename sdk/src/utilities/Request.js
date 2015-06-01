@@ -21,7 +21,7 @@ ADSKSpark.Request = function(url, authorization, options) {
     // authorization header; otherwise we resolve to the value of the parameter.
     //
     var prepareRequest = function (method, headers, data, authorization) {
-        var promise = new Promise(function (resolve, reject) {
+        var promise = new Promise(function (resolve) {
             if (authorization && typeof authorization === 'function') {
                 authorization().then(function (data) {
                     resolve(data);
