@@ -93,6 +93,24 @@ var ADSKSpark = ADSKSpark || {};
             }
 
             return Promise.reject(new Error('Proper fileId(s) or assetId were not supplied'));
+        },
+
+        /**
+         * @description - Get a URL for downloading the user's file(s) from the Spark Drive
+         * @param {String} fileIds - Comma separated list of file IDs to download
+         * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
+         */
+        downloadFileByURL: function (fileIds) {
+
+            //Make sure fileId is defined and that it is valid
+            if (Helpers.isValidIds(fileIds)) {
+                var payload = {
+                    file_ids: fileIds
+                };
+                return Client.authorizedApiRequest('/files/download/path').get(null, payload);
+            }
+            
+            return Promise.reject(new Error('Proper fileId(s) was not supplied'));
         }
     };
 

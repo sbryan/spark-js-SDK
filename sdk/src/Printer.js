@@ -277,7 +277,7 @@ var ADSKSpark = ADSKSpark || {};
 
 			var headers = {'Content-Type': 'application/json'};
 
-			var params = JSON.stringify(params);
+			params = JSON.stringify(params);
 
             return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/command')
                 .post(headers, params)
