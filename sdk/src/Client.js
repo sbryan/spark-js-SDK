@@ -38,6 +38,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Initializes the client.
+         * @memberOf ADSKSpark.Client
          * @param {String} clientId - The app key provided when you registered your app.
          * @param {String} guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
          *                                 handle exchanging the client secret for a guest token.
@@ -60,7 +61,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Returns the URL to redirect to for logging in.
-         *
+         * @memberOf ADSKSpark.Client
          * @returns {String} - The URL.
          */
         getLoginRedirectUrl: function() {
@@ -79,6 +80,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Clears access token that had been stored in localStorage
+         * @memberOf ADSKSpark.Client
          */
         logout: function() {
             localStorage.removeItem(ACCESS_TOKEN_KEY);
@@ -86,7 +88,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Completes the login process, gets an access_token and stores it in localStorage.
-         *
+         * @memberOf ADSKSpark.Client
          * @param {String} code - The code that was returned after the user signed in. {@see ADSKSpark.Client#login}
          * @returns {Promise} - A promise that resolves to the access token.
          */
@@ -111,7 +113,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Checks if the access token exists and has not expired.
-         *
+         * @memberOf ADSKSpark.Client
          * @returns {Boolean} - True if the access token exists and has not expired. Otherwise, false.
          */
         isAccessTokenValid: function() {
@@ -123,7 +125,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Returns the full access token object if one is currently in local storage. Null otherwise.
-         *
+         * @memberOf ADSKSpark.Client
          * @returns {?String} - The access token or null if not found.
          */
         getAccessTokenObject: function() {
@@ -134,7 +136,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Returns the access_token if one is currently in local storage. Null otherwise.
-         *
+         * @memberOf ADSKSpark.Client
          * @returns {?String} - The access token or null if not found.
          */
         getAccessToken: function() {
@@ -147,7 +149,7 @@ var ADSKSpark = ADSKSpark || {};
          * @description - Return a promise that resolves to the guest token.
          * This will attempt to retrieve the token from local storage. If it's missing, a call will be made to
          * the authentication server.
-         *
+         * @memberOf ADSKSpark.Client
          * @returns {Promise} - A promise that resolves to the guest token.
          */
         getGuestToken: function() {
@@ -163,7 +165,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Refreshes the access token to extend its expiry and returns a promise that resolves to the access token object
-         *
+         * @memberOf ADSKSpark.Client
          * @returns {Promise} - A promise that resolves to the access token object.
          */
         refreshAccessToken: function() {
@@ -187,9 +189,10 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Request the API with an access token (if exists)
+         * @memberOf ADSKSpark.Client
          * @param {String} endpoint - The API endpoint to query
          * @param {Object} [options] - Additional options that are supported by Request
-         *
+
          * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
          */
         authorizedApiRequest: function (endpoint, options) {
@@ -228,6 +231,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Request the API with a guest token (if exists)
+         * @memberOf ADSKSpark.Client
          * @param {String} endpoint - The API endpoint to query
          * @param {Object} [options] - Additional options that are supported by Request
          *
@@ -248,6 +252,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @description - Open an auth window
+         * @memberOf ADSKSpark.Client
          */
         openLoginWindow: function() {
             Helpers.popupWindow(this.getLoginRedirectUrl(), 350, 600);
