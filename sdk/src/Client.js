@@ -208,7 +208,7 @@ var ADSKSpark = ADSKSpark || {};
                         //
                         var now = Date.now();
                         if (token.expires_at && now < token.expires_at) {
-                            Client.refreshAccessToken()
+                            this.refreshAccessToken()
                                 .then(function (refreshedToken) {
                                     resolve(formatAuthHeader(refreshedToken));
                                 });
@@ -231,10 +231,11 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {ADSKSpark.Request} - The request object that abstracts REST APIs
          */
         authorizedAsGuestApiRequest: function (endpoint, options) {
+            var _this = this;
             options = options || {};
             return ADSKSpark.Request(_apiUrl + endpoint, function () {
                 return new Promise(function (resolve, reject) {
-                    Client.getGuestToken().then(function (token) {
+                    _this.getGuestToken().then(function (token) {
                         resolve(token ? ('Bearer ' + token) : null);
                     });
                 });

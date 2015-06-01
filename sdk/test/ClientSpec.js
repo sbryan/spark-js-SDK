@@ -28,7 +28,7 @@ describe('Client', function() {
             refresh_token_expires_in: 100000,
             refresh_token_issued_at: Date.now()
         };
-        
+
         ASC.initialize(testClientId, testGuestUrl, testAccessUrl, testRefreshUrl, testApiUrl,testRedirectURI);
 
     });
