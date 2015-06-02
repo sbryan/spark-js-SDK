@@ -62,7 +62,7 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @description - Returns the URL to redirect to for logging in.
          * @memberOf ADSKSpark.Client
-         * @param {String} showRegisterScreen - Whether to show the register screen as the default
+         * @param {Boolean} showRegisterScreen - Whether to show the register screen as the default
          * @returns {String} - The URL.
          */
         getLoginRedirectUrl: function(showRegisterScreen) {
