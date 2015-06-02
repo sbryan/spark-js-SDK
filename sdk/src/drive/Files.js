@@ -103,7 +103,7 @@ var ADSKSpark = ADSKSpark || {};
          * @description - Get a URL for downloading the user's file(s) from the Spark Drive
          * @memberOf ADSKSpark.Members
          * @param {String} fileIds - Comma separated list of file IDs to download
-         * @returns {Promise} - A promise that will resolve to a file, or zip (if more than one file ID is passed)
+         * @returns {Promise} - A promise that will resolve to a JSON object with .download_url
          */
         downloadFileByURL: function(fileIds) {
 
