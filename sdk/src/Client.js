@@ -62,16 +62,21 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @description - Returns the URL to redirect to for logging in.
          * @memberOf ADSKSpark.Client
+         * @param {String} showRegisterScreen - Whether to show the register screen as the default
          * @returns {String} - The URL.
          */
-        getLoginRedirectUrl: function() {
+        getLoginRedirectUrl: function(showRegisterScreen) {
 
             var apiRedirectUrl = _apiUrl + '/oauth/authorize' +
-                "?response_type=code" +
-                "&client_id=" + _clientId;
+                '?response_type=code' +
+                '&client_id=' + _clientId;
 
             if (_redirectUri) {
                 apiRedirectUrl += "&redirect_uri=" + _redirectUri;
+            }
+
+            if (showRegisterScreen){
+                apiRedirectUrl += '&register=true';
             }
 
             return apiRedirectUrl;
