@@ -135,9 +135,6 @@ var ADSKSpark = ADSKSpark || {};
                 'settings': { 'profile_id': profileId},
                 'printable_id': printableId
             });
-            this.printer_id = printerId;        // Not currently available from server query
-            this.profile_id = profileId;        // Not currently available from server query
-            this.printable_id = printableId;    // Not currently available from server query
             return Client.authorizedApiRequest('/print/printers/' + printerId + '/jobs')
                     .post(headers, payload)
                     .then(updateJob);
