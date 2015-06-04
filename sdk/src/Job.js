@@ -78,7 +78,7 @@ var ADSKSpark = ADSKSpark || {};
             this.printer_id = data.printer_id;
             this.status   = data.job_status ? data.job_status.job_status : null;
             this.progress = data.job_status ? data.job_status.job_progress : 0.0;
-            this.data = data;   // TODO: Just copy all properties over to this?
+            this.data = data;
         }
     };
 
@@ -99,9 +99,13 @@ var ADSKSpark = ADSKSpark || {};
             return Client.authorizedApiRequest('/print/jobs/' + this.id)
                 .get()
                 .then(function(data) {
+                    // Service will soon include the printer_id.
+                    if( data.hasOwnProperty("printer_id") )
+                        _this.printer_id = data.printer_id;
+
                     _this.status   = data.job_status ? data.job_status.job_status : null;
                     _this.progress = data.job_status ? data.job_status.job_progress : 0.0;
-                    _this.data = data;  // TODO: Just copy all properties over to this?
+                    _this.data = data;
                     return _this;
                 })
                 .catch(function(error) {
