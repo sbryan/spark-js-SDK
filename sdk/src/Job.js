@@ -133,21 +133,23 @@ var ADSKSpark = ADSKSpark || {};
                 _this.id = data.job_id;
                 return _this.getStatus();
             }
+            printerId = printerId || 0;
             var headers = {'Content-Type': 'application/json'};
-            var payload = JSON.stringify({
-                'printer_id': printerId,
-                'settings': { 'profile_id': profileId},
-                'printable_id': printableId
-            });
+            var payload = {
+                'settings': { 'profile_id': profileId },
+            };
+            if( printableId ) {
+                payload.printable_id = printableId;
+            }
             return Client.authorizedApiRequest('/print/printers/' + printerId + '/jobs')
-                    .post(headers, payload)
+                    .post(headers, JSON.stringify(payload))
                     .then(updateJob);
         },
 
         /**
-         * Update the job status and comment with optional custom data for this job.
-         * @param {string} newStatus - job status string. Must be either "success" or "failed".
-         * @param {string} newComment - comment string 
+         * Update the job status and/or comment and/or custom data for this job.
+         * @param {string} [newStatus] - job status string. Must be either "success" or "failed".
+         * @param {string} [newComment] - comment string 
          * @param {object} [customData] - custom application data to be saved with this job.
          * @returns {Promise} - A Promise which resolves to this object with updated contents.
          */
@@ -155,15 +157,15 @@ var ADSKSpark = ADSKSpark || {};
             if( !this.id ) {
                 return Promise.reject(new Error("Unknown job in updateStatus."));
             }
-
-            newStatus = newStatus.toLowerCase();
-            if( newStatus !== "success" && newStatus !== "failed" ) {
-                return Promise.reject(new Error("Invalid job status in updateStatus."));
+            if( newStatus ) {
+                newStatus = newStatus.toLowerCase();
+                if( newStatus !== "success" && newStatus !== "failed" ) {
+                    return Promise.reject(new Error("Invalid job status in updateStatus."));
+                }
             }
-
             var _this = this;
-            var urlStatus  = encodeURIComponent(newStatus);
-            var urlComment = encodeURIComponent(newComment);
+            var urlStatus  = encodeURIComponent(newStatus || "");
+            var urlComment = encodeURIComponent(newComment || "");
             var headers, payload;
             if( customData ) {
                 headers = {'Content-Type': 'application/json'};
@@ -172,7 +174,69 @@ var ADSKSpark = ADSKSpark || {};
             return Client.authorizedApiRequest('/print/jobs/' + this.id + '?status=' + urlStatus + '&comment=' + urlComment)
                     .put(headers, payload)
                     .then(function(response) {
-                        console.log("GOT: " + JSON.stringify(response));
+                        console.log("updateStatus GOT: " + JSON.stringify(response));
+                        return _this.getStatus();
+                    });
+        },
+
+        /**
+         * Set the printable file on a job that doesn't already have one.
+         * @param {string} [printableId] - Spark Drive Id of the printable file.
+         * @returns {Promise} - A Promise which resolves to this object with updated contents.
+         */
+        setPrintable: function(printableId) {
+            if( !this.id )
+                return Promise.reject(new Error("Unknown job in setPrintable."));
+
+            if( !printableId )
+                return Promise.reject(new Error("Must provide printable file ID for setPrintable."));
+
+            var _this = this;
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
+                'printable_id': printableId
+            });
+
+            return Client.authorizedApiRequest('/print/jobs/' + this.id + '/set-printable')
+                    .post(headers, payload)
+                    .then(function(response) {
+                        if( response.printer_id )
+                            _this.printer_id = response.printer_id;
+                        if( response.status )
+                            _this.status = response.status;
+
+                        console.log("setPrintable GOT: " + JSON.stringify(response));
+                        return _this.getStatus();
+                    });
+        },
+
+        /**
+         * Set the printer on a job that doesn't already have one.
+         * @param {string} [printerId] - Printer to assign this job to.
+         * @returns {Promise} - A Promise which resolves to this object with updated contents.
+         */
+        setPrinter: function(printerId) {
+            if( !this.id )
+                return Promise.reject(new Error("Unknown job in setPrinter."));
+
+            if( !printerId )
+                return Promise.reject(new Error("Must provide printer for setPrinter."));
+
+            var _this = this;
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
+                'printer_id': printerId
+            });
+
+            return Client.authorizedApiRequest('/print/jobs/' + this.id + '/set-printer')
+                    .post(headers, payload)
+                    .then(function(response) {
+                        if( response.printer_id )
+                            _this.printer_id = response.printer_id;
+                        if( response.status )
+                            _this.status = response.status;
+
+                        console.log("setPrinter GOT: " + JSON.stringify(response));
                         return _this.getStatus();
                     });
         },
