@@ -115,7 +115,6 @@ var ADSKSpark = ADSKSpark || {};
                 });
         },
 
-
         /**
          * Create a new print job. Note, this may also send it immediately to the printer.
          * @param {string} printerId - Spark Id of the target printer.
@@ -124,7 +123,19 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise} - A Promise which resolves to this object with updated contents.
          * @see {@link ADSKSpark.TrayAPI.generatePrintable}
          */
-        create: function (printerId, profileId, printableId) {
+        createWithProfile: function (printerId, profileId, printableId) {
+            return this.createWithSettings(printerId, {profile_id: profileId}, printableId);
+        },
+
+        /**
+         * Create a new print job. Note, this may also send it immediately to the printer.
+         * @param {string} printerId - Spark Id of the target printer.
+         * @param {Object} settings - Settings to be used for this print job.
+         * @param {string} printableId - Spark Drive Id of the printable file.
+         * @returns {Promise} - A Promise which resolves to this object with updated contents.
+         * @see {@link ADSKSpark.TrayAPI.generatePrintable}
+         */
+        createWithSettings: function (printerId, settings, printableId) {
             if (this.id) {
                 return Promise.reject(new Error("Job already exists."));
             }
@@ -138,9 +149,7 @@ var ADSKSpark = ADSKSpark || {};
 
             printerId = printerId || 0;
             var headers = {'Content-Type': 'application/json'};
-            var payload = {
-                'settings': { 'profile_id': profileId },
-            };
+            var payload = {settings: settings};
             if (printableId) {
                 payload.printable_id = printableId;
             }
