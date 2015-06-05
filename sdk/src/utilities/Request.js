@@ -63,7 +63,7 @@ var ADSKSpark = ADSKSpark || {};
             var promise = new Promise(function (resolve, reject) {
                 var xhr = new XMLHttpRequest();
 
-                // console.log(method + " -> " + url + " (" + payload + ")");
+                // console.log(method + ' -> ' + url + ' (' + payload + ')');
                 xhr.open(method, url);
 
                 // Set the headers

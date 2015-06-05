@@ -10,7 +10,7 @@ var ADSKSpark = ADSKSpark || {};
         var _taskId, _interval;
 
         this._checkTaskResponse = function (taskResponse) {
-            console.log("Task status: ", taskResponse.status, "progress:", taskResponse.progress);
+            console.log('Task status: ', taskResponse.status, 'progress:', taskResponse.progress);
 
             if (taskResponse.status === 'done') {
                 return taskResponse.result;
@@ -22,7 +22,7 @@ var ADSKSpark = ADSKSpark || {};
                 progressCallback(taskResponse.progress);
             }
 
-            // console.log("Delay task");
+            // console.log('Delay task');
 
             return new Promise(function (resolve) {
                 setTimeout(function () {
@@ -32,7 +32,7 @@ var ADSKSpark = ADSKSpark || {};
         };
 
         this._pollTask = function () {
-            // console.log("Poll task");
+            // console.log('Poll task');
             return Client.authorizedApiRequest('/print/tasks/' + _taskId)
                 .get().then(_this._checkTaskResponse);
         };

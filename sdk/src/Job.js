@@ -93,7 +93,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         getStatus: function () {
             if (!this.id) {
-                return Promise.reject(new Error("Job does not exist."));
+                return Promise.reject(new Error('Job does not exist.'));
             }
 
             var _this = this;
@@ -101,7 +101,7 @@ var ADSKSpark = ADSKSpark || {};
                 .get()
                 .then(function (data) {
                     // Service will soon include the printer_id.
-                    if (data.hasOwnProperty("printer_id")) {
+                    if (data.hasOwnProperty('printer_id')) {
                         _this.printer_id = data.printer_id;
                     }
 
@@ -138,7 +138,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         createWithSettings: function (settings, printerId, printableId) {
             if (this.id) {
-                return Promise.reject(new Error("Job already exists."));
+                return Promise.reject(new Error('Job already exists.'));
             }
 
             var _this = this;
@@ -168,17 +168,17 @@ var ADSKSpark = ADSKSpark || {};
          */
         updateStatus: function (newStatus, newComment, customData) {
             if (!this.id) {
-                return Promise.reject(new Error("Unknown job in updateStatus."));
+                return Promise.reject(new Error('Unknown job in updateStatus.'));
             }
             if (newStatus) {
                 newStatus = newStatus.toLowerCase();
-                if (newStatus !== "success" && newStatus !== "failed") {
-                    return Promise.reject(new Error("Invalid job status in updateStatus."));
+                if (newStatus !== 'success' && newStatus !== 'failed') {
+                    return Promise.reject(new Error('Invalid job status in updateStatus.'));
                 }
             }
             var _this = this;
-            var urlStatus = encodeURIComponent(newStatus || "");
-            var urlComment = encodeURIComponent(newComment || "");
+            var urlStatus = encodeURIComponent(newStatus || '');
+            var urlComment = encodeURIComponent(newComment || '');
             var headers, payload;
             if (customData) {
                 headers = {'Content-Type': 'application/json'};
@@ -187,7 +187,7 @@ var ADSKSpark = ADSKSpark || {};
             return Client.authorizedApiRequest('/print/jobs/' + this.id + '?status=' + urlStatus + '&comment=' + urlComment)
                 .put(headers, payload)
                 .then(function (response) {
-                    console.log("updateStatus GOT: " + JSON.stringify(response));
+                    console.log('updateStatus GOT: ' + JSON.stringify(response));
                     return _this.getStatus();
                 });
         },
@@ -199,11 +199,11 @@ var ADSKSpark = ADSKSpark || {};
          */
         setPrintable: function (printableId) {
             if (!this.id) {
-                return Promise.reject(new Error("Unknown job in setPrintable."));
+                return Promise.reject(new Error('Unknown job in setPrintable.'));
             }
 
             if (!printableId) {
-                return Promise.reject(new Error("Must provide printable file ID for setPrintable."));
+                return Promise.reject(new Error('Must provide printable file ID for setPrintable.'));
             }
 
             var _this = this;
@@ -222,7 +222,7 @@ var ADSKSpark = ADSKSpark || {};
                         _this.status = response.status;
                     }
 
-                    console.log("setPrintable GOT: " + JSON.stringify(response));
+                    console.log('setPrintable GOT: ' + JSON.stringify(response));
                     return _this.getStatus();
                 });
         },
@@ -234,11 +234,11 @@ var ADSKSpark = ADSKSpark || {};
          */
         setPrinter: function (printerId) {
             if (!this.id) {
-                return Promise.reject(new Error("Unknown job in setPrinter."));
+                return Promise.reject(new Error('Unknown job in setPrinter.'));
             }
 
             if (!printerId) {
-                return Promise.reject(new Error("Must provide printer for setPrinter."));
+                return Promise.reject(new Error('Must provide printer for setPrinter.'));
             }
 
             var _this = this;
@@ -257,7 +257,7 @@ var ADSKSpark = ADSKSpark || {};
                         _this.status = response.status;
                     }
 
-                    console.log("setPrinter GOT: " + JSON.stringify(response));
+                    console.log('setPrinter GOT: ' + JSON.stringify(response));
                     return _this.getStatus();
                 });
         },

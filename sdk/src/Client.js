@@ -72,7 +72,7 @@ var ADSKSpark = ADSKSpark || {};
                 '&client_id=' + _clientId;
 
             if (_redirectUri) {
-                apiRedirectUrl += "&redirect_uri=" + _redirectUri;
+                apiRedirectUrl += '&redirect_uri=' + _redirectUri;
             }
 
             if (showRegisterScreen) {

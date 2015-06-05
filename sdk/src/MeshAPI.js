@@ -11,7 +11,7 @@ var ADSKSpark = ADSKSpark || {};
 
     var requestImport = function (fileId, name, generateVisual, transform) {
         ++_meshCounter;
-        name = name || ("Mesh_" + _meshCounter);
+        name = name || ('Mesh_' + _meshCounter);
         transform = transform || [
             [1, 0, 0, 0],
             [0, 1, 0, 0],
@@ -19,10 +19,10 @@ var ADSKSpark = ADSKSpark || {};
         ];
         var headers = {'Content-Type': 'application/json'};
         var payload = JSON.stringify({
-            "file_id": fileId.toString(),
-            "name": name,
-            "transform": transform,
-            "generate_visual": !!generateVisual
+            'file_id': fileId.toString(),
+            'name': name,
+            'transform': transform,
+            'generate_visual': !!generateVisual
         });
         return Client.authorizedApiRequest('/geom/meshes/import').post(headers, payload);
     };

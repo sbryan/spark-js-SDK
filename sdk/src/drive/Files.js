@@ -45,13 +45,13 @@ var ADSKSpark = ADSKSpark || {};
         uploadFile: function (fileData) {
 
             var fd = new FormData();
-            fd.append("file", fileData.file);
+            fd.append('file', fileData.file);
 
             var unzip = fileData.unzip ? fileData.unzip : false;
-            fd.append("unzip", unzip);
+            fd.append('unzip', unzip);
 
             if (fileData.public) {
-                fd.append("public", fileData.public);
+                fd.append('public', fileData.public);
             }
 
             return Client.authorizedApiRequest('/files/upload').post(null, fd);

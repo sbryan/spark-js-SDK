@@ -32,9 +32,9 @@ var ADSKSpark = ADSKSpark || {};
         transformToAssocArray: function (prmstr) {
             var params = [];
             if (prmstr) {
-                var prmarr = prmstr.split("&");
+                var prmarr = prmstr.split('&');
                 for (var i = 0; i < prmarr.length; i++) {
-                    var tmparr = prmarr[i].split("=");
+                    var tmparr = prmarr[i].split('=');
                     params[tmparr[0]] = tmparr[1];
                 }
             }

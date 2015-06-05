@@ -203,7 +203,7 @@ var ADSKSpark = ADSKSpark || {};
                     return {id: file.id, caption: file.caption || '', description: file.description || '', is_primary: file.is_primary || false};
                 });
                 async = async || false;
-                var params = "thumbnails=" + JSON.stringify(thumbnails) + '&async=' + async;
+                var params = 'thumbnails=' + JSON.stringify(thumbnails) + '&async=' + async;
 
                 var headers = {'Content-type': 'application/x-www-form-urlencoded'};
                 return Client.authorizedApiRequest('/assets/' + assetId + '/thumbnails').post(headers, params);
