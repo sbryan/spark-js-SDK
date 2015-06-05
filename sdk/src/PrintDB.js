@@ -30,16 +30,20 @@ var ADSKSpark = ADSKSpark || {};
          * @param {String} [materialId] - The type ID. If not specified, return all materials.
          * @returns {Promise} - A promise that will resolve with a list of materials.
          */
-        getMaterial: function (/*materialId*/) {
-            // TODO: Make XHR request and chain the resulting promise to parse the JSON
+        getMaterial: function (materialId) {
+            materialId = materialId || '';
+            return Client.authorizedApiRequest('/printdb/materials/' + materialId)
+                .get();
         },
 
         /**
          * @param {String} [profileId] - The type ID. If not specified, return all profiles.
          * @returns {Promise} - A promise that will resolve with a list of profiles.
          */
-        getProfile: function (/*profileId*/) {
-            // TODO: Make XHR request and chain the resulting promise to parse the JSON
+        getProfile: function (profileId) {
+            profileId = profileId || '';
+            return Client.authorizedApiRequest('/printdb/profiles/' + profileId)
+                .get();
         }
     };
 
