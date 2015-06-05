@@ -3,12 +3,13 @@
  */
 var ADSKSpark = ADSKSpark || {};
 
-(function() {
+(function () {
     'use strict';
+
     var Client = ADSKSpark.Client;
     var _meshCounter = 0;
 
-    var requestImport = function(fileId, name, generateVisual, transform) {
+    var requestImport = function (fileId, name, generateVisual, transform) {
         ++_meshCounter;
         name = name || ("Mesh_" + _meshCounter);
         transform = transform || [
@@ -26,11 +27,10 @@ var ADSKSpark = ADSKSpark || {};
         return Client.authorizedApiRequest('/geom/meshes/import').post(headers, payload);
     };
 
-    var uploadFileObject = function(file)
-    {
+    var uploadFileObject = function (file) {
         var formData = new FormData();
         formData.append(file.name, file);
-                
+
         // TODO: file upload progress ???
         return Client.authorizedApiRequest('/files/upload').post(null, formData);
     };
@@ -57,12 +57,11 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to a Mesh Resource Object.
          */
-        importMesh: function(fileId, name, generateVisual, transform, progressCallback) {
-
+        importMesh: function (fileId, name, generateVisual, transform, progressCallback) {
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             return requestImport(fileId, name, generateVisual, transform)
-                    .then(waiter.wait);
+                .then(waiter.wait);
         },
 
         /**
@@ -74,7 +73,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to a list of file upload results. The first entry in the resulting list should be the File resource information for this upload. See https://spark.autodesk.com/developers/reference/drive
          */
-        uploadFile: function(file, progressCallback) {
+        uploadFile: function (file, progressCallback) {
             return uploadFileObject(file, progressCallback);
         },
 
@@ -82,11 +81,12 @@ var ADSKSpark = ADSKSpark || {};
          * @method transformMesh
          * @memberOf ADSKSpark.MeshAPI
          * @description - Modify the transform applied to a Spark Mesh Resource.
+         * @param meshId
          * @param {Array} transform - Optional transform to be applied to this mesh. This should be an array containing the three rows of an affine transformation. The default value is the identity transform: [ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ] ].
          *
          * @returns {Object} - A new Spark Mesh Resource with the modified transform.
          */
-        transformMesh: function( meshId, transform ) {
+        transformMesh: function (meshId, transform) {
             // TODO: This needs generateVisual option (even though transforms are not applied to visuals).
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({
@@ -105,14 +105,14 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to the input Mesh Resource with analysis results available in the "problems" property. See https://spark.autodesk.com/developers/reference/print
          */
-        analyzeMesh: function( meshId, progressCallback ) {
+        analyzeMesh: function (meshId, progressCallback) {
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({
                 id: meshId
             });
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
             return Client.authorizedApiRequest('/geom/meshes/analyze').post(headers, payload)
-                    .then(waiter.wait);
+                .then(waiter.wait);
         },
 
         /**
@@ -125,7 +125,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to a new Mesh Resource with possible repairs applied. See https://spark.autodesk.com/developers/reference/print
          */
-        repairMesh: function( meshId, generateVisual, progressCallback ) {
+        repairMesh: function (meshId, generateVisual, progressCallback) {
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({
                 id: meshId,
@@ -134,7 +134,7 @@ var ADSKSpark = ADSKSpark || {};
             });
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
             return Client.authorizedApiRequest('/geom/meshes/repair').post(headers, payload)
-                    .then(waiter.wait);
+                .then(waiter.wait);
         },
 
         /**
@@ -146,15 +146,15 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to the input Mesh Resource with a visual_file_id property added.
          */
-        generateVisual: function( meshId, progressCallback ) {
+        generateVisual: function (meshId, progressCallback) {
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({
                 id: meshId
             });
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
             return Client.authorizedApiRequest('/geom/meshes/generateVisual').post(headers, payload)
-                    .then(waiter.wait);
+                .then(waiter.wait);
         }
-
     };
+
 }());

@@ -39,8 +39,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		getMyProfile: function() {
 			return Client.authorizedApiRequest('/members').get();
-
 		}
-
 	};
+
 }());

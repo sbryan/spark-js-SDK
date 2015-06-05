@@ -2,6 +2,7 @@ var ADSKSpark = ADSKSpark || {};
 
 (function () {
     'use strict';
+
     var Client = ADSKSpark.Client;
 
     /**
@@ -272,4 +273,4 @@ var ADSKSpark = ADSKSpark || {};
         }
     };
 
-})();
+}());

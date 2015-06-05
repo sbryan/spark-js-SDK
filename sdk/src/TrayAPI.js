@@ -5,9 +5,8 @@ var ADSKSpark = ADSKSpark || {};
 
 (function() {
     'use strict';
-    var Client = ADSKSpark.Client;
-    //var _meshCounter = 0;
 
+    var Client = ADSKSpark.Client;
 
     /**
      * @class ADSKSpark.TrayAPI
@@ -31,7 +30,6 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Promise} - A Promise which resolves to a new Tray Resource Object.
          */
         createTray: function(printerTypeId, printerProfileId, meshIds, meshAttrs, defaultMaterialId, progressCallback) {
-
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             var headers = {'Content-Type': 'application/json'};
@@ -40,6 +38,7 @@ var ADSKSpark = ADSKSpark || {};
                 'profile_id': printerProfileId,
                 'mesh_ids': meshIds
             };
+
             if( meshAttrs ) {
                 payload.mesh_attrs = meshAttrs;
             }
@@ -95,6 +94,6 @@ var ADSKSpark = ADSKSpark || {};
             return Client.authorizedApiRequest('/print/trays/generatePrintable').post(headers, payload)
                     .then(waiter.wait);
         }
-
     };
+
 }());

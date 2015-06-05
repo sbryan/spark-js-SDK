@@ -1,7 +1,8 @@
 var ADSKSpark = ADSKSpark || {};
 
-(function() {
+(function () {
     'use strict';
+
     var Client = ADSKSpark.Client;
 
     /**
@@ -9,7 +10,7 @@ var ADSKSpark = ADSKSpark || {};
      * @param {Object} data - JSON data.
      * @constructor
      */
-    ADSKSpark.Printers = function(data) {
+    ADSKSpark.Printers = function (data) {
         ADSKSpark.Paginated.call(this, data);
     };
 
@@ -21,21 +22,21 @@ var ADSKSpark = ADSKSpark || {};
      * @param {Object} params - limit/offset/sort/filter options.
      * @returns {Promise} - A promise that will resolve to an array of printers.
      */
-    ADSKSpark.Printers.get = function(params) {
+    ADSKSpark.Printers.get = function (params) {
         return Client.authorizedApiRequest('/print/printers')
             .get(null, params)
-            .then(function(data) {
+            .then(function (data) {
                 return new ADSKSpark.Printers(data);
             });
     };
 
-    ADSKSpark.Printers.prototype.parse = function(data) {
+    ADSKSpark.Printers.prototype.parse = function (data) {
         ADSKSpark.Paginated.prototype.parse.call(this, data);
         if (data) {
             var printers = data.printers;
             if (Array.isArray(printers)) {
                 var that = this;
-                printers.forEach(function(printer) {
+                printers.forEach(function (printer) {
                     that.push(new ADSKSpark.Printer(printer));
                 });
             }
@@ -47,20 +48,20 @@ var ADSKSpark = ADSKSpark || {};
      * @param {Object} data - JSON data.
      * @constructor
      */
-    ADSKSpark.PrinterMembers = function(data) {
+    ADSKSpark.PrinterMembers = function (data) {
         ADSKSpark.Paginated.call(this, data);
     };
 
     ADSKSpark.PrinterMembers.prototype = Object.create(ADSKSpark.Paginated.prototype);
     ADSKSpark.PrinterMembers.prototype.constructor = ADSKSpark.PrinterMembers;
 
-    ADSKSpark.PrinterMembers.prototype.parse = function(data) {
+    ADSKSpark.PrinterMembers.prototype.parse = function (data) {
         ADSKSpark.Paginated.prototype.parse.call(this, data);
         if (data) {
             var members = data.members;
             if (Array.isArray(members)) {
                 var that = this;
-                members.forEach(function(member) {
+                members.forEach(function (member) {
                     that.push(member);
                 });
             }
@@ -72,7 +73,7 @@ var ADSKSpark = ADSKSpark || {};
      * @param {Object} data - JSON data.
      * @constructor
      */
-    ADSKSpark.Printer = function(data) {
+    ADSKSpark.Printer = function (data) {
         this.printer_id = this.id = data.printer_id || data.id;
         this.printer_name = this.name = data.printer_name || data.name;
         this.firmware = data.firmware;
@@ -90,7 +91,7 @@ var ADSKSpark = ADSKSpark || {};
      * @param {string} [memberId] - Secondary member id if registering as a printer user.
      * @returns {Promise}
      */
-    ADSKSpark.Printer.register = function(name, code, memberId) {
+    ADSKSpark.Printer.register = function (name, code, memberId) {
         var headers = {'Content-Type': 'application/json'},
             payload = JSON.stringify({
                 printer_name: name,
@@ -100,7 +101,7 @@ var ADSKSpark = ADSKSpark || {};
 
         return Client.authorizedApiRequest('/print/printers/register')
             .post(headers, payload)
-            .then(function(data) {
+            .then(function (data) {
                 if (data.registered) {
                     return ADSKSpark.Printer.getById(data.printer_id);
                 }
@@ -121,10 +122,10 @@ var ADSKSpark = ADSKSpark || {};
      * @param {string} id - Printer id.
      * @returns {Promise} - A Promise that will resolve to a printer.
      */
-    ADSKSpark.Printer.getById = function(id) {
+    ADSKSpark.Printer.getById = function (id) {
         return Client.authorizedApiRequest('/print/printers/' + id)
             .get()
-            .then(function(data) {
+            .then(function (data) {
                 return new ADSKSpark.Printer(data);
             });
     };
@@ -137,15 +138,15 @@ var ADSKSpark = ADSKSpark || {};
          * Check printer status.
          * @returns {Promise} - A Promise that will resolve to the status information.
          */
-        getStatus: function() {
+        getStatus: function () {
             var that = this;
             return Client.authorizedApiRequest('/print/printers/status/' + this.printer_id)
                 .get()
-                .then(function(data) {
+                .then(function (data) {
                     that.status = data;
                     return data;
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     that.status = null;
                     throw error;
                 });
@@ -156,7 +157,7 @@ var ADSKSpark = ADSKSpark || {};
          * This uses the result of the last call to getStatus().
          * @returns {boolean}
          */
-        isOnline: function() {
+        isOnline: function () {
             return this.status || this.data.printer_last_health !== 'Offline';
         },
 
@@ -165,7 +166,7 @@ var ADSKSpark = ADSKSpark || {};
          * This uses the result of the last call to getStatus().
          * @returns {boolean}
          */
-        isPrinting: function() {
+        isPrinting: function () {
             var state = (((this.status || {}).last_reported_state || {}).data || {}).state;
             return /^(?:Exposing|Printing|Printing Layer|Separating)$/.test(state);
         },
@@ -175,7 +176,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {ADSKSpark.Job|string} job - Job or job id.
          * @returns {Promise}
          */
-        pause: function(job) {
+        pause: function (job) {
             var jobId = (job instanceof ADSKSpark.Job) ? job.id : job;
             return this.sendCommand('pause', {job_id: jobId});
         },
@@ -185,7 +186,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {ADSKSpark.Job|string} job - Job or job id.
          * @returns {Promise}
          */
-        resume: function(job) {
+        resume: function (job) {
             var jobId = (job instanceof ADSKSpark.Job) ? job.id : job;
             return this.sendCommand('resume', {job_id: jobId});
         },
@@ -195,7 +196,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {ADSKSpark.Job|string} job - Job or job id.
          * @returns {Promise}
          */
-        cancel: function(job) {
+        cancel: function (job) {
             var jobId = (job instanceof ADSKSpark.Job) ? job.id : job;
             return this.sendCommand('cancel', {job_id: jobId});
         },
@@ -204,7 +205,7 @@ var ADSKSpark = ADSKSpark || {};
          * Reboot the printer.
          * @returns {Promise}
          */
-        reset: function() {
+        reset: function () {
             return this.sendCommand('reset');
         },
 
@@ -212,7 +213,7 @@ var ADSKSpark = ADSKSpark || {};
          * Run a printer specific calibration routine.
          * @returns {Promise}
          */
-        calibrate: function() {
+        calibrate: function () {
             return this.sendCommand('calibrate');
         },
 
@@ -221,7 +222,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {string} packageUrl
          * @returns {Promise}
          */
-        firmwareUpgrade: function(packageUrl) {
+        firmwareUpgrade: function (packageUrl) {
             return this.sendCommand('firmware_upgrade', {package_url: packageUrl});
         },
 
@@ -229,7 +230,7 @@ var ADSKSpark = ADSKSpark || {};
          * Printer returns a public URL to the uploaded logs.
          * @returns {Promise}
          */
-        log: function() {
+        log: function () {
             return this.sendCommand('log');
         },
 
@@ -237,7 +238,7 @@ var ADSKSpark = ADSKSpark || {};
          * Moves all actuators to their home configuration.
          * @returns {Promise}
          */
-        home: function() {
+        home: function () {
             return this.sendCommand('home');
         },
 
@@ -245,7 +246,7 @@ var ADSKSpark = ADSKSpark || {};
          * Moves all actuators to their park configuration.
          * @returns {Promise}
          */
-        park: function() {
+        park: function () {
             return this.sendCommand('park');
         },
 
@@ -256,12 +257,12 @@ var ADSKSpark = ADSKSpark || {};
          * @param {Object} options
          * @returns {Promise} - A Promise that will resolve to the command status.
          */
-        sendCommandAndWait: function(command, params, options) {
+        sendCommandAndWait: function (command, params, options) {
             this.sendCommand(command, params)
-                .then(function(data) {
+                .then(function (data) {
                     return this.waitForCommand(data.task_id, options);
                 })
-                .then(function(data) {
+                .then(function (data) {
                     return data;
                 });
         },
@@ -272,17 +273,17 @@ var ADSKSpark = ADSKSpark || {};
          * @param {string} [params]
          * @returns {Promise} - A Promise that will resolve to the command and task_id.
          */
-        sendCommand: function(command, params) {
+        sendCommand: function (command, params) {
             params = params || {};
             params.command = command;
 
-			var headers = {'Content-Type': 'application/json'};
+            var headers = {'Content-Type': 'application/json'};
 
-			params = JSON.stringify(params);
+            params = JSON.stringify(params);
 
             return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/command')
                 .post(headers, params)
-                .then(function(data) {
+                .then(function (data) {
                     return data;
                 });
         },
@@ -296,7 +297,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {Function} [options.progressHandler] Progress callback.
          * @returns {Promise} - A Promise that will resolve to the command status.
          */
-        waitForCommand: function(taskId, options) {
+        waitForCommand: function (taskId, options) {
             options = options || {};
 
             var freq = options.freq || 1000, // 1 sec
@@ -304,11 +305,11 @@ var ADSKSpark = ADSKSpark || {};
                 start = +new Date(),
                 url = '/print/printers/command/' + taskId;
 
-            return new Promise(function(resolve, reject) {
-                var timerId = setInterval(function() {
+            return new Promise(function (resolve, reject) {
+                var timerId = setInterval(function () {
                     Client.authorizedApiRequest(url)
                         .get()
-                        .then(function(data) {
+                        .then(function (data) {
                             var isError = ((data || {}).data || {}).is_error;
                             if (isError) {
                                 clearInterval(timerId);
@@ -332,7 +333,7 @@ var ADSKSpark = ADSKSpark || {};
                                 }
                             }
                         })
-                        .catch(function(error) {
+                        .catch(function (error) {
                             clearInterval(timerId);
                             reject(error);
                         });
@@ -347,7 +348,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {boolean} isJobScoped - true if the member is allowed to send jobs to the printer.
          * @returns {Promise}
          */
-        setMemberRole: function(secondaryMemberId, isPrinterScoped, isJobScoped) {
+        setMemberRole: function (secondaryMemberId, isPrinterScoped, isJobScoped) {
             if (this.is_primary) {
                 var headers = {'Content-Type': 'application/json'},
                     payload = JSON.stringify({
@@ -367,13 +368,13 @@ var ADSKSpark = ADSKSpark || {};
          * @param {string} secondaryMemberEmail
          * @returns {Promise} A promise that resolves to the registration code.
          */
-        generateRegistrationCode: function(secondaryMemberEmail) {
+        generateRegistrationCode: function (secondaryMemberEmail) {
             if (this.is_primary) {
                 var headers = {'Content-Type': 'application/json'},
                     payload = JSON.stringify({secondary_member_email: secondaryMemberEmail});
                 return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/secondary_registration')
                     .post(headers, payload)
-                    .then(function(data) {
+                    .then(function (data) {
                         return data.registration_code;
                     });
             }
@@ -385,10 +386,10 @@ var ADSKSpark = ADSKSpark || {};
          * @param {Object} params - limit/offset/sort/filter options.
          * @returns {Promise} A Promise that resolves to an array of members.
          */
-        getMembers: function(params) {
+        getMembers: function (params) {
             return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/members')
                 .get(null, params)
-                .then(function(data) {
+                .then(function (data) {
                     return new ADSKSpark.PrinterMembers(data);
                 });
         },
@@ -398,7 +399,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {string} [secondaryMemberId]
          * @returns {Promise}
          */
-        unregister: function(secondaryMemberId) {
+        unregister: function (secondaryMemberId) {
             var headers = {'Content-Type': 'application/json'},
                 payload = secondaryMemberId ? JSON.stringify({secondary_member_id: secondaryMemberId}) : null;
             return Client.authorizedApiRequest('/print/printers/' + this.printer_id)
@@ -410,10 +411,10 @@ var ADSKSpark = ADSKSpark || {};
          * @param {Object} params - limit/offset/sort/filter options.
          * @returns {Promise} - A promise that will resolve to an array of jobs.
          */
-        getJobs: function(params) {
+        getJobs: function (params) {
             return Client.authorizedApiRequest('/print/printers/' + this.printer_id + '/jobs')
                 .get(null, params)
-                .then(function(data) {
+                .then(function (data) {
                     return new ADSKSpark.Jobs(data);
                 });
         },
@@ -426,7 +427,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {string} callbackUrl
          * @returns {Promise}
          */
-        createJob: function(printableId, printableUrl, settings, callbackUrl) {
+        createJob: function (printableId, printableUrl, settings, callbackUrl) {
             var headers = {'Content-Type': 'application/json'},
                 payload = JSON.stringify({
                     printable_id: printableId,
@@ -443,7 +444,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {ADSKSpark.Job|string} job - Job or job id.
          * @returns {Promise}
          */
-        startJob: function(job) {
+        startJob: function (job) {
             var jobId = (job instanceof ADSKSpark.Job) ? job.id : job,
                 headers = {'Content-Type': 'application/json'},
                 payload = JSON.stringify({job_id: jobId});
@@ -452,4 +453,4 @@ var ADSKSpark = ADSKSpark || {};
         }
     };
 
-})();
+}());
