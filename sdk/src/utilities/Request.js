@@ -2,7 +2,7 @@ var ADSKSpark = ADSKSpark || {};
 
 /**
  * @description // A wrapper for XHR requests that returns a promise.
- // Usage: ADSKSpark.Request('http://alpha.spark.autodesk.com/api/v1/printDB/printers').get([headers[, data]]).then(...);
+ // Usage: ADSKSpark.Request('http://alpha.spark.autodesk.com/api/v1/print/printers').get([headers[, data]]).then(...);
  // Based on https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise#Example_using_new_XMLHttpRequest()
  * @memberOf ADSKSpark
  * @param {String} url - The url for the request.
@@ -12,7 +12,7 @@ var ADSKSpark = ADSKSpark || {};
  *                                  notJsonResponse
  *                              }
  */
-ADSKSpark.Request = function(url, authorization, options) {
+ADSKSpark.Request = function (url, authorization, options) {
     options = options || {};
 
     // This function returns a Promise that resolves to the authorization header
@@ -57,7 +57,7 @@ ADSKSpark.Request = function(url, authorization, options) {
             payload = data;
         }
 
-        var promise = new Promise(function(resolve, reject) {
+        var promise = new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
 
             // console.log(method + " -> " + url + " (" + payload + ")");
@@ -74,18 +74,18 @@ ADSKSpark.Request = function(url, authorization, options) {
                 xhr.setRequestHeader('Authorization', authorization);
             }
 
-            xhr.onload = function() {
+            xhr.onload = function () {
                 if (xhr.status === 200 || xhr.status === 201 || xhr.status === 202 || xhr.status === 204) {
 
                     var response;
 
-					//Successful with an empty body - xhr.status 204 in the API means that the response is empty
-					if (xhr.status !== 204 && !options.notJsonResponse) {
-						response = JSON.parse(xhr.responseText);
-					} else {
+                    //Successful with an empty body - xhr.status 204 in the API means that the response is empty
+                    if (xhr.status !== 204 && !options.notJsonResponse) {
+                        response = JSON.parse(xhr.responseText);
+                    } else {
                         response = {};
-						response.responseText = xhr.responseText;
-					}
+                        response.responseText = xhr.responseText;
+                    }
                     response.httpStatus = xhr.status;
                     response.httpStatusText = xhr.statusText;
 
@@ -99,7 +99,7 @@ ADSKSpark.Request = function(url, authorization, options) {
                     reject(error);
                 }
             };
-            xhr.onerror = function() {
+            xhr.onerror = function () {
                 // Why can we not get more info about what the error was?
                 // See: https://xhr.spec.whatwg.org/#suggested-names-for-events-using-the-progressevent-interface
                 // console.log('XHR error type: ' + e.type);
@@ -115,16 +115,16 @@ ADSKSpark.Request = function(url, authorization, options) {
     };
 
     return {
-        'get': function(headers, data) {
+        'get': function (headers, data) {
             return prepareRequest('GET', headers, data, authorization);
         },
-        'post': function(headers, data) {
+        'post': function (headers, data) {
             return prepareRequest('POST', headers, data, authorization);
         },
-        'put': function(headers, data) {
+        'put': function (headers, data) {
             return prepareRequest('PUT', headers, data, authorization);
         },
-        'delete': function(headers, data) {
+        'delete': function (headers, data) {
             return prepareRequest('DELETE', headers, data, authorization);
         }
     };

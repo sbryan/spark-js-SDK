@@ -538,7 +538,7 @@
                     if( printerId && profileId && printableId ) {
                         _printJob = new ADSKSpark.Job();
 
-                        _printJob.create(printerId, profileId, printableId)
+                        _printJob.createWithProfile(profileId, printerId, printableId)
                             .then(function(job) {
                                 var report = '<b>Job ID:</b> ' + job.id + ' Status: ' + job.status + ' Progress: ' + job.progress + '\n';
                                 $('#job-log').append(report);
