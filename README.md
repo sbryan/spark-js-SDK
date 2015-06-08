@@ -3,7 +3,7 @@
 ### Overview
 This open-source web client SDK enables you to easily integrate the Spark REST APIs into your application. For API reference and a general introduction see our [documentation](https://spark.autodesk.com/developers/reference/).
 
-This is a client-side implementation of the Spark APIs, however it requires a server-side handling the authentication APIs: Node.js code implementing the server-side is located in the repository's [authentication_server](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs) folder.
+This client-side implementation of the Spark APIs requires a server-side handling the authentication APIs: Node.js code implementing the server-side is located in the repository's [authentication_server](https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs) folder.
 
 
 ### Installation
