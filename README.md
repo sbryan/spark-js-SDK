@@ -1,11 +1,15 @@
 # Spark JavaScript SDK
 
 ### Overview
-This open-source web client SDK enables you to easily integrate the Spark REST APIs into your application. 
+This open-source web client SDK enables you to easily integrate the Spark REST APIs into your application. See our <a href="https://spark.autodesk.com/developers/features/" target="_blank">Features page</a> for a list of the possibilities available with the Spark API.
 
 <b>Spark APIs are current in beta: <a href="https://spark.autodesk.com/developers/" target="_blank">Request access</a>.</b>
 
-Note that this client-side implementation of the Spark APIs requires a server-side handling the authentication APIs: Node.js code implementing the server-side is located in the repository's <a href="https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs" target="_blank">authentication_server</a> folder.
+The JavaScript SDK supports all Authentication, Drive and Print API calls, providing capabilities such as storing 3D objects in the Spark Cloud, preparing files for printing and submitting them to a Spark supported printer.
+
+With the exception of Authentication, this SDK implementation is entirely client-side.  If you want to use the SDK's Authentication elements, Node.js code implementing the server-side is located in the repository's <a href="https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs" target="_blank">authentication_server</a> folder.
+
+Sample apps using the SDK have also been provided in the <a href="https://github.com/spark3dp/spark-js-sdk/tree/master/sample_apps" target="_blank">sample_app</a> folder.
 
 ### Installation
 To use the Spark JavaScript SDK you must first add an app on the Spark Developer’s Portal and save the app key and app secret Spark generates. For more information see the <a href="https://spark.autodesk.com/developers/reference/introduction/tutorials/register-an-app" target="_blank">tutorial</a>.
