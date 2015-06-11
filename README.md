@@ -7,8 +7,9 @@ This open-source web client SDK enables you to easily integrate the Spark REST A
 
 Note that this client-side implementation of the Spark APIs requires a server-side handling the authentication APIs: Node.js code implementing the server-side is located in the repository's <a href="https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs" target="_blank">authentication_server</a> folder.
 
-
 ### Installation
+To use the Spark JavaScript SDK you must first add an app on the Spark Developer’s Portal and save the app key and app secret Spark generates. For more information see the <a href="https://spark.autodesk.com/developers/reference/introduction/tutorials/register-an-app" target="_blank">tutorial</a>.
+
 1) Include the SDK library in your HTML page just before closing the body section (`</body>`).
 
 ```HTML
