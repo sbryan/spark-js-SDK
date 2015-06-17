@@ -137,6 +137,19 @@ var ADSKSpark = ADSKSpark || {};
 				obj3[attrname2] = obj2[attrname2];
 			}
 			return obj3;
+		},
+
+
+		/**
+		 * Change url from HTTP to HTTPS
+		 * @param url
+		 * @returns the same string changed to https
+		 */
+			changeHttpToHttps: function (url) {
+			if(url && url.indexOf("http:")>-1){
+				url=url.replace("http:","https:");
+			}
+			return url;
 		}
 
 
