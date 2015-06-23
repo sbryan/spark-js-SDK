@@ -137,7 +137,7 @@ var ADSKSpark = ADSKSpark || {};
                 obj3[attrname2] = obj2[attrname2];
             }
             return obj3;
-        }
+        },
 
 
 		/**
