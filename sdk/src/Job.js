@@ -212,7 +212,7 @@ var ADSKSpark = ADSKSpark || {};
                 'printable_id': printableId
             });
 
-            return Client.authorizedApiRequest('/print/jobs/' + this.id + '/set-printable')
+            return Client.authorizedApiRequest('/print/jobs/' + this.id + '/printable')
                 .post(headers, payload)
                 .then(function (response) {
                     if (response.printer_id) {
@@ -247,7 +247,7 @@ var ADSKSpark = ADSKSpark || {};
                 'printer_id': printerId
             });
 
-            return Client.authorizedApiRequest('/print/jobs/' + this.id + '/set-printer')
+            return Client.authorizedApiRequest('/print/jobs/' + this.id + '/printer')
                 .post(headers, payload)
                 .then(function (response) {
                     if (response.printer_id) {
