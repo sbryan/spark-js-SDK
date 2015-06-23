@@ -125,7 +125,7 @@ var ADSKSpark = ADSKSpark || {};
          * @see {@link ADSKSpark.TrayAPI.generatePrintable}
          */
         createWithProfile: function (profileId, printerId, printableId) {
-            return this.createWithSettings(printerId, {profile_id: profileId}, printableId);
+            return this.createWithSettings({profile_id: profileId}, printerId, printableId);
         },
 
         /**
