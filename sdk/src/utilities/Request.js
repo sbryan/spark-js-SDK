@@ -77,6 +77,10 @@ var ADSKSpark = ADSKSpark || {};
                     xhr.setRequestHeader('Authorization', authorization);
                 }
 
+                if(options.notJsonResponse){
+                    xhr.responseType = 'arraybuffer';
+                }
+
                 xhr.onload = function () {
                     if (xhr.status === 200 || xhr.status === 201 || xhr.status === 202 || xhr.status === 204) {
 
@@ -87,7 +91,8 @@ var ADSKSpark = ADSKSpark || {};
                             response = JSON.parse(xhr.responseText);
                         } else {
                             response = {};
-                            response.responseText = xhr.responseText;
+                            response.arraybuffer = new ArrayBuffer(xhr.response);
+                            // response.responseText = xhr.responseText;
                         }
                         response.httpStatus = xhr.status;
                         response.httpStatusText = xhr.statusText;
