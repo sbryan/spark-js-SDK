@@ -22,7 +22,7 @@ THREE.BLTLoader.prototype.closeWorker = function(worker) {
 };
 
 THREE.BLTLoader.prototype.load = function ( data, onSuccessCallback, onErrorCallback ) {
-	var worker = new Worker('/scripts/views/jobs/BLTworker.js');
+	var worker = new Worker('./BLTworker.js');
 
     var self = this;
     var bltData = data;

@@ -8,8 +8,8 @@ if (IS_WORKER)
     {
         //Everything below will get compiled into the worker JS during build
 
-        importScripts('/scripts/views/jobs/zlib.js');
-        importScripts('/scripts/views/jobs/jpegimage.js');
+        importScripts('./zlib.js');
+        importScripts('./jpegimage.js');
     }
 
     var PrimitiveTypeEnum, SB_Message, SB_MessageData, SB_MessageQueue, SceneBuilder, _ref,
