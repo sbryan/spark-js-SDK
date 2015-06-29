@@ -48,7 +48,7 @@ var ADSKSpark = ADSKSpark || {};
          * @returns {Array} - URL parameters
          */
         extractParamsFromURL: function (prmstr) {
-            prmstr = prmstr || window.location.search.substr(1);
+            prmstr = prmstr || window.location.search.substr(1) || window.location.hash.substr(1);
             return prmstr ? this.transformToAssocArray(prmstr) : [];
         },
 
@@ -150,7 +150,26 @@ var ADSKSpark = ADSKSpark || {};
 				url=url.replace("http:","https:");
 			}
 			return url;
-		}
+		},
+		/**
+		 * Get the code param in URL after returning from Spark Auth flow
+		 */
+		extractRedirectionCode: function() {
+		var getParams = ADSKSpark.Helpers.extractParamsFromURL();
+		return getParams['code'] ? getParams['code'] : null;
+		},
+
+	/**
+	 * Get the access token and expiry param in URL after returning from Spark Auth flow
+	 */
+	 extractRedirectionTokenData:function() {
+		var getParams = ADSKSpark.Helpers.extractParamsFromURL();
+		var data = {};
+		data.access_token = getParams['access_token'] ? getParams['access_token'] : null;
+		data.expires_in = getParams['expires_in'] ? getParams['expires_in'] : null;
+
+		return data;
+	}
 
     };
 

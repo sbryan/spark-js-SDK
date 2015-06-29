@@ -63,13 +63,21 @@ var ADSKSpark = ADSKSpark || {};
          * @description - Returns the URL to redirect to for logging in.
          * @memberOf ADSKSpark.Client
          * @param {Boolean} showRegisterScreen - Whether to show the register screen as the default
-         * @returns {String} - The URL.
+		 * @param {Boolean} isImplicit - is it implicit login
+		 * @returns {String} - The URL.
          */
-        getLoginRedirectUrl: function (showRegisterScreen) {
+        getLoginRedirectUrl: function (showRegisterScreen,isImplicit) {
 
-            var apiRedirectUrl = _apiUrl + '/oauth/authorize' +
-                '?response_type=code' +
-                '&client_id=' + _clientId;
+            var apiRedirectUrl = _apiUrl + '/oauth/authorize';
+			if (isImplicit){
+				apiRedirectUrl += '?response_type=token' +
+				'&client_id=' + _clientId;
+			}
+			else{
+				apiRedirectUrl += '?response_type=code' +
+				'&client_id=' + _clientId;
+			}
+
 
             if (_redirectUri) {
                 apiRedirectUrl += '&redirect_uri=' + _redirectUri;
@@ -253,9 +261,28 @@ var ADSKSpark = ADSKSpark || {};
          * @description - Open an auth window
          * @memberOf ADSKSpark.Client
          */
-        openLoginWindow: function () {
-            Helpers.popupWindow(this.getLoginRedirectUrl(), 350, 600);
-        }
+        openLoginWindow: function (showRegisterScreen,isImplicit) {
+            Helpers.popupWindow(this.getLoginRedirectUrl(showRegisterScreen,isImplicit), 350, 600);
+        },
+		/**
+		 * @description - Completes the implicit login process, gets an access_token and expiresIn parameters and stores it in localStorage.
+		 * @memberOf ADSKSpark.Client
+		 * @param {accessToken} accessToken - The accessToken that was returned after the user signed in.
+		 * @param {expiresIn} expiresIn - The time in milliseconds when the access token will be expired.
+		 * @returns {String} - The access token.
+		 */
+		completeImplicitLogin: function (accessToken,expiresIn) {
+
+			var data = {};
+			data.access_token = accessToken;
+			var now = Date.now();
+			data.expires_at = now + parseInt(expiresIn) * 1000;
+			localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
+
+			return data.access_token;
+
+
+		}
     };
 
 }());
