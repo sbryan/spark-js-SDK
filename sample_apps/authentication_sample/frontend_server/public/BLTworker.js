@@ -654,8 +654,6 @@ if (IS_WORKER)
         console.log( obj.indices);
         console.log( "obj.indices.arrayTyped ");
         console.log( obj.indices.arrayTyped );
-        console.log( "obj.indices.arrayTyped[obj.indices.arrayTyped.length - 1 ] ");
-        console.log( obj.indices.arrayTyped[obj.indices.arrayTyped.length - 1 ] );
         //Index off by 1
         obj.indices.arrayTyped[obj.indices.arrayTyped.length - 1 ] = obj.indices.arrayTyped[obj.indices.arrayTyped.length - 1 ] + 1;
         switch (obj.indices.type) {
@@ -665,8 +663,6 @@ if (IS_WORKER)
             break;
           case 'triStrips':
             this.sceneBuilder.setPrim(mesh, PrimitiveTypeEnum.IndexedTriangleList, this.tristripToIndexedTriangleList(obj.indices.arrayTyped));
-            console.log("AFTER TRISTRIP to triangle conversion");
-            console.log( this.tristripToIndexedTriangleList(obj.indices.arrayTyped) );
             obj.indices.arrayTyped = void 0;
             break;
           case 'lines':
