@@ -133,7 +133,7 @@ var ADSKSpark = ADSKSpark || {};
                 apiRedirectUrl += '&redirect_uri=' + _redirectUri;
             }
 			else{
-				apiRedirectUrl += '&redirect_uri=' + this.calculateRedirectUri();
+				apiRedirectUrl += '&redirect_uri=' + Helpers.calculateRedirectUri();
 			}
 
             if (showRegisterScreen) {
@@ -164,7 +164,7 @@ var ADSKSpark = ADSKSpark || {};
                 params.redirect_uri = _redirectUri;
             }
 			else{
-				params.redirect_uri = this.calculateRedirectUri();
+				params.redirect_uri = Helpers.calculateRedirectUri();
 			}
 			if(_accessTokenUrl) {
 				return ADSKSpark.Request(_accessTokenUrl).get(undefined, params).then(function (data) {
