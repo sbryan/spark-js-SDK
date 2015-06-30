@@ -70,20 +70,20 @@ THREE.BLTLoader.prototype.load = function ( data, onSuccessCallback, onErrorCall
             currentNodeId = nodeid;
             break;
         case 'setPrim':
-            // geometry = objectMap[args['id']];
-            // var primType = args['primType'];
-            // var prim = new Uint32Array(args['data']);
-            // console.log("prim");
-            // console.log(prim);
-            // for (var _i = 0, _len = prim.length; _i < _len; _i++) {
-            //     if (!(_i + 2 < _len && prim[_i + 1] === 0 && prim[_i + 2] === 0 && prim[_i] === 0)) {
-            //         continue;
-            //     }
-            //     prim = prim.subarray(0, _i);
-            //     break;
-            // }
-            // geometry.addAttribute('index', new THREE.BufferAttribute(prim,1));
-            // indexCount += prim.length;
+            geometry = objectMap[args['id']];
+            var primType = args['primType'];
+            var prim = new Uint32Array(args['data']);
+            console.log("prim");
+            console.log(prim);
+            for (var _i = 0, _len = prim.length; _i < _len; _i++) {
+                if (!(_i + 2 < _len && prim[_i + 1] === 0 && prim[_i + 2] === 0 && prim[_i] === 0)) {
+                    continue;
+                }
+                prim = prim.subarray(0, _i);
+                break;
+            }
+            geometry.addAttribute('index', new THREE.BufferAttribute(prim,1));
+            indexCount += prim.length;
             break;
         case 'setPos':
             geometry = objectMap[args['id']];

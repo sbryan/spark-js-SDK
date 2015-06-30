@@ -588,7 +588,8 @@ if (IS_WORKER)
         temp = this.transposeUint8Array(src, nr, 2);
         dest = new Uint16Array(temp.buffer);
         for (i = _i = 0; 0 <= nr ? _i < nr : _i > nr; i = 0 <= nr ? ++_i : --_i) {
-          dest[i] += i;
+          //Index off by 1;
+          dest[i] += i - 1;
         }
         return dest;
       };
@@ -647,17 +648,25 @@ if (IS_WORKER)
         if (obj.indices.format !== 'uint16') {
           throw 'Index buffer is ' + obj.indices.format + ', not uint16';
         }
+        console.log( "obj ");
+        console.log( obj );
+        console.log( "obj.indices");
+        console.log( obj.indices);
         console.log( "obj.indices.arrayTyped ");
         console.log( obj.indices.arrayTyped );
+        console.log( "obj.indices.arrayTyped[obj.indices.arrayTyped.length - 1 ] ");
+        console.log( obj.indices.arrayTyped[obj.indices.arrayTyped.length - 1 ] );
+        //Index off by 1
+        obj.indices.arrayTyped[obj.indices.arrayTyped.length - 1 ] = obj.indices.arrayTyped[obj.indices.arrayTyped.length - 1 ] + 1;
         switch (obj.indices.type) {
           case 'triangles':
-            console.log("TRIANGLES");
             this.sceneBuilder.setPrim(mesh, PrimitiveTypeEnum.IndexedTriangleList, obj.indices.arrayTyped);
             obj.indices.arrayTyped = void 0;
             break;
           case 'triStrips':
-            console.log("triSTRIPS");
             this.sceneBuilder.setPrim(mesh, PrimitiveTypeEnum.IndexedTriangleList, this.tristripToIndexedTriangleList(obj.indices.arrayTyped));
+            console.log("AFTER TRISTRIP to triangle conversion");
+            console.log( this.tristripToIndexedTriangleList(obj.indices.arrayTyped) );
             obj.indices.arrayTyped = void 0;
             break;
           case 'lines':
