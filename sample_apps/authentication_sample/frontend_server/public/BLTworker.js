@@ -588,7 +588,7 @@ if (IS_WORKER)
         temp = this.transposeUint8Array(src, nr, 2);
         dest = new Uint16Array(temp.buffer);
         for (i = _i = 0; 0 <= nr ? _i < nr : _i > nr; i = 0 <= nr ? ++_i : --_i) {
-          //Index off by 1;
+          //Fix for indices values off by 1;
           dest[i] += i - 1;
         }
         return dest;
@@ -648,13 +648,7 @@ if (IS_WORKER)
         if (obj.indices.format !== 'uint16') {
           throw 'Index buffer is ' + obj.indices.format + ', not uint16';
         }
-        console.log( "obj ");
-        console.log( obj );
-        console.log( "obj.indices");
-        console.log( obj.indices);
-        console.log( "obj.indices.arrayTyped ");
-        console.log( obj.indices.arrayTyped );
-        //Index off by 1
+        //Fix for values in indices arraybuffer. Last digit needs to be 65535 to represent (-1)
         obj.indices.arrayTyped[obj.indices.arrayTyped.length - 1 ] = obj.indices.arrayTyped[obj.indices.arrayTyped.length - 1 ] + 1;
         switch (obj.indices.type) {
           case 'triangles':
