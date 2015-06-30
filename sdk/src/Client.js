@@ -30,7 +30,7 @@ var ADSKSpark = ADSKSpark || {};
 			});
 		}
 		else{
-			return  Promise.reject(new Error("No Server Needed"));
+			return  Promise.reject(new Error("No Server Implementation"));
 		}
     };
 
@@ -179,7 +179,7 @@ var ADSKSpark = ADSKSpark || {};
 				});
 			}
 			else{
-				return  Promise.reject(new Error("No Server Needed"));
+				return  Promise.reject(new Error("No Server Implementation"));
 			}
         },
 
