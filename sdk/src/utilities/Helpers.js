@@ -169,7 +169,22 @@ var ADSKSpark = ADSKSpark || {};
 		data.expires_in = getParams['expires_in'] ? getParams['expires_in'] : null;
 
 		return data;
-	}
+	},
+		calculateRedirectUri: function(){
+			var questionMarkIndex = window.location.href.indexOf('?');
+			var hashMarkIndex = window.location.href.indexOf('#');
+			var uri = window.location.href;
+			if (questionMarkIndex != -1){
+				uri = uri.substring(0,questionMarkIndex)
+			}else if (hashMarkIndex != -1){
+				uri = uri.substring(0,hashMarkIndex)
+
+			}
+
+			return uri;
+
+
+		}
 
     };
 

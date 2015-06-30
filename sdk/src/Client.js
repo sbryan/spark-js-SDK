@@ -342,13 +342,6 @@ var ADSKSpark = ADSKSpark || {};
 			return data.access_token;
 
 
-		},
-		calculateRedirectUri: function(){
-			console.log("Referer is:  "+document.referrer);
-			console.log("location is:  "+window.location);
-			return document.referrer;
-
-
 		}
     };
 
