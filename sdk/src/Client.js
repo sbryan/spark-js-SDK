@@ -21,12 +21,17 @@ var ADSKSpark = ADSKSpark || {};
      * @returns {Promise} - A promise that resolves to the guest token.
      */
     var getGuestTokenFromServer = function () {
-        return ADSKSpark.Request(_guestTokenUrl).get().then(function (data) {
-            var now = Date.now();
-            data.expires_at = now + parseInt(data.expires_in) * 1000;
-            localStorage.setItem(GUEST_TOKEN_KEY, JSON.stringify(data));
-            return data.access_token;
-        });
+		if (_guestTokenUrl) {
+			return ADSKSpark.Request(_guestTokenUrl).get().then(function (data) {
+			var now = Date.now();
+			data.expires_at = now + parseInt(data.expires_in) * 1000;
+			localStorage.setItem(GUEST_TOKEN_KEY, JSON.stringify(data));
+			return data.access_token;
+			});
+		}
+		else{
+			return  Promise.reject(new Error("No Server Needed"));
+		}
     };
 
     /**
@@ -40,23 +45,24 @@ var ADSKSpark = ADSKSpark || {};
          * @description - Initializes the client.
          * @memberOf ADSKSpark.Client
          * @param {String} clientId - The app key provided when you registered your app.
-         * @param {String} guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
+		 * @param {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
+		 * @param {Boolean} isProduction - Flag to indicate if we use Production environment or Sandbox environment
+		 * @param {String} guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
          *                                 handle exchanging the client secret for a guest token.
          * @param {String} accessTokenUrl - The URL of your authentication server used for access tokens. This server should
          *                                 handle exchanging a provided code for an access token.
          * @param {String} refreshTokenUrl - The URL of your authentication server used to refresh access tokens. This server
          *                                  should call the refresh token api (extend the expiry time) and return a new valid
          *                                  access token.
-         * @param {String} apiUrl - The URL of the spark api. (Ex. https://sandbox.spark.autodesk.com/api/vi)
-         * @param {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
          */
-        initialize: function (clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, apiUrl, redirectUri) {
-            _clientId = clientId;
-            _guestTokenUrl = guestTokenUrl;
-            _accessTokenUrl = accessTokenUrl;
-            _refreshTokenUrl = refreshTokenUrl;
-            _apiUrl = apiUrl;
-            _redirectUri = redirectUri;
+        initialize: function (clientId,isProduction, redirectUri,guestTokenUrl, accessTokenUrl, refreshTokenUrl) {
+			if (isProduction){
+				this.initializeProduction(clientId,guestTokenUrl,accessTokenUrl,refreshTokenUrl,redirectUri);
+			}
+			else{
+				this.initializeSandbox(clientId,guestTokenUrl,accessTokenUrl,refreshTokenUrl,redirectUri);
+			}
+
         },
 
 		/**
@@ -126,6 +132,9 @@ var ADSKSpark = ADSKSpark || {};
             if (_redirectUri) {
                 apiRedirectUrl += '&redirect_uri=' + _redirectUri;
             }
+			else{
+				apiRedirectUrl += '&redirect_uri=' + this.calculateRedirectUri();
+			}
 
             if (showRegisterScreen) {
                 apiRedirectUrl += '&register=true';
@@ -154,17 +163,24 @@ var ADSKSpark = ADSKSpark || {};
             if (_redirectUri) {
                 params.redirect_uri = _redirectUri;
             }
+			else{
+				params.redirect_uri = this.calculateRedirectUri();
+			}
+			if(_accessTokenUrl) {
+				return ADSKSpark.Request(_accessTokenUrl).get(undefined, params).then(function (data) {
+					if (data && data.expires_in && data.access_token) {
+						var now = Date.now();
+						data.expires_at = now + parseInt(data.expires_in) * 1000;
+						localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
 
-            return ADSKSpark.Request(_accessTokenUrl).get(undefined, params).then(function (data) {
-                if (data && data.expires_in && data.access_token) {
-                    var now = Date.now();
-                    data.expires_at = now + parseInt(data.expires_in) * 1000;
-                    localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
-
-                    return data.access_token;
-                }
-                return Promise.reject(new Error(data.Error));
-            });
+						return data.access_token;
+					}
+					return Promise.reject(new Error(data.Error));
+				});
+			}
+			else{
+				return  Promise.reject(new Error("No Server Needed"));
+			}
         },
 
         /**
@@ -324,6 +340,13 @@ var ADSKSpark = ADSKSpark || {};
 			localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
 
 			return data.access_token;
+
+
+		},
+		calculateRedirectUri: function(){
+			console.log("Referer is:  "+document.referrer);
+			console.log("location is:  "+window.location);
+			return document.referrer;
 
 
 		}
