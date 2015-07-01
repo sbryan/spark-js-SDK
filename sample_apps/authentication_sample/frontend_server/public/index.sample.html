@@ -253,6 +253,7 @@
                 var _printerTypes = null;
                 var _printableFileID = null;
                 var _printJob = null;
+	            var isServerLogin = (window.location.search.indexOf('code') != -1);
 
 	            Client.initialize(APP_KEY,false,'', GUEST_TOKEN_URL, ACCESS_TOKEN_URL, REFRESH_TOKEN_URL);
 
@@ -273,49 +274,40 @@
                     $('#login-button').show();
 	                $('#implicit-login-button').show();
 
-	                //if we get back from the login service
-	                var code = ADSKSpark.Helpers.extractRedirectionCode();
-	                var data = ADSKSpark.Helpers.extractRedirectionTokenData();
+		                Client.completeLogin(isServerLogin).then(function (token) {
+			                console.log('Completed login with token: ' + token);
 
-                    if (code) {
-                        Client.completeLogin(code).then(function (token) {
-                            console.log('Completed login with token: ' + token);
-                            if (token) {
-                                //You can redirect now to some page in your app or to homepage
-                                // or to reload the top window or any other action
-                                window.location.reload();
-                            } else {
-                                console.error('Problem with fetching token');
-                            }
-                        }, function (error) {
-                            console.error(error.message);
-                            $('#profile').text(error.message);
-                        });
-                    }
-                    else if (data.access_token){
-	                    var accessToken = Client.completeImplicitLogin(data.access_token,data.expires_in);
-	                    if (accessToken){
-		                    window.location.reload();
+			                if (token) {
+				                //You can redirect now to some page in your app or to homepage
+				                // or to reload the top window or any other action
+				                window.location.reload();
+			                } else {
+				                console.error('Problem with fetching token');
+			                }
 
-                        } else {
-	                    console.error('Problem with fetching token');
-                        }
+		                }, function (error) {
 
-                    }
+			                console.error(error.message);
+			                $('#profile').text(error.message);
+		                });
+
+
+
+
                 }
 
                 // Register buttons
                 $('#login-button').click(function() {
-                    window.location = Client.getLoginRedirectUrl();
+                    window.location = Client.getLoginRedirectUrl(false,true);
                 });
 
 	            $('#implicit-login-button').click(function() {
-		            window.location = Client.getLoginRedirectUrl(false,true);
+		            window.location = Client.getLoginRedirectUrl();
 	            });
 
                 $('#logout-button').click(function() {
                     Client.logout();
-                    window.location.reload();
+	                window.location.assign(ADSKSpark.Helpers.calculateRedirectUri());
                 });
 
                 $('#guest-button').click(function() {

@@ -45,13 +45,13 @@ var ADSKSpark = ADSKSpark || {};
          * @description - Initializes the client.
          * @memberOf ADSKSpark.Client
          * @param {String} clientId - The app key provided when you registered your app.
-		 * @param {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
-		 * @param {Boolean} isProduction - Flag to indicate if we use Production environment or Sandbox environment
-		 * @param {String} guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
+		 * @param {Boolean} [isProduction] - Flag to indicate if we use Production environment or Sandbox environment
+		* @param  {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
+		 * @param {String} [guestTokenUrl] - The URL of your authentication server used for guest tokens. This server should
          *                                 handle exchanging the client secret for a guest token.
-         * @param {String} accessTokenUrl - The URL of your authentication server used for access tokens. This server should
+         * @param {String} [accessTokenUrl] - The URL of your authentication server used for access tokens. This server should
          *                                 handle exchanging a provided code for an access token.
-         * @param {String} refreshTokenUrl - The URL of your authentication server used to refresh access tokens. This server
+         * @param {String} [refreshTokenUrl] - The URL of your authentication server used to refresh access tokens. This server
          *                                  should call the refresh token api (extend the expiry time) and return a new valid
          *                                  access token.
          */
@@ -66,14 +66,14 @@ var ADSKSpark = ADSKSpark || {};
         },
 
 		/**
-		 * @description - Initializes the client.
+		 * @description - Initializes the client for Sandbox environment.
 		 * @memberOf ADSKSpark.Client
 		 * @param {String} clientId - The app key provided when you registered your app.
-		 * @param {String} guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
+		 * @param {String} [guestTokenUrl] - The URL of your authentication server used for guest tokens. This server should
 		 *                                 handle exchanging the client secret for a guest token.
-		 * @param {String} accessTokenUrl - The URL of your authentication server used for access tokens. This server should
+		 * @param {String} [accessTokenUrl] - The URL of your authentication server used for access tokens. This server should
 		 *                                 handle exchanging a provided code for an access token.
-		 * @param {String} refreshTokenUrl - The URL of your authentication server used to refresh access tokens. This server
+		 * @param {String} [refreshTokenUrl] - The URL of your authentication server used to refresh access tokens. This server
 		 *                                  should call the refresh token api (extend the expiry time) and return a new valid
 		 *                                  access token.
 		 * @param {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
@@ -88,14 +88,14 @@ var ADSKSpark = ADSKSpark || {};
 		},
 
 		/**
-		 * @description - Initializes the client.
+		 * @description - Initializes the client for production environment.
 		 * @memberOf ADSKSpark.Client
 		 * @param {String} clientId - The app key provided when you registered your app.
-		 * @param {String} guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
+		 * @param {String} [guestTokenUrl] - The URL of your authentication server used for guest tokens. This server should
 		 *                                 handle exchanging the client secret for a guest token.
-		 * @param {String} accessTokenUrl - The URL of your authentication server used for access tokens. This server should
+		 * @param {String} [accessTokenUrl] - The URL of your authentication server used for access tokens. This server should
 		 *                                 handle exchanging a provided code for an access token.
-		 * @param {String} refreshTokenUrl - The URL of your authentication server used to refresh access tokens. This server
+		 * @param {String} [refreshTokenUrl] - The URL of your authentication server used to refresh access tokens. This server
 		 *                                  should call the refresh token api (extend the expiry time) and return a new valid
 		 *                                  access token.
 		 * @param {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
@@ -112,19 +112,19 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @description - Returns the URL to redirect to for logging in.
          * @memberOf ADSKSpark.Client
-         * @param {Boolean} showRegisterScreen - Whether to show the register screen as the default
-		 * @param {Boolean} isImplicit - is it implicit login
+         * @param {Boolean} [showRegisterScreen] - Whether to show the register screen as the default
+		 * @param {Boolean} [isServerLogin] - is it server login - if not supplied defaults to False (meaning we use implicit login)
 		 * @returns {String} - The URL.
          */
-        getLoginRedirectUrl: function (showRegisterScreen,isImplicit) {
+        getLoginRedirectUrl: function (showRegisterScreen,isServerLogin) {
 
             var apiRedirectUrl = _apiUrl + '/oauth/authorize';
-			if (isImplicit){
-				apiRedirectUrl += '?response_type=token' +
+			if (isServerLogin){
+				apiRedirectUrl += '?response_type=code' +
 				'&client_id=' + _clientId;
 			}
 			else{
-				apiRedirectUrl += '?response_type=code' +
+				apiRedirectUrl += '?response_type=token' +
 				'&client_id=' + _clientId;
 			}
 
@@ -157,7 +157,7 @@ var ADSKSpark = ADSKSpark || {};
          * @param {String} code - The code that was returned after the user signed in. {@see ADSKSpark.Client#login}
          * @returns {Promise} - A promise that resolves to the access token.
          */
-        completeLogin: function (code) {
+        completeServerLogin: function (code) {
             var params = {code: code};
 
             if (_redirectUri) {
@@ -241,15 +241,20 @@ var ADSKSpark = ADSKSpark || {};
             var accessTokenObj = this.getAccessTokenObject();
 
             if (accessTokenObj) {
-                var refreshToken = accessTokenObj.refresh_token;
-                return ADSKSpark.Request(_refreshTokenUrl)
-                    .get(null, {refresh_token: refreshToken})
-                    .then(function (data) {
-                        var now = Date.now();
-                        data.expires_at = now + parseInt(data.expires_in) * 1000;
-                        localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
-                        return data;
-                    });
+				var refreshToken = accessTokenObj.refresh_token;
+				if (_refreshTokenUrl) {
+				return ADSKSpark.Request(_refreshTokenUrl)
+					.get(null, {refresh_token: refreshToken})
+					.then(function (data) {
+						var now = Date.now();
+						data.expires_at = now + parseInt(data.expires_in) * 1000;
+						localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
+						return data;
+					});
+				}
+				else{
+					return  Promise.reject(new Error("No Server Implementation"));
+				}
             }
 
             return Promise.reject(new Error('Access token does not exist, you need to login again'));
@@ -320,7 +325,9 @@ var ADSKSpark = ADSKSpark || {};
         /**
          * @description - Open an auth window
          * @memberOf ADSKSpark.Client
-         */
+		 * @param {Boolean} [showRegisterScreen] - Whether to show the register screen as the default
+		 * @param {Boolean} [isImplicit] - is it implicit login - if not supplied defaults to True
+		 **/
         openLoginWindow: function (showRegisterScreen,isImplicit) {
             Helpers.popupWindow(this.getLoginRedirectUrl(showRegisterScreen,isImplicit), 350, 600);
         },
@@ -330,7 +337,7 @@ var ADSKSpark = ADSKSpark || {};
 		 * @param {accessToken} accessToken - The accessToken that was returned after the user signed in.
 		 * @param {expiresIn} expiresIn - The time in milliseconds when the access token will be expired.
 		 * @returns {String} - The access token.
-		 */
+		 **/
 		completeImplicitLogin: function (accessToken,expiresIn) {
 
 			var data = {};
@@ -342,7 +349,36 @@ var ADSKSpark = ADSKSpark || {};
 			return data.access_token;
 
 
+		},
+		/**
+		 * @description - Completes the login process and stores it in localStorage.
+		 * @param {Boolean} [isServer] - flag to indicate if this is server login or not ,default to false.
+		 * @returns {Promise}
+		 */
+		completeLogin:function(isServer){
+			if (isServer){
+				var code = Helpers.extractRedirectionCode();
+				if (code) {
+					return this.completeServerLogin(code);
+				}
+				else{
+					return Promise.reject("No code supplied");
+				}
+
+			}else {
+				var data = Helpers.extractRedirectionTokenData();
+				if (data.access_token) {
+					return Promise.resolve(this.completeImplicitLogin(data.access_token, data.expires_in));
+				}
+				else{
+					return Promise.reject("No access_token supplied");
+				}
+			}
+
+
 		}
+
+
     };
 
 }());
