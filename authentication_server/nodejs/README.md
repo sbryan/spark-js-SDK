@@ -18,4 +18,4 @@ $ npm install
 $ node server.js
 ```
 
-Now you have a server running on your machine with the access, guest and refresh token endpoints.
+You now have a server running on your machine with the access, guest and refresh token endpoints.
