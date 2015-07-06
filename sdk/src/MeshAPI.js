@@ -115,46 +115,78 @@ var ADSKSpark = ADSKSpark || {};
                 .then(waiter.wait);
         },
 
-        /**
-         * @method repairMesh
-         * @memberOf ADSKSpark.MeshAPI
-         * @description - Perform all possible mesh repair operations on a given Spark Mesh Resource.
-         * @param {String} meshId - The Id associated with an existing Spark Mesh Resource.
-         * @param {boolean} [generateVisual] - Optional flag requesting that a Bolt file be generated for visualization purposes.
-         * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
-         *
-         * @returns {Promise} - A Promise which resolves to a new Mesh Resource with possible repairs applied. See https://spark.autodesk.com/developers/reference/print
-         */
-        repairMesh: function (meshId, generateVisual, progressCallback) {
-            var headers = {'Content-Type': 'application/json'};
-            var payload = JSON.stringify({
-                id: meshId,
-                all: true,       // TODO: Do we want this as a parameter?
-                generate_visual: !!generateVisual
-            });
-            var waiter = new ADSKSpark.TaskWaiter(progressCallback);
-            return Client.authorizedApiRequest('/geom/meshes/repair').post(headers, payload)
-                .then(waiter.wait);
-        },
 
-        /**
-         * @method generateVisual
-         * @memberOf ADSKSpark.MeshAPI
-         * @description - Request the generation of a Bolt visualization file for a given Spark Mesh Resource.
-         * @param {String} meshId - The Id associated with an existing Spark Mesh Resource.
-         * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
-         *
-         * @returns {Promise} - A Promise which resolves to the input Mesh Resource with a visual_file_id property added.
-         */
-        generateVisual: function (meshId, progressCallback) {
-            var headers = {'Content-Type': 'application/json'};
-            var payload = JSON.stringify({
-                id: meshId
-            });
-            var waiter = new ADSKSpark.TaskWaiter(progressCallback);
-            return Client.authorizedApiRequest('/geom/meshes/generateVisual').post(headers, payload)
-                .then(waiter.wait);
-        }
+	    /**
+	     * @method repairMesh
+	     * @memberOf ADSKSpark.MeshAPI
+	     * @description - Perform all possible mesh repair operations on a given Spark Mesh Resource.
+	     * @param {String} meshId - The Id associated with an existing Spark Mesh Resource.
+	     * @param {boolean} [isRepairAll] - Optional flag. If false - will repair only one problem at a time. default: true.
+	     * @param {boolean} [generateVisual] - Optional flag requesting that a Bolt file be generated for visualization purposes.
+	     * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+	     *
+	     * @returns {Promise} - A Promise which resolves to a new Mesh Resource with possible repairs applied. See https://spark.autodesk.com/developers/reference/print
+	     */
+	    repairMesh: function (meshId, isRepairAll,generateVisual, progressCallback) {
+		    var headers = {'Content-Type': 'application/json'};
+
+		    if(isRepairAll === undefined){
+			    isRepairAll = true;
+		    }
+
+		    var payload = JSON.stringify({
+			    id: meshId,
+			    all: isRepairAll,
+			    generate_visual: !!generateVisual
+		    });
+		    var waiter = new ADSKSpark.TaskWaiter(progressCallback);
+		    return Client.authorizedApiRequest('/geom/meshes/repair').post(headers, payload)
+			    .then(waiter.wait);
+	    },
+
+	    /**
+	     * @method generateVisual
+	     * @memberOf ADSKSpark.MeshAPI
+	     * @description - Request the generation of a Bolt visualization file for a given Spark Mesh Resource.
+	     * @param {String} meshId - The Id associated with an existing Spark Mesh Resource.
+	     * @param {Function} [progressCallback] - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+	     *
+	     * @returns {Promise} - A Promise which resolves to the input Mesh Resource with a visual_file_id property added.
+	     */
+	    generateVisual: function (meshId, progressCallback) {
+		    var headers = {'Content-Type': 'application/json'};
+		    var payload = JSON.stringify({
+			    id: meshId
+		    });
+		    var waiter = new ADSKSpark.TaskWaiter(progressCallback);
+		    return Client.authorizedApiRequest('/geom/meshes/generateVisual').post(headers, payload)
+			    .then(waiter.wait);
+	    },
+
+
+	    /**
+	     * @method exportMesh
+	     * @memberOf ADSKSpark.MeshAPI
+	     * @description exports Mesh and eventually returns a downloadable fileId
+	     * @param meshId - The Id associated with an existing Spark Mesh Resource.
+	     * @param fileType - The type of the export file: obj (Wavefront OBJ), stl_ascii (ASCII STL) or stl_binary (binary STL). default stl_ascii
+	     * @param progressCallback - Optional function to be invoked when import progress updates are available. The function is passed a numeric value in the range [0, 1].
+	     *
+	     * @returns {Promise} - Promise which resolves to a file_id for downloading.
+	     */
+	    exportMesh: function (meshId, fileType, progressCallback) {
+
+		    fileType = fileType || "stl_ascii";
+
+		    var headers = {'Content-Type': 'application/json'};
+		    var payload = JSON.stringify({
+			    id: meshId,
+			    file_type: fileType
+		    });
+		    var waiter = new ADSKSpark.TaskWaiter(progressCallback);
+		    return Client.authorizedApiRequest('/geom/meshes/export').post(headers, payload)
+			    .then(waiter.wait);
+	    }
     };
 
 }());
