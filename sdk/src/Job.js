@@ -270,7 +270,111 @@ var ADSKSpark = ADSKSpark || {};
         setCallback: function (callbackUrl) {
             return Client.authorizedApiRequest('/print/jobs/' + this.id + '/register')
                 .post(null, {callback_url: callbackUrl});
+        },
+
+        /**
+         * Set the custom data for this job.
+         * @param {object} [customData] - custom application data to be saved with this job.
+         * @returns {Promise} - A Promise which resolves to this object with updated contents.
+         */
+        updateCustomData: function (customData) {
+            if (!this.id) {
+                return Promise.reject(new Error('Unknown job in updateCustomData.'));
+            }
+            if (!customData) {
+                return Promise.reject(new Error('Custom data required for setCustomData.'));
+            }
+            var _this = this;
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify(customData);
+
+            return Client.authorizedApiRequest('/print/jobs/' + this.id)
+                .put(headers, payload)
+                .then(function (response) {
+                    console.log('updateCustomData GOT: ' + JSON.stringify(response));
+                    return _this.getStatus();
+                });
+        },
+
+        /**
+         * Set the source tray for this job. The tray Id provided is saved with the job
+         * custom data in the property "ADSKSpark.source_tray". Although not required
+         * for the print job, applications should use this field to keep track of which
+         * tray was used to create this job. This call will overwrite any previously
+         * set value for this field.
+         * @param {String} [Tray Id] - The Spark Id of the Tray used to create the printable
+         * for this job.
+         * @returns {Promise} - A Promise which resolves to this object with updated contents.
+         */
+        setSourceTray: function (trayId) {
+            if (!this.id) {
+                return Promise.reject(new Error('Unknown job in setSourceTray.'));
+            }
+            if (!this.data.job_custom_data)
+                this.data.job_custom_data = {};
+
+            if (!this.data.job_custom_data.ADSKSpark)
+                this.data.job_custom_data.ADSKSpark = {};
+
+            this.data.job_custom_data.ADSKSpark.source_tray = trayId;
+
+            return this.updateCustomData(this.data.job_custom_data);
+        },
+
+        /**
+         * Get the source tray for this job.
+         * @returns {String} - The previously saved source tray Id for this Job, if any.
+         * Returns null if not set.
+         */
+        getSourceTray: function () {
+            var custom = this.data.job_custom_data;
+            if( custom && custom.ADSKSpark )
+                return custom.ADSKSpark.source_tray;
+
+            return null;
+        },
+
+        /**
+         * Set the list of source meshes for this job. This is a list of user defined
+         * filenames that were originally used to create this job. Filenames are saved
+         * with the job custom data in the property 'ADSKSpark.source_files'. Although
+         * not required, applications should use this list to keep track of the user
+         * files imported for this job. This call will overwrite any previously set
+         * value for this field.
+         * @param {Array} [meshPaths] - List of user paths or filenames.
+         * @returns {Promise} - A Promise which resolves to this object with updated contents.
+         */
+        setMeshPaths: function (meshPaths) {
+            if (!this.id) {
+                return Promise.reject(new Error('Unknown job in updateCustomData.'));
+            }
+            if (!meshPaths)
+                meshPaths = [];
+
+            if (!this.data.job_custom_data)
+                this.data.job_custom_data = {};
+
+            if (!this.data.job_custom_data.ADSKSpark)
+                this.data.job_custom_data.ADSKSpark = {};
+
+            this.data.job_custom_data.ADSKSpark.source_files = meshPaths;
+
+            return this.updateCustomData(this.data.job_custom_data);
+        },
+
+        /**
+         * Get the source mesh list for this job.
+         * @returns {Array} - The previously saved list of source mesh paths for this Job,
+         * if any.
+         */
+        getMeshPaths: function () {
+            var custom = this.data.job_custom_data;
+            if( custom && custom.ADSKSpark )
+                return custom.ADSKSpark.source_files;
+
+            return [];
         }
+
     };
 
 }());
