@@ -274,7 +274,7 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * Set the custom data for this job.
-         * @param {object} [customData] - custom application data to be saved with this job.
+         * @param {object} customData - custom application data to be saved with this job.
          * @returns {Promise} - A Promise which resolves to this object with updated contents.
          */
         updateCustomData: function (customData) {
@@ -282,7 +282,7 @@ var ADSKSpark = ADSKSpark || {};
                 return Promise.reject(new Error('Unknown job in updateCustomData.'));
             }
             if (!customData) {
-                return Promise.reject(new Error('Custom data required for setCustomData.'));
+                return Promise.reject(new Error('Custom data required for updateCustomData.'));
             }
             var _this = this;
             var headers = {'Content-Type': 'application/json'};
@@ -302,7 +302,7 @@ var ADSKSpark = ADSKSpark || {};
          * for the print job, applications should use this field to keep track of which
          * tray was used to create this job. This call will overwrite any previously
          * set value for this field.
-         * @param {String} [Tray Id] - The Spark Id of the Tray used to create the printable
+         * @param {String} [trayId] - The Spark Id of the Tray used to create the printable
          * for this job.
          * @returns {Promise} - A Promise which resolves to this object with updated contents.
          */
@@ -346,7 +346,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         setMeshPaths: function (meshPaths) {
             if (!this.id) {
-                return Promise.reject(new Error('Unknown job in updateCustomData.'));
+                return Promise.reject(new Error('Unknown job in setMeshPaths.'));
             }
             if (!meshPaths)
                 meshPaths = [];
