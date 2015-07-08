@@ -326,10 +326,10 @@ var ADSKSpark = ADSKSpark || {};
          * @description - Open an auth window
          * @memberOf ADSKSpark.Client
 		 * @param {Boolean} [showRegisterScreen] - Whether to show the register screen as the default
-		 * @param {Boolean} [isImplicit] - is it implicit login - if not supplied defaults to True
+		 * @param {Boolean} [isServerLogin] - is it server login or implicit login - if not supplied defaults to False
 		 **/
-        openLoginWindow: function (showRegisterScreen,isImplicit) {
-            Helpers.popupWindow(this.getLoginRedirectUrl(showRegisterScreen,isImplicit), 350, 600);
+        openLoginWindow: function (showRegisterScreen,isServerLogin) {
+            Helpers.popupWindow(this.getLoginRedirectUrl(showRegisterScreen,isServerLogin), 350, 600);
         },
 		/**
 		 * @description - Completes the implicit login process, gets an access_token and expiresIn parameters and stores it in localStorage.
