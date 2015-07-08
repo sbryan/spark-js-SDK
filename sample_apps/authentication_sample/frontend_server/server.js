@@ -4,6 +4,6 @@ var app = express();
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/../../../sdk/src')); // Make the SDK available from the server root
 
-app.listen(8000);
+app.listen(9000);
 
-console.log('Frontend server started on port 8000');
+console.log('Frontend server started on port 9000');
