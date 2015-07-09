@@ -128,8 +128,14 @@ app.get('/refresh_token', function(req, res) {
         body: params,
         method: 'POST'
     }, function (err, result, body) {
-        //return the access token object (json)
-        res.send(body);
+		//return the access token object (json)
+		var resp = JSON.parse(body);
+
+		if (resp.refresh_token) {
+			req.session.refresh_token = JSON.parse(JSON.stringify(resp.refresh_token));
+		}
+
+		res.send(resp);
     });
 });
 
