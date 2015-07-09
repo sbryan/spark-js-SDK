@@ -179,9 +179,8 @@ var ADSKSpark = ADSKSpark || {};
 					return Promise.reject(new Error(data.Error));
 				});
 			}
-			else{
-				return  Promise.reject(new Error("No Server Implementation"));
-			}
+			return Promise.reject(new Error("No Server Implementation"));
+
         },
 
         /**
@@ -363,18 +362,16 @@ var ADSKSpark = ADSKSpark || {};
 				if (code) {
 					return this.completeServerLogin(code);
 				}
-				else{
-					return Promise.reject("No code supplied");
-				}
+				return Promise.reject("No code supplied");
+
 
 			}else {
 				var data = Helpers.extractRedirectionTokenData();
 				if (data.access_token) {
 					return Promise.resolve(this.completeImplicitLogin(data.access_token, data.expires_in));
 				}
-				else{
-					return Promise.reject("No access_token supplied");
-				}
+				return Promise.reject("No access_token supplied");
+
 			}
 
 
