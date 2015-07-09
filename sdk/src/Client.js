@@ -167,10 +167,11 @@ var ADSKSpark = ADSKSpark || {};
 				params.redirect_uri = Helpers.calculateRedirectUri();
 			}
 			if(_accessTokenUrl) {
-				return ADSKSpark.Request(_accessTokenUrl).get(undefined, params).then(function (data) {
+				return ADSKSpark.Request(_accessTokenUrl,null,{withCredentials:true}).get(undefined, params).then(function (data) {
 					if (data && data.expires_in && data.access_token) {
 						var now = Date.now();
 						data.expires_at = now + parseInt(data.expires_in) * 1000;
+                        delete(data.refresh_token);
 						localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
 
 						return data.access_token;
@@ -241,16 +242,18 @@ var ADSKSpark = ADSKSpark || {};
             var accessTokenObj = this.getAccessTokenObject();
 
             if (accessTokenObj) {
-				var refreshToken = accessTokenObj.refresh_token;
 				if (_refreshTokenUrl) {
-				return ADSKSpark.Request(_refreshTokenUrl)
-					.get(null, {refresh_token: refreshToken})
-					.then(function (data) {
-						var now = Date.now();
-						data.expires_at = now + parseInt(data.expires_in) * 1000;
-						localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
-						return data;
-					});
+                    return ADSKSpark.Request(_refreshTokenUrl,null,{withCredentials:true})
+                        .get()
+                        .then(function (data) {
+                            if (!data.Error) {
+                                var now = Date.now();
+                                data.expires_at = now + parseInt(data.expires_in) * 1000;
+                                delete(data.refresh_token);
+                                localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
+                            }
+                            return data;
+                        });
 				}
 				else{
 					return  Promise.reject(new Error("No Server Implementation"));
@@ -285,7 +288,7 @@ var ADSKSpark = ADSKSpark || {};
                         //
                         var now = Date.now();
 
-                        if (token.expires_at && now > token.expires_at) {
+                        if (_refreshTokenUrl && token.expires_at && now > token.expires_at) {
                             _this.refreshAccessToken()
                                 .then(function (refreshedToken) {
                                     resolve(formatAuthHeader(refreshedToken));
