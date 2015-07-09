@@ -248,8 +248,9 @@ var ADSKSpark = ADSKSpark || {};
                             if (!data.Error) {
                                 var now = Date.now();
                                 data.expires_at = now + parseInt(data.expires_in) * 1000;
-                                delete(data.refresh_token);
-                                localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(data));
+                                var clonedData = JSON.parse(JSON.stringify(data));
+                                delete(clonedData.refresh_token);
+                                localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(clonedData));
                             }
                             return data;
                         });
