@@ -310,12 +310,12 @@ var ADSKSpark = ADSKSpark || {};
             if (!this.id) {
                 return Promise.reject(new Error('Unknown job in setSourceTray.'));
             }
-            if (!this.data.job_custom_data)
+            if (!this.data.job_custom_data) {
                 this.data.job_custom_data = {};
-
-            if (!this.data.job_custom_data.ADSKSpark)
+            }
+            if (!this.data.job_custom_data.ADSKSpark) {
                 this.data.job_custom_data.ADSKSpark = {};
-
+            }
             this.data.job_custom_data.ADSKSpark.source_tray = trayId;
 
             return this.updateCustomData(this.data.job_custom_data);
@@ -328,9 +328,9 @@ var ADSKSpark = ADSKSpark || {};
          */
         getSourceTray: function () {
             var custom = this.data.job_custom_data;
-            if( custom && custom.ADSKSpark )
+            if( custom && custom.ADSKSpark ) {
                 return custom.ADSKSpark.source_tray;
-
+            }
             return null;
         },
 
@@ -348,15 +348,15 @@ var ADSKSpark = ADSKSpark || {};
             if (!this.id) {
                 return Promise.reject(new Error('Unknown job in setMeshPaths.'));
             }
-            if (!meshPaths)
+            if (!meshPaths) {
                 meshPaths = [];
-
-            if (!this.data.job_custom_data)
+            }
+            if (!this.data.job_custom_data) {
                 this.data.job_custom_data = {};
-
-            if (!this.data.job_custom_data.ADSKSpark)
+            }
+            if (!this.data.job_custom_data.ADSKSpark) {
                 this.data.job_custom_data.ADSKSpark = {};
-
+            }
             this.data.job_custom_data.ADSKSpark.source_files = meshPaths;
 
             return this.updateCustomData(this.data.job_custom_data);
@@ -369,9 +369,9 @@ var ADSKSpark = ADSKSpark || {};
          */
         getMeshPaths: function () {
             var custom = this.data.job_custom_data;
-            if( custom && custom.ADSKSpark )
+            if( custom && custom.ADSKSpark ) {
                 return custom.ADSKSpark.source_files;
-
+            }
             return [];
         }
 
