@@ -1,0 +1,117 @@
+<html>
+    <script src="./autodesk-spark-sdk-0.0.2.min.js"></script>
+    <script src="./Three.js"></script>
+    <script src="./BLTLoader.js"></script>
+    <script src="./BLTworker.js"></script>
+    <script src="./zlib.js"></script>
+    <script src="./jpegimage.js"></script>
+
+<form>
+ <button type="button" onclick="authenticate();">Step (1) login</button>
+ <button type="button" onclick="checkLogin();">Step (2) complete login and check -in developers tools console-</button>
+ <input id="fileInput" type="file"/>
+</form>
+
+<pre id="log">
+</pre>
+
+    <script>
+
+        var Client = ADSKSpark.Client;
+
+        var APP_KEY = 'nowMt9VXkc9OiG8u7iKLNN9fKWQbMLVM',
+        GUEST_TOKEN_URL = 'http://localhost:3000/guest_token',
+        ACCESS_TOKEN_URL = 'http://localhost:3000/access_token',
+        REFRESH_TOKEN_URL = 'http://localhost:3000/refresh_token',
+        API_URL = 'https://api-sandbox.spark.autodesk.com/api/v1';
+
+        Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, REFRESH_TOKEN_URL, API_URL);
+
+        var authenticate = function() {
+            window.location = Client.getLoginRedirectUrl();    
+        }
+
+        var checkLogin = function() {
+            var params = ADSKSpark.Helpers.extractParamsFromURL();
+            var code = params.code;
+            ADSKSpark.Client.completeLogin(code)
+            .then(function (result){
+                console.log(ADSKSpark.Client.isAccessTokenValid());
+                if (ADSKSpark.Client.isAccessTokenValid()) {
+                    console.log('access token: ',ADSKSpark.Client.getAccessToken());
+                    ADSKSpark.Members.getMyProfile().then(function(response){
+                    console.log('Current logged in member is: ', response.member);
+                });
+            }
+            });
+            
+        }
+
+        //Draw Three.js viewer
+        var mesh;
+
+        var container = document.createElement( 'div' );
+        document.body.appendChild( container );
+
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth * 0.6, window.innerHeight * 0.6 );
+        container.appendChild( renderer.domElement );
+
+        var camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera.position.z = 100;
+
+        var scene = new THREE.Scene();
+
+        //After the .BLT decoder has converted the .BLT file into an bufferGeometery object
+        var callBackRender = function (geometries) {
+            var material = new THREE.MeshDepthMaterial();
+
+            mesh = new THREE.Mesh( geometries[0], material );
+            scene.add( mesh );
+        }
+
+
+        //Upload File
+        document.getElementById("fileInput").onchange = function () {
+            // retrieve File from input
+            var modelFile = this.files[0];
+            var filename = this.files[0].name;
+
+            //Package it for Drive API upload 
+            var fileData = {
+                file: modelFile
+            }
+
+            ADSKSpark.Files.uploadFile(fileData)
+            .then(function (result){
+                //Generate an image
+                ADSKSpark.MeshAPI.importMesh(result.files[0].file_id, filename, true)
+                .then(function (mesh){
+                    var loader = new THREE.BLTLoader();
+                    ADSKSpark.Files.downloadFile(mesh.visual_file_id).
+                    then(function (buffer){
+                        //Download the .BLT file
+                        loader.load(buffer.arraybuffer.buffer, callBackRender);
+                    });
+                });
+            });
+
+        };
+
+        //Object rotates about the center. If it doesn't start on screen it may not show up
+        var animate = function() {
+            requestAnimationFrame( animate );
+
+            if(mesh){
+                // mesh.rotation.x += 0.005;
+                mesh.rotation.y += 0.01;
+            }
+
+            renderer.render( scene, camera );
+
+        }
+        animate();
+    </script>
+
+</html>
