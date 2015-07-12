@@ -159,7 +159,7 @@ var ADSKSpark = ADSKSpark || {};
 		 */
 		extractRedirectionCode: function (prmstr) {
 			var getParams = this.extractParamsFromURL(prmstr);
-			return getParams['code'] ? getParams['code'] : null;
+			return getParams.code;
 		},
 
 		/**
@@ -168,9 +168,8 @@ var ADSKSpark = ADSKSpark || {};
 		extractRedirectionTokenData: function (prmstr) {
 			var getParams = this.extractParamsFromURL(prmstr);
 			var data = {};
-			data.access_token = getParams['access_token'];
-			data.expires_in = getParams['expires_in'];
-
+			data.access_token = getParams.access_token;
+			data.expires_in = getParams.expires_in;
 			return data;
 		},
 		/**
