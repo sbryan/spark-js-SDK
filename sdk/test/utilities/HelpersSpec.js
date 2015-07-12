@@ -145,10 +145,10 @@ describe('Helpers', function () {
 		expect(data).to.have.property('expires_in', '7100');
 
 	});
-	it('extractRedirectionTokenData returns null', function () {
+	it('extractRedirectionTokenData returns empty results', function () {
 		var data =Helpers.extractRedirectionTokenData("something=200&another=100");
-		expect(data).to.have.property('access_token', null);
-		expect(data).to.have.property('expires_in', null);
+		expect(data.access_token).to.not.be.ok;
+		expect(data.expires_in).to.not.be.ok;
 	});
 
 	it('calculateRedirectUri returns correct uri of question mark', function () {

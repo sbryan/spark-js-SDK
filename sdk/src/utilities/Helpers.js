@@ -168,8 +168,8 @@ var ADSKSpark = ADSKSpark || {};
 		extractRedirectionTokenData: function (prmstr) {
 			var getParams = this.extractParamsFromURL(prmstr);
 			var data = {};
-			data.access_token = getParams['access_token'] ? getParams['access_token'] : null;
-			data.expires_in = getParams['expires_in'] ? getParams['expires_in'] : null;
+			data.access_token = getParams['access_token'];
+			data.expires_in = getParams['expires_in'];
 
 			return data;
 		},

@@ -29,9 +29,8 @@ var ADSKSpark = ADSKSpark || {};
 			return data.access_token;
 			});
 		}
-		else{
-			return  Promise.reject(new Error("No Server Implementation"));
-		}
+		return Promise.reject(new Error("No Server Implementation"));
+
     };
 
     /**
@@ -118,23 +117,12 @@ var ADSKSpark = ADSKSpark || {};
          */
         getLoginRedirectUrl: function (showRegisterScreen,isServerLogin) {
 
-            var apiRedirectUrl = _apiUrl + '/oauth/authorize';
-			if (isServerLogin){
-				apiRedirectUrl += '?response_type=code' +
-				'&client_id=' + _clientId;
-			}
-			else{
-				apiRedirectUrl += '?response_type=token' +
-				'&client_id=' + _clientId;
-			}
+            var responseType = isServerLogin ? 'code' : 'token';
+            var redirectUri = _redirectUri || Helpers.calculateRedirectUri();
 
-
-            if (_redirectUri) {
-                apiRedirectUrl += '&redirect_uri=' + _redirectUri;
-            }
-			else{
-				apiRedirectUrl += '&redirect_uri=' + Helpers.calculateRedirectUri();
-			}
+            var apiRedirectUrl = _apiUrl +  '/oauth/authorize?response_type=' + responseType +
+                                            '&client_id=' + _clientId +
+                                            '&redirect_uri=' + redirectUri;
 
             if (showRegisterScreen) {
                 apiRedirectUrl += '&register=true';
@@ -334,10 +322,11 @@ var ADSKSpark = ADSKSpark || {};
             Helpers.popupWindow(this.getLoginRedirectUrl(showRegisterScreen,isServerLogin), 350, 600);
         },
 		/**
-		 * @description - Completes the implicit login process, gets an access_token and expiresIn parameters and stores it in localStorage.
+		 * @description - Completes the implicit login process, gets an access_token and expiresIn parameters and stores it in localStorage. For more
+         * information about implicit login see here - https://tools.ietf.org/html/rfc6749#section-4.2
 		 * @memberOf ADSKSpark.Client
-		 * @param {accessToken} accessToken - The accessToken that was returned after the user signed in.
-		 * @param {expiresIn} expiresIn - The time in milliseconds when the access token will be expired.
+		 * @param {String} accessToken - The accessToken that was returned after the user signed in.
+		 * @param {Number} expiresIn - The time in milliseconds when the access token will be expired.
 		 * @returns {String} - The access token.
 		 **/
 		completeImplicitLogin: function (accessToken,expiresIn) {
@@ -368,7 +357,7 @@ var ADSKSpark = ADSKSpark || {};
 
 			}else {
 				var data = Helpers.extractRedirectionTokenData();
-				if (data.access_token) {
+				if (data && data.access_token) {
 					return Promise.resolve(this.completeImplicitLogin(data.access_token, data.expires_in));
 				}
 				return Promise.reject("No access_token supplied");
