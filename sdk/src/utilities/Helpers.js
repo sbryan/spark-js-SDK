@@ -183,10 +183,10 @@ var ADSKSpark = ADSKSpark || {};
 			var questionMarkIndex = prmstr.indexOf('?');
 			var hashMarkIndex = prmstr.indexOf('#');
 			var uri = prmstr;
-			if (questionMarkIndex != -1) {
-				uri = uri.substring(0, questionMarkIndex)
-			} else if (hashMarkIndex != -1) {
-				uri = uri.substring(0, hashMarkIndex)
+			if (questionMarkIndex > -1) {
+				uri = uri.substring(0, questionMarkIndex);
+			} else if (hashMarkIndex > -1) {
+				uri = uri.substring(0, hashMarkIndex);
 
 			}
 

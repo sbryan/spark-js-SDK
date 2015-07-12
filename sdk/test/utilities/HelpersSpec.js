@@ -136,8 +136,9 @@ describe('Helpers', function () {
 	it('extractRedirectionCode success', function () {
 		expect(Helpers.extractRedirectionCode("code=200")).to.equal('200');
 	});
-	it('extractRedirectionCode returns null', function () {
-		expect(Helpers.extractRedirectionCode("something=200")).to.equal(null);
+	it('extractRedirectionCode returns empty result', function () {
+		var code = Helpers.extractRedirectionCode("something=200");
+		expect(code).to.not.be.ok;
 	});
 	it('extractRedirectionTokenData success', function () {
 		var data = Helpers.extractRedirectionTokenData("access_token=200&expires_in=7100");
