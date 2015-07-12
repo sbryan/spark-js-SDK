@@ -41,4 +41,4 @@ In the `frontend_server` directory:
 #### How to Run
 Run `node server.js` from within the `frontend_server` directory to start the server on port 8000.
 
-In your browser, navigate to `localhost.autodesk.com:8000` (or just `localhost:8000`).
+In your browser, navigate to `localhost.autodesk.com:8000/index.html` (or just `localhost:8000/index.html`).

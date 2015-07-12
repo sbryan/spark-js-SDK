@@ -9,10 +9,21 @@ if (isNaN(port)){
     port = 3000;
 }
 
-// Setup express + request
+// Setup dependencies
 var express = require('express'),
-    app = express(),
-    request = require('request');
+	app = express(),
+	request = require('request'),
+	session = require('express-session'),
+	cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
+app.use(session({
+		cookie: {maxAge: 720000},
+		resave: false,
+		saveUninitialized: false,
+		secret: 'spark secret string'
+	})
+);
 
 /**
  * Encode a string in base64.
@@ -26,8 +37,10 @@ var toBase64 = function(s){
 
 // Enable CORS
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.header('Access-Control-Allow-Credentials', true);
+	res.header('Access-Control-Allow-Origin', req.headers.origin);
+	res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+	res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Authorization, Content-Type, Accept');
     next();
 });
 
@@ -59,8 +72,14 @@ app.get('/access_token', function(req, res){
         body: params,
         method: 'POST'
     }, function (err, result, body) {
-        //return the guest token object (json)
-        res.send(body);
+		//return the access token object (json)
+		var resp = JSON.parse(body);
+		
+		if (resp.refresh_token) {
+			req.session.refresh_token = JSON.parse(JSON.stringify(resp.refresh_token));
+		}
+
+		res.send(resp);
     });
 });
 
@@ -92,8 +111,9 @@ app.get('/guest_token', function(req, res){
 // Refresh token service
 // See API reference - https://spark.autodesk.com/developers/reference/authentication?deeplink=%2Freference%2Foauth-2.0%2Faccess-token-refresh
 app.get('/refresh_token', function(req, res) {
+	console.log("session is:" , req.session);
     var url = API_SERVER + '/oauth/refreshtoken',
-        params = "grant_type=refresh_token&refresh_token=" + req.query.refresh_token,
+        params = "grant_type=refresh_token&refresh_token=" + req.session.refresh_token,
         contentLength = params.length,
         headers = {
             'Authorization': 'Basic ' + toBase64(config.APP_KEY + ':' + config.APP_SECRET),
@@ -108,8 +128,14 @@ app.get('/refresh_token', function(req, res) {
         body: params,
         method: 'POST'
     }, function (err, result, body) {
-        //return the access token object (json)
-        res.send(body);
+		//return the access token object (json)
+		var resp = JSON.parse(body);
+
+		if (resp.refresh_token) {
+			req.session.refresh_token = JSON.parse(JSON.stringify(resp.refresh_token));
+		}
+
+		res.send(resp);
     });
 });
 

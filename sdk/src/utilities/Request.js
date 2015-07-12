@@ -13,6 +13,7 @@ var ADSKSpark = ADSKSpark || {};
      * @param {Object} [options] - May have the following options:
      *                              {
      *                                  notJsonResponse
+     *                                  withCredentials
      *                              }
      */
     ADSKSpark.Request = function (url, authorization, options) {
@@ -77,8 +78,12 @@ var ADSKSpark = ADSKSpark || {};
                     xhr.setRequestHeader('Authorization', authorization);
                 }
 
-                if(options.notJsonResponse){
+                if(options.notJsonResponse) {
                     xhr.responseType = 'arraybuffer';
+                }
+
+                if (options.withCredentials){
+                    xhr.withCredentials = true;
                 }
 
                 xhr.onload = function () {
