@@ -17,7 +17,7 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 ### Changed
 - Move the storage of refresh_token from client (localStorage) to server (session)
 
-## [0.0.2] - 2015-05-21
+## 0.0.2 - 2015-05-21
 ### Added
 - Atomatic building of SDK and documentation
 - Server implementation for calling access, refresh and guest tokens to prevent the exposing of APP SECRET
