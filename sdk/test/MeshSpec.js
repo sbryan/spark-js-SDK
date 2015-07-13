@@ -11,8 +11,9 @@ describe('Mesh API tests', function() {
     });
 
     beforeEach(function() {
-        var testApiUrl = 'http://localhost:9998';
-        ADSKSpark.Client.initialize(null, null, null, null, testApiUrl);
+        //var testApiUrl = 'http://localhost:9998';
+        var server = 'http://localhost:3000';
+        ADSKSpark.Client.initialize(null, false,'', server);
     });
 
     after(function(){

@@ -45,16 +45,33 @@ var ADSKSpark = ADSKSpark || {};
          * @memberOf ADSKSpark.Client
          * @param {String} clientId - The app key provided when you registered your app.
 		 * @param {Boolean} [isProduction] - Flag to indicate if we use Production environment or Sandbox environment
-		* @param  {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
-		 * @param {String} [guestTokenUrl] - The URL of your authentication server used for guest tokens. This server should
-         *                                 handle exchanging the client secret for a guest token.
-         * @param {String} [accessTokenUrl] - The URL of your authentication server used for access tokens. This server should
-         *                                 handle exchanging a provided code for an access token.
-         * @param {String} [refreshTokenUrl] - The URL of your authentication server used to refresh access tokens. This server
-         *                                  should call the refresh token api (extend the expiry time) and return a new valid
-         *                                  access token.
+         * @param  {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
+         * @param {String|Object} [server] - The server details for the 3-legged authentication using the explicit auth flow.
+         * If provided as a string, all the relevant endpoints will be assumed as /guest_token, /access_token and /refresh_token.
+         * If provided as an object, make sure you pass these options:
+		 *      guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
+         *                      handle exchanging the client secret for a guest token.
+         *      accessTokenUrl - The URL of your authentication server used for access tokens. This server should
+         *                       handle exchanging a provided code for an access token.
+         *      refreshTokenUrl - The URL of your authentication server used to refresh access tokens. This server
+         *                        should call the refresh token api (extend the expiry time) and return a new valid
+         *                        access token.
          */
-        initialize: function (clientId,isProduction, redirectUri,guestTokenUrl, accessTokenUrl, refreshTokenUrl) {
+        initialize: function (clientId,isProduction, redirectUri,server) {
+            var guestTokenUrl,
+                accessTokenUrl,
+                refreshTokenUrl;
+
+            if (typeof server === 'string' || server instanceof String){
+                guestTokenUrl = server + '/guest_token';
+                accessTokenUrl = server + '/access_token';
+                refreshTokenUrl = server + '/refresh_token';
+            }else{
+                guestTokenUrl = server.guestTokenUrl;
+                accessTokenUrl = server.accessTokenUrl;
+                refreshTokenUrl = server.refreshTokenUrl;
+            }
+
 			if (isProduction){
 				this.initializeProduction(clientId,guestTokenUrl,accessTokenUrl,refreshTokenUrl,redirectUri);
 			}
