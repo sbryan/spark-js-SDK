@@ -59,7 +59,7 @@ var ADSKSpark = ADSKSpark || {};
 	 * @param {String} code - The code that was returned after the user signed in. {@see ADSKSpark.Client#login}
 	 * @returns {Promise} - A promise that resolves to the access token.
 	 */
-	var _completeServerLogin = function(code) {
+	var _completeServerLogin = function (code) {
 		var params = {code: code};
 
 		if (_redirectUri) {
@@ -95,71 +95,27 @@ var ADSKSpark = ADSKSpark || {};
 		/**
 		 * @description - Initializes the client.
 		 * @memberOf ADSKSpark.Client
-		 * @param {String} clientId - The app key provided when you registered your app.
-		 * @param {Boolean} [isProduction] - Flag to indicate if we use Production environment or Sandbox environment
-		 * @param  {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
-		 * @param {String} [guestTokenUrl] - The URL of your authentication server used for guest tokens. This server should
+		 * @param {String} appKey - The app key provided when you registered your app.
+		 * @param {Object} [options]:
+		 *                    isProduction - Flag to indicate if we use Production environment or Sandbox environment
+		 *                    redirectUri - The URI that the Spark OAuth service will return the browser to
+		 *                    guestTokenUrl - The URL of your authentication server used for guest tokens. This server should
 		 *                                 handle exchanging the client secret for a guest token.
-		 * @param {String} [accessTokenUrl] - The URL of your authentication server used for access tokens. This server should
+		 *                    accessTokenUrl - The URL of your authentication server used for access tokens. This server should
 		 *                                 handle exchanging a provided code for an access token.
-		 * @param {String} [refreshTokenUrl] - The URL of your authentication server used to refresh access tokens. This server
+		 *                    refreshTokenUrl - The URL of your authentication server used to refresh access tokens. This server
 		 *                                  should call the refresh token api (extend the expiry time) and return a new valid
 		 *                                  access token.
 		 */
-		initialize: function (clientId, isProduction, redirectUri, guestTokenUrl, accessTokenUrl, refreshTokenUrl) {
-			if (isProduction) {
-				this.initializeProduction(clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, redirectUri);
-			}
-			else {
-				this.initializeSandbox(clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, redirectUri);
-			}
+		initialize: function (appKey, options) {
+			_clientId = appKey;
+			_apiUrl = options && options.isProduction ? ADSKSpark.Constants.API_HOST_PROD : ADSKSpark.Constants.API_HOST_SANDBOX;
+			_redirectUri = options && options.redirectUri ? options.redirectUri : null;
+			_guestTokenUrl = options && options.guestTokenUrl ? options.guestTokenUrl : null;
+			_accessTokenUrl = options && options.accessTokenUrl ? options.accessTokenUrl : null;
+			_refreshTokenUrl = options && options.refreshTokenUrl ? options.refreshTokenUrl : null;
 
 		},
-
-		/**
-		 * @description - Initializes the client for Sandbox environment.
-		 * @memberOf ADSKSpark.Client
-		 * @param {String} clientId - The app key provided when you registered your app.
-		 * @param {String} [guestTokenUrl] - The URL of your authentication server used for guest tokens. This server should
-		 *                                 handle exchanging the client secret for a guest token.
-		 * @param {String} [accessTokenUrl] - The URL of your authentication server used for access tokens. This server should
-		 *                                 handle exchanging a provided code for an access token.
-		 * @param {String} [refreshTokenUrl] - The URL of your authentication server used to refresh access tokens. This server
-		 *                                  should call the refresh token api (extend the expiry time) and return a new valid
-		 *                                  access token.
-		 * @param {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
-		 */
-		initializeSandbox: function (clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, redirectUri) {
-			_clientId = clientId;
-			_guestTokenUrl = guestTokenUrl;
-			_accessTokenUrl = accessTokenUrl;
-			_refreshTokenUrl = refreshTokenUrl;
-			_apiUrl = ADSKSpark.Constants.API_HOST_SANDBOX;
-			_redirectUri = redirectUri;
-		},
-
-		/**
-		 * @description - Initializes the client for production environment.
-		 * @memberOf ADSKSpark.Client
-		 * @param {String} clientId - The app key provided when you registered your app.
-		 * @param {String} [guestTokenUrl] - The URL of your authentication server used for guest tokens. This server should
-		 *                                 handle exchanging the client secret for a guest token.
-		 * @param {String} [accessTokenUrl] - The URL of your authentication server used for access tokens. This server should
-		 *                                 handle exchanging a provided code for an access token.
-		 * @param {String} [refreshTokenUrl] - The URL of your authentication server used to refresh access tokens. This server
-		 *                                  should call the refresh token api (extend the expiry time) and return a new valid
-		 *                                  access token.
-		 * @param {String} [redirectUri] - The URI that the Spark OAuth service will return the browser to
-		 */
-		initializeProduction: function (clientId, guestTokenUrl, accessTokenUrl, refreshTokenUrl, redirectUri) {
-			_clientId = clientId;
-			_guestTokenUrl = guestTokenUrl;
-			_accessTokenUrl = accessTokenUrl;
-			_refreshTokenUrl = refreshTokenUrl;
-			_apiUrl = ADSKSpark.Constants.API_HOST_PROD;
-			_redirectUri = redirectUri;
-		},
-
 		/**
 		 * @description - Returns the URL to redirect to for logging in.
 		 * @memberOf ADSKSpark.Client
