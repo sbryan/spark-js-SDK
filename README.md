@@ -7,10 +7,9 @@ This open-source web client SDK enables you to easily integrate the Spark REST A
 
 ### Prerequisites
 * A registered application on <a href="https://spark.autodesk.com/developers/" target="_blank">Spark Developer Portal</a>. For more information see the <a href="https://spark.autodesk.com/developers/reference/introduction/tutorials/register-an-app" target="_blank">tutorial</a>.
-* A server side implementation of the authentication API calls (guest, access and refresh tokens). Sample Node.js code implementing the server side is located in the repository's <a href="https://github.com/spark3dp/spark-js-sdk/tree/master/authentication_server/nodejs" target="_blank">nodejs server</a> folder.
 
 ### Installation
-To use the Spark JavaScript SDK you must first add an app on the Spark Developer’s Portal and save the app key and app secret Spark generates. 
+To use the Spark JavaScript SDK you must first add an app on the Spark Developer’s Portal and save the app key Spark generates.
 
 1) Include the SDK library in your HTML page just before closing the body section (`</body>`).
 
@@ -23,12 +22,9 @@ To use the Spark JavaScript SDK you must first add an app on the Spark Developer
 ```JavaScript
 ADSKSpark.Client.initialize(
   '<app key>', //A string containing your Spark app key, provided during registration.
-  '<guest token URL>', //The server URL to which guest token requests will be directed, for example http://example.com/guest_token. The SDK requires that authentication APIs are called from a server.
-  '<access token URL>', //The server URL to which access token requests will be directed, for example http://example.com/access_token.
-  '<refresh access token URL>', //The server URL to which refresh access token requests will be directed.
-  ADSKSpark.Constants.API_HOST_SANDBOX, // ADSKSpark.Constants.API_HOST_SANDBOX or ADSKSpark.Constants.API_HOST_PRODUCTION - A constant specifying whether the SDK is running in sandbox or production.
-  '<redirect uri>' // (Optional) The redirect URI for the auth service (i.e. http://example.com/callback), in cases where it is different than the one that was set for your app's Callback URL 
-)
+  'isProduction', //(Optional) Whether we work in production or sandbox environment - default is sandbox
+  '<redirect uri>' // (Optional) The redirect URI for the auth service (i.e. http://example.com/callback), in cases where it is different than the one that was set for your app's Callback URL
+);
 ```
 
 * See the Sample Code section below for additional options.
@@ -49,13 +45,11 @@ ADSKSpark.Client.initialize(
 
     <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk-latest.min.js"></script>
     <script>
-      ADSKSpark.Client.initialize('',// Your app key
-              '',// The guest token endpoint implemented by your server (i.e. http://example.com/guest_token)
-              '',// The access token endpoint implemented by your server (i.e. http://example.com/access_token)
-              '',// The refresh access token endpoint implemented by your server (i.e. http://example.com/refresh_token)
-              ADSKSpark.Constants.API_HOST_SANDBOX, // api host - API_HOST_PRODUCTION or API_HOST_SANDBOX
-              '' // (Optional) The redirect URI for the auth service (i.e. http://example.com/callback), if it is different to the one that was set for your app's Callback URL 
-      );
+        ADSKSpark.Client.initialize(
+          '<app key>', //A string containing your Spark app key, provided during registration.
+          'isProduction', //(Optional) Whether we work in production or sandbox environment - default is sandbox
+          '<redirect uri>' // (Optional) The redirect URI for the auth service (i.e. http://example.com/callback), in cases where it is different than the one that was set for your app's Callback URL
+        );
 
       	/**
       	 * Open login window
@@ -68,13 +62,6 @@ ADSKSpark.Client.initialize(
       		ADSKSpark.Client.logout();
       		location.reload();
       	}
-
-      	function getGuestToken(){
-      		ADSKSpark.Client.getGuestToken().then(function(guestToken) {
-      			console.log('guest token: ',guestToken);
-      		});
-      	}
-
 
       	if (ADSKSpark.Client.isAccessTokenValid()) {
       		console.log('access token: ',ADSKSpark.Client.getAccessToken());
