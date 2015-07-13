@@ -22,7 +22,7 @@ To use the Spark JavaScript SDK you must first add an app on the Spark Developer
 ```JavaScript
 ADSKSpark.Client.initialize(
   '<app key>', //A string containing your Spark app key, provided during registration.
-  'isProduction', //(Optional) Whether we work in production or sandbox environment - default is sandbox
+  '<is production>', //(Optional - true/false) Whether we work in production or sandbox environment - default is sandbox
   '<redirect uri>' // (Optional) The redirect URI for the auth service (i.e. http://example.com/callback), in cases where it is different than the one that was set for your app's Callback URL
 );
 ```
