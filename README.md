@@ -56,7 +56,7 @@ Client.initialize(APP_KEY); //APP_KEY is a string containing your Spark app key,
     };
 
 
-    ADSKSpark.Client.initialize('',options);
+    ADSKSpark.Client.initialize('<your app key>',options);
 
     /**
      * Open login window
