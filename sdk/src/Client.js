@@ -20,7 +20,7 @@ var ADSKSpark = ADSKSpark || {};
 	 *
 	 * @returns {Promise} - A promise that resolves to the guest token.
 	 */
-	var _getGuestTokenFromServer = function () {
+	var getGuestTokenFromServer = function () {
 		if (_guestTokenUrl) {
 			return ADSKSpark.Request(_guestTokenUrl).get().then(function (data) {
 				var now = Date.now();
@@ -41,7 +41,7 @@ var ADSKSpark = ADSKSpark || {};
 	 * @param {Number} expiresIn - The time in milliseconds when the access token will be expired.
 	 * @returns {String} - The access token.
 	 **/
-	var _completeImplicitLogin = function (accessToken, expiresIn) {
+	var completeImplicitLogin = function (accessToken, expiresIn) {
 
 		var data = {};
 		data.access_token = accessToken;
@@ -59,13 +59,12 @@ var ADSKSpark = ADSKSpark || {};
 	 * @param {String} code - The code that was returned after the user signed in. {@see ADSKSpark.Client#login}
 	 * @returns {Promise} - A promise that resolves to the access token.
 	 */
-	var _completeServerLogin = function (code) {
+	var completeServerLogin = function (code) {
 		var params = {code: code};
 
 		if (_redirectUri) {
 			params.redirect_uri = _redirectUri;
-		}
-		else {
+		} else {
 			params.redirect_uri = Helpers.calculateRedirectUri();
 		}
 		if (_accessTokenUrl) {
@@ -193,7 +192,7 @@ var ADSKSpark = ADSKSpark || {};
 				return Promise.resolve(guestToken.access_token);
 			}
 
-			return _getGuestTokenFromServer();
+			return getGuestTokenFromServer();
 		},
 
 		/**
@@ -306,7 +305,7 @@ var ADSKSpark = ADSKSpark || {};
 			if (isServer) {
 				var code = Helpers.extractRedirectionCode();
 				if (code) {
-					return _completeServerLogin(code);
+					return completeServerLogin(code);
 				}
 				return Promise.reject("No code supplied");
 
@@ -314,7 +313,7 @@ var ADSKSpark = ADSKSpark || {};
 			} else {
 				var data = Helpers.extractRedirectionTokenData();
 				if (data && data.access_token) {
-					return Promise.resolve(_completeImplicitLogin(data.access_token, data.expires_in));
+					return Promise.resolve(completeImplicitLogin(data.access_token, data.expires_in));
 				}
 				return Promise.reject("No access_token supplied");
 
