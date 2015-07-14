@@ -20,7 +20,7 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 
 ## 0.0.2 - 2015-05-21
 ### Added
-- Atomatic building of SDK and documentation
+- Automatic building of SDK and documentation
 - Server implementation for calling access, refresh and guest tokens to prevent the exposing of APP SECRET
 - More tests coverage
 
