@@ -254,10 +254,15 @@
                 var _printableFileID = null;
                 var _printJob = null;
 	            var isServerLogin = (window.location.search.indexOf('code') != -1);
-                var useProductionService = false;
-                var redirectUri = null;
 
-	            Client.initialize(APP_KEY,useProductionService,redirectUri, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, REFRESH_TOKEN_URL);
+                var options = {
+                    isProduction:false,
+                    guestTokenUrl: GUEST_TOKEN_URL,
+                    accessTokenUrl: ACCESS_TOKEN_URL,
+                    refreshTokenUrl: REFRESH_TOKEN_URL
+                };
+
+	            Client.initialize(APP_KEY,options);
 
                 //First let's see if we have a valid access token
                 if (Client.isAccessTokenValid()) {

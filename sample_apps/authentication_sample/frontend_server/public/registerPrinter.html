@@ -122,7 +122,6 @@
 
         <script>
             var APP_KEY = ''; // Your app key
-            var API_ROOT = 'sandbox';  // Use 'sandbox' for testing and 'api' for production.
 
             // The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
             var GUEST_TOKEN_URL = 'http://localhost:3000/guest_token';
@@ -148,12 +147,18 @@
                 var TrayAPI = ADSKSpark.TrayAPI;
                 var Client  = ADSKSpark.Client;
 
-                var API_URL = 'https://' + API_ROOT + '.spark.autodesk.com/api/v1';
-
                 var _meshID = null;
                 var _printerTypes = null;
 
-                Client.initialize(APP_KEY, GUEST_TOKEN_URL, ACCESS_TOKEN_URL, REFRESH_TOKEN_URL, API_URL);
+                var options = {
+                    isProduction:false,
+                    guestTokenUrl: GUEST_TOKEN_URL,
+                    accessTokenUrl: ACCESS_TOKEN_URL,
+                    refreshTokenUrl: REFRESH_TOKEN_URL
+                };
+
+
+                Client.initialize(APP_KEY, options);
 
                 //First let's see if we have a valid access token
                 if (Client.isAccessTokenValid()) {
