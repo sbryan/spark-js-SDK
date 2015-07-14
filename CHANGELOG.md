@@ -4,11 +4,12 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 
 ## [Unreleased][unreleased]
 ### Changed
-- Shorter initialization for 3-legged (explicit) authentication
+- Add bower support
 
 ## [0.1.0] - 2015-07-12
 ### Added
 - Implicit login to simplify the login process
+- Simpler Client initialization
 - Added support for repairAll option in method repairMesh
 - Added exportMesh method
 - New Job methods for updating custom job data
@@ -41,5 +42,5 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 - Some Print API implementation, mainly mesh related methods
 - Added grunt to the SDK with initial build tasks
 
-[unreleased]: https://github.com/spark3dp/spark-js-SDK/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/spark3dp/spark-js-SDK/compare/v0.1.0...develop
 [0.1.0]: https://github.com/spark3dp/spark-js-SDK/compare/v0.0.2...v0.1.0
