@@ -6,7 +6,7 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 ### Changed
 - Add bower support
 
-## [0.1.0] - 2015-07-12
+## [0.1.0] - 2015-07-14
 ### Added
 - Implicit login to simplify the login process
 - Simpler Client initialization
