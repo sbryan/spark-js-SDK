@@ -52,7 +52,7 @@ Client.initialize(APP_KEY); //APP_KEY is a string containing your Spark app key,
         redirectUri: '',// (Optional) The redirect URI for the auth service (i.e. http://example.com/callback), in cases where it is different than the one that was set for your app's Callback URL
         guestTokenUrl: '',//(Optional) The server URL to which guest token requests will be directed, for example http://example.com/guest_token.
         accessTokenUrl: '',//(Optional) The server URL to which access token requests will be directed, for example http://example.com/access_token.
-        refreshTokenUrl: ''(Optional) The server URL to which refresh access token requests will be directed.
+        refreshTokenUrl: ''//(Optional) The server URL to which refresh access token requests will be directed.
     };
 
 
