@@ -328,7 +328,7 @@ var ADSKSpark = ADSKSpark || {};
          */
         getSourceTray: function () {
             var custom = this.data.job_custom_data;
-            if( custom && custom.ADSKSpark ) {
+            if (custom && custom.ADSKSpark) {
                 return custom.ADSKSpark.source_tray;
             }
             return null;
@@ -369,12 +369,11 @@ var ADSKSpark = ADSKSpark || {};
          */
         getMeshPaths: function () {
             var custom = this.data.job_custom_data;
-            if( custom && custom.ADSKSpark ) {
+            if (custom && custom.ADSKSpark) {
                 return custom.ADSKSpark.source_files;
             }
             return [];
         }
-
     };
 
 }());
