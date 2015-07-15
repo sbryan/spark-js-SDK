@@ -589,6 +589,7 @@ if (IS_WORKER)
         dest = new Uint16Array(temp.buffer);
         for (i = _i = 0; 0 <= nr ? _i < nr : _i > nr; i = 0 <= nr ? ++_i : --_i) {
           //Fix for indices values off by 1;
+          // dest[i] += i;
           dest[i] += i - 1;
         }
         return dest;
