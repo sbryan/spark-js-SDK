@@ -93,6 +93,31 @@ var ADSKSpark = ADSKSpark || {};
 
             return Client.authorizedApiRequest('/print/trays/generatePrintable').post(headers, payload)
                 .then(waiter.wait);
+        },
+
+        /**
+         * @method exportSupports
+         * @memberOf ADSKSpark.TrayAPI
+         * @description - Request the creation of a printable file from an existing Spark Tray resource. The specified tray must have been successfully prepared for this operation to succeed.
+         * @param {String} trayId - The Id associated with an existing Spark Tray Resource.
+         * @param {String} meshIds - A list of Spark Mesh resource Id's specifying which meshes' supports are to be exported. If left blank, all meshes' supports will be exported.
+         * @param {boolean} [generateVisual] - Optional flag requesting that a Bolt visualization file be generated for each of the mesh supports.
+         * @param {Function} [progressCallback] - Optional function to be invoked when progress updates are available. The function is passed a numeric value in the range [0, 1].
+         *
+         * @returns {Promise} - A Promise resolves to a task ID for use with the Task API. When the task completes, the Task API response will contain the new tray object.
+         */
+        exportSupports: function(trayId, meshIds, generateVisual, progressCallback) {
+            var waiter = new ADSKSpark.TaskWaiter(progressCallback);
+
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
+                'id': trayId,
+                'mesh_ids': meshIds,
+                'generate_visual': !!generateVisual
+            });
+
+            return Client.authorizedApiRequest('/print/trays/export-support').post(headers, payload)
+                    .then(waiter.wait);
         }
     };
 
