@@ -305,6 +305,7 @@ var ADSKSpark = ADSKSpark || {};
 			if (isServer) {
 				var code = Helpers.extractRedirectionCode();
 				if (code) {
+					code = code.replace(/[\/\\]+$/, '');
 					return completeServerLogin(code);
 				}
 				return Promise.reject("No code supplied");

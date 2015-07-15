@@ -27,10 +27,10 @@ var ADSKSpark = ADSKSpark || {};
 		 * @description - Transform parameter strings to array of params
 		 * @memberOf ADSKSpark.Helpers
 		 * @param {String} prmstr - The GET query string
-		 * @returns {Array} - Associative array of parameters
+		 * @returns {Object} - Associative array of parameters
 		 */
 		transformToAssocArray: function (prmstr) {
-			var params = [];
+			var params = {};
 
 			if (prmstr) {
 				var prmarr = prmstr.split('&');
@@ -47,12 +47,12 @@ var ADSKSpark = ADSKSpark || {};
 		 * @description - Extract params from URL
 		 * @memberOf ADSKSpark.Helpers
 		 * @param {String} prmstr - The GET query string
-		 * @returns {Array} - URL parameters
+		 * @returns {Object} - URL parameters
 		 */
 		extractParamsFromURL: function (prmstr) {
 			prmstr = prmstr || window.location.search.substr(1) || window.location.hash.substr(1);
 
-			return prmstr ? this.transformToAssocArray(prmstr) : [];
+			return prmstr ? this.transformToAssocArray(prmstr) : {};
 		},
 
 		/**
