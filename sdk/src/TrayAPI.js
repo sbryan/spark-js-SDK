@@ -3,7 +3,7 @@
  */
 var ADSKSpark = ADSKSpark || {};
 
-(function() {
+(function () {
     'use strict';
 
     var Client = ADSKSpark.Client;
@@ -29,7 +29,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to a new Tray Resource Object.
          */
-        createTray: function(printerTypeId, printerProfileId, meshIds, meshAttrs, defaultMaterialId, progressCallback) {
+        createTray: function (printerTypeId, printerProfileId, meshIds, meshAttrs, defaultMaterialId, progressCallback) {
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             var headers = {'Content-Type': 'application/json'};
@@ -39,16 +39,16 @@ var ADSKSpark = ADSKSpark || {};
                 'mesh_ids': meshIds
             };
 
-            if( meshAttrs ) {
+            if (meshAttrs) {
                 payload.mesh_attrs = meshAttrs;
             }
 
-            if( defaultMaterialId ) {
+            if (defaultMaterialId) {
                 payload.default_material_id = defaultMaterialId;
             }
-    
+
             return Client.authorizedApiRequest('/print/trays').post(headers, JSON.stringify(payload))
-                    .then(waiter.wait);
+                .then(waiter.wait);
         },
 
         /**
@@ -61,7 +61,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to the new Tray Resource.
          */
-        prepareTray: function(trayId, generateVisual, progressCallback) {
+        prepareTray: function (trayId, generateVisual, progressCallback) {
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             var headers = {'Content-Type': 'application/json'};
@@ -71,7 +71,7 @@ var ADSKSpark = ADSKSpark || {};
             });
 
             return Client.authorizedApiRequest('/print/trays/prepare').post(headers, payload)
-                    .then(waiter.wait);
+                .then(waiter.wait);
         },
 
         /**
@@ -83,16 +83,16 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to an object containing a Spark Drive "file_id" property.
          */
-        generatePrintable: function(trayId, progressCallback) {
+        generatePrintable: function (trayId, progressCallback) {
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({
-                'id': trayId,
+                'id': trayId
             });
 
             return Client.authorizedApiRequest('/print/trays/generatePrintable').post(headers, payload)
-                    .then(waiter.wait);
+                .then(waiter.wait);
         }
     };
 

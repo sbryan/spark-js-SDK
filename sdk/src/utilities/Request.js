@@ -78,11 +78,11 @@ var ADSKSpark = ADSKSpark || {};
                     xhr.setRequestHeader('Authorization', authorization);
                 }
 
-                if(options.notJsonResponse) {
+                if (options.notJsonResponse) {
                     xhr.responseType = 'arraybuffer';
                 }
 
-                if (options.withCredentials){
+                if (options.withCredentials) {
                     xhr.withCredentials = true;
                 }
 

@@ -200,7 +200,12 @@ var ADSKSpark = ADSKSpark || {};
             if (Helpers.isValidId(assetId)) {
 
                 var thumbnails = filesArray.map(function (file) {
-                    return {id: file.id, caption: file.caption || '', description: file.description || '', is_primary: file.is_primary || false};
+                    return {
+                        id: file.id,
+                        caption: file.caption || '',
+                        description: file.description || '',
+                        is_primary: file.is_primary || false
+                    };
                 });
                 async = async || false;
                 var params = 'thumbnails=' + JSON.stringify(thumbnails) + '&async=' + async;
