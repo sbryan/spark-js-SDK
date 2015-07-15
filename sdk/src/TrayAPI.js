@@ -106,7 +106,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise resolves to a task ID for use with the Task API. When the task completes, the Task API response will contain the new tray object.
          */
-        exportSupports: function(trayId, meshIds, generateVisual, progressCallback) {
+        exportSupports: function (trayId, meshIds, generateVisual, progressCallback) {
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             var headers = {'Content-Type': 'application/json'};
@@ -117,7 +117,7 @@ var ADSKSpark = ADSKSpark || {};
             });
 
             return Client.authorizedApiRequest('/print/trays/export-support').post(headers, payload)
-                    .then(waiter.wait);
+                .then(waiter.wait);
         }
     };
 
