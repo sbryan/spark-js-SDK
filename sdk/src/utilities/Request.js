@@ -96,7 +96,9 @@ var ADSKSpark = ADSKSpark || {};
                             response = JSON.parse(xhr.responseText);
                         } else {
                             response = {};
-                            response.arraybuffer = new Uint8Array(xhr.response);
+                            if (xhr.response) {
+                                response.arraybuffer = new Uint8Array(xhr.response);
+                            }
                         }
                         response.httpStatus = xhr.status;
                         response.httpStatusText = xhr.statusText;
