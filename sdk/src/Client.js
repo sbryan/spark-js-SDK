@@ -29,7 +29,7 @@ var ADSKSpark = ADSKSpark || {};
                 return data.access_token;
             });
         }
-        return Promise.reject(new Error("No Server Implementation"));
+        return Promise.reject(new Error('No Server Implementation'));
     };
 
     /**
@@ -77,7 +77,7 @@ var ADSKSpark = ADSKSpark || {};
                 return Promise.reject(new Error(data.Error));
             });
         }
-        return Promise.reject(new Error("No Server Implementation"));
+        return Promise.reject(new Error('No Server Implementation'));
     };
 
     /**
@@ -104,11 +104,31 @@ var ADSKSpark = ADSKSpark || {};
          */
         initialize: function (appKey, options) {
             _clientId = appKey;
-            _apiUrl = options && options.isProduction ? ADSKSpark.Constants.API_HOST_PROD : ADSKSpark.Constants.API_HOST_SANDBOX;
+            _apiUrl = (options && options.apiRoot) ? options.apiRoot :
+                      (options && options.isProduction) ? ADSKSpark.Constants.API_HOST_PROD : ADSKSpark.Constants.API_HOST_SANDBOX;
             _redirectUri = options && options.redirectUri ? options.redirectUri : null;
             _guestTokenUrl = options && options.guestTokenUrl ? options.guestTokenUrl : null;
             _accessTokenUrl = options && options.accessTokenUrl ? options.accessTokenUrl : null;
             _refreshTokenUrl = options && options.refreshTokenUrl ? options.refreshTokenUrl : null;
+        },
+
+        /**
+         * @description - Returns the name of the Api currently being used. Must be called after initialize.
+         * @memberOf ADSKSpark.Client
+         * @returns {String} - The Api Name (normally either "sandbox" or "production").
+         */
+        getApiName: function () {
+            var name = '';
+            if( _apiUrl) {
+                var split = _apiUrl.split('//');
+                if( split.length > 1 ) {
+                    name = split[1].split('.')[0];
+                }
+                if( name === 'api' ) {
+                    name = 'production';
+                }
+            }
+            return name;
         },
 
         /**
@@ -216,7 +236,7 @@ var ADSKSpark = ADSKSpark || {};
                 }
                 return Promise.reject(new Error('Access token does not exist, you need to login again'));
             }
-            return Promise.reject(new Error("No Server Implementation"));
+            return Promise.reject(new Error('No Server Implementation'));
         },
 
         /**
@@ -300,14 +320,14 @@ var ADSKSpark = ADSKSpark || {};
                     code = code.replace(/[\/\\]+$/, '');
                     return completeServerLogin(code);
                 }
-                return Promise.reject("No code supplied");
+                return Promise.reject(new Error('No code supplied'));
 
             } else {
                 var data = Helpers.extractRedirectionTokenData();
                 if (data && data.access_token) {
                     return Promise.resolve(completeImplicitLogin(data.access_token, data.expires_in));
                 }
-                return Promise.reject("No access_token supplied");
+                return Promise.reject(new Error('No access_token supplied'));
             }
         }
     };
