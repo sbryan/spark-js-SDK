@@ -3,7 +3,7 @@
  */
 var ADSKSpark = ADSKSpark || {};
 
-(function() {
+(function () {
     'use strict';
 
     var Client = ADSKSpark.Client;
@@ -29,7 +29,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to a new Tray Resource Object.
          */
-        createTray: function(printerTypeId, printerProfileId, meshIds, meshAttrs, defaultMaterialId, progressCallback) {
+        createTray: function (printerTypeId, printerProfileId, meshIds, meshAttrs, defaultMaterialId, progressCallback) {
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             var headers = {'Content-Type': 'application/json'};
@@ -39,16 +39,16 @@ var ADSKSpark = ADSKSpark || {};
                 'mesh_ids': meshIds
             };
 
-            if( meshAttrs ) {
+            if (meshAttrs) {
                 payload.mesh_attrs = meshAttrs;
             }
 
-            if( defaultMaterialId ) {
+            if (defaultMaterialId) {
                 payload.default_material_id = defaultMaterialId;
             }
-    
+
             return Client.authorizedApiRequest('/print/trays').post(headers, JSON.stringify(payload))
-                    .then(waiter.wait);
+                .then(waiter.wait);
         },
 
         /**
@@ -61,7 +61,7 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to the new Tray Resource.
          */
-        prepareTray: function(trayId, generateVisual, progressCallback) {
+        prepareTray: function (trayId, generateVisual, progressCallback) {
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             var headers = {'Content-Type': 'application/json'};
@@ -71,7 +71,7 @@ var ADSKSpark = ADSKSpark || {};
             });
 
             return Client.authorizedApiRequest('/print/trays/prepare').post(headers, payload)
-                    .then(waiter.wait);
+                .then(waiter.wait);
         },
 
         /**
@@ -83,16 +83,41 @@ var ADSKSpark = ADSKSpark || {};
          *
          * @returns {Promise} - A Promise which resolves to an object containing a Spark Drive "file_id" property.
          */
-        generatePrintable: function(trayId, progressCallback) {
+        generatePrintable: function (trayId, progressCallback) {
+            var waiter = new ADSKSpark.TaskWaiter(progressCallback);
+
+            var headers = {'Content-Type': 'application/json'};
+            var payload = JSON.stringify({
+                'id': trayId
+            });
+
+            return Client.authorizedApiRequest('/print/trays/generatePrintable').post(headers, payload)
+                .then(waiter.wait);
+        },
+
+        /**
+         * @method exportSupports
+         * @memberOf ADSKSpark.TrayAPI
+         * @description - Request the creation of a printable file from an existing Spark Tray resource. The specified tray must have been successfully prepared for this operation to succeed.
+         * @param {String} trayId - The Id associated with an existing Spark Tray Resource.
+         * @param {String} meshIds - A list of Spark Mesh resource Id's specifying which meshes' supports are to be exported. If left blank, all meshes' supports will be exported.
+         * @param {boolean} [generateVisual] - Optional flag requesting that a Bolt visualization file be generated for each of the mesh supports.
+         * @param {Function} [progressCallback] - Optional function to be invoked when progress updates are available. The function is passed a numeric value in the range [0, 1].
+         *
+         * @returns {Promise} - A Promise resolves to a task ID for use with the Task API. When the task completes, the Task API response will contain the new tray object.
+         */
+        exportSupports: function (trayId, meshIds, generateVisual, progressCallback) {
             var waiter = new ADSKSpark.TaskWaiter(progressCallback);
 
             var headers = {'Content-Type': 'application/json'};
             var payload = JSON.stringify({
                 'id': trayId,
+                'mesh_ids': meshIds,
+                'generate_visual': !!generateVisual
             });
 
-            return Client.authorizedApiRequest('/print/trays/generatePrintable').post(headers, payload)
-                    .then(waiter.wait);
+            return Client.authorizedApiRequest('/print/trays/export-support').post(headers, payload)
+                .then(waiter.wait);
         }
     };
 
