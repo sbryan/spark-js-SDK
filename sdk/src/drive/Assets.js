@@ -49,6 +49,22 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
+         * @description - Get asset comments
+         * @memberOf ADSKSpark.Assets
+         * @param {Number} assetId - The ID of the asset
+         * @returns {Promise} - A promise that will resolve to asset's comments
+         */
+        getPublicAssetComments: function(assetId){
+            //Make sure assetId is defined and that it is valid
+            if (Helpers.isValidId(assetId)) {
+                return Client.authorizedAsGuestApiRequest('/assets/' + assetId + '/comments').get();
+            }
+
+            return Promise.reject(new Error('Proper assetId was not supplied'));
+        },
+
+
+        /**
          * @description - Get a specific asset
          * @memberOf ADSKSpark.Assets
          * @param {Number} assetId - The ID of the asset
@@ -267,6 +283,74 @@ var ADSKSpark = ADSKSpark || {};
             if (Helpers.isValidId(assetId)) {
                 var params = '?thumbnail_ids=' + fileIds;
                 return Client.authorizedApiRequest('/assets/' + assetId + '/thumbnails' + params).delete();
+            }
+
+            return Promise.reject(new Error('Proper assetId was not supplied'));
+        },
+
+        /**
+         * @description - Toggle the current member's "Like" state for the current asset (setting it on/off)
+         * @memberOf ADSKSpark.Assets
+         * @param {Number} assetId - The ID of the asset
+         * @returns {Promise} - A promise that will resolve to an asset like response
+         */
+        updateLikeStatusForMember: function(assetId){
+
+            //Make sure assetId is defined and that it is valid
+            if (Helpers.isValidId(assetId)) {
+                return Client.authorizedApiRequest('/assets/' + assetId + '/likes').put();
+            }
+
+            return Promise.reject(new Error('Proper assetId was not supplied'));
+        },
+        /**
+         * @description - Toggle the current member's "Like" state for the current asset (setting it on/off)
+         * @memberOf ADSKSpark.Assets
+         * @param {Number} assetId - The ID of the asset
+         * @param {String} commentText - Comment text
+         * @returns {Promise} - A promise that will resolve to an asset like response
+         */
+        createAssetComment: function(assetId,commentText){
+            //Make sure assetId is defined and that it is valid
+            if (Helpers.isValidId(assetId)) {
+                var comment = 'comment=' + commentText;
+                var headers = {'Content-type': 'application/x-www-form-urlencoded'};
+                return Client.authorizedApiRequest('/assets/' + assetId + '/comments').post(headers,comment);
+            }
+
+            return Promise.reject(new Error('Proper assetId was not supplied'));
+        },
+        /**
+         * @description - Update a comment by comment id
+         * @memberOf ADSKSpark.Assets
+         * @param {Number} assetId - The ID of the asset
+         * @param {String} commentId - The ID of the comment
+         * @param {String} commentText - Comment text
+         * @returns {Promise} - A promise that will resolve to an asset like response
+         */
+        updateAssetComment: function(assetId,commentId, commentText){
+            //Make sure assetId is defined and that it is valid
+            if (Helpers.isValidId(assetId)) {
+                var comment = 'comment=' + commentText + '&comment_id=' + commentId;
+                var headers = {'Content-type': 'application/x-www-form-urlencoded'};
+                return Client.authorizedApiRequest('/assets/' + assetId + '/comments').put(headers,comment);
+            }
+
+            return Promise.reject(new Error('Proper assetId was not supplied'));
+        },
+
+        /**
+         * @description - Delete asset comment from an asset for a logged in user
+         * @memberOf ADSKSpark.Assets
+         * @param {Number} assetId - The ID of the asset
+         * @param {String} commentId - The ID of the comment
+         * @returns {Promise} - A promise that will resolve to an empty body with a proper success/failure response
+         */
+        deleteAssetComment: function (assetId, commentId) {
+            //Make sure assetId is defined and that it is valid
+            if (Helpers.isValidId(assetId)) {
+                var params = '?comment_id=' + commentId;
+                return Client.authorizedApiRequest('/assets/' + assetId + '/comments' + params).delete();
             }
 
             return Promise.reject(new Error('Proper assetId was not supplied'));
