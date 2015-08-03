@@ -3,3 +3,4 @@ bower_components
 sdk/doc
 npm-debug.log
 .idea
+samples/config.js
