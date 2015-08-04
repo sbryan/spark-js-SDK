@@ -10,7 +10,7 @@
 	<!-- Bootstrap core CSS -->
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
-	<link href="common.css" rel="stylesheet">
+	<link href="../common.css" rel="stylesheet">
 
 </head>
 
@@ -18,7 +18,7 @@
 <div class="container">
 	<div class="col-md-12">
 		<div id="welcome-wrapper">
-			<h2>Welcome to <br/>Spark Javascript Authentication Sample</h2>
+			<h2>Spark JS Authentication Sample</h2>
 
 			<p>To try the sample, you need to login with a test environment account.</p>
 
@@ -49,24 +49,21 @@
 <!-- spark sdk -->
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk.min.js"></script>
 
-<!-- your config file and initialization -->
+<!-- your config file -->
 <script type="text/javascript" src="../config.js"></script>
 
 
 <script>
 
-	var SERVER_URL = SERVER_URL || 'http://localhost:3000';
-	//Init the Spark Client - you may supply your personal config through the assets/scripts/config.js file
-	var APP_KEY = APP_KEY || '',
-			GUEST_TOKEN_URL = SERVER_URL ? SERVER_URL + '/guest_token' : 'http://localhost:3000/guest_token',
-			ACCESS_TOKEN_URL = SERVER_URL ? SERVER_URL + '/access_token' : 'http://localhost:3000/access_token',
-			REFRESH_TOKEN_URL = SERVER_URL ? SERVER_URL + '/refresh_token' : 'http://localhost:3000/refresh_token',
-			REDIRECT_URI = REDIRECT_URI || '';
-
-	var isProd = false;
+	//Init the Spark Client - you may supply your personal config through the config.js file
+	var SERVER_URL = SERVER_URL || 'http://localhost:3000',
+		APP_KEY = APP_KEY || '',
+		GUEST_TOKEN_URL = SERVER_URL ? SERVER_URL + '/guest_token' : 'http://localhost:3000/guest_token',
+		ACCESS_TOKEN_URL = SERVER_URL ? SERVER_URL + '/access_token' : 'http://localhost:3000/access_token',
+		REFRESH_TOKEN_URL = SERVER_URL ? SERVER_URL + '/refresh_token' : 'http://localhost:3000/refresh_token',
+		REDIRECT_URI = REDIRECT_URI || '';
 
 	var options = {
-		isProduction: isProd,
 		redirectUri: REDIRECT_URI,
 		guestTokenUrl: GUEST_TOKEN_URL,
 		accessTokenUrl: ACCESS_TOKEN_URL,

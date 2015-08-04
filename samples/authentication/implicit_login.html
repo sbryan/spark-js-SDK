@@ -3,10 +3,14 @@
 <head>
 	<title>Spark Sample - Implicit login</title>
 	<meta charset="utf-8">
+
+	<!-- fonts -->
+	<link href='//fonts.googleapis.com/css?family=Open+Sans:300,600,400' rel='stylesheet' type='text/css'>
+
 	<!-- Bootstrap core CSS -->
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
-	<link href="common.css" rel="stylesheet">
+	<link href="../common.css" rel="stylesheet">
 
 	<style>
 		#logout{display: none}
@@ -16,9 +20,16 @@
 <body>
 <div class="container">
 	<div class="col-md-12">
-		<p class="token-wrapper" id="access-token">Access Token: <b id="access-token-span">none</b></p>
-		<a onclick="login()" id="login" class="btn btn-primary">Login to Get an Access Token (Implicit)</a>
-		<a onclick="logout()" id="logout" class="btn btn-primary">Logout</a>
+		<div id="welcome-wrapper">
+			<h2>Spark JS Authentication Sample</h2>
+
+			<p>To try the sample, you need to login with a test environment account.</p>
+
+			<div class="col-md-12">
+				<p class="token-wrapper" id="access-token">Access Token: <b id="access-token-span">none</b></p>
+				<a onclick="login()" id="login" class="spark_btn primary">Login to Get an Access Token (Implicit)</a>
+				<a onclick="logout()" id="logout" class="spark_btn primary">Logout</a>
+			</div>
 
 	</div>
 
