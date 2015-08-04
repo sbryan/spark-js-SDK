@@ -1,6 +1,6 @@
 ## Authentication Example
 
-This example has two components: the authentication server, and the frontend server.
+This example has two components: the authentication server and the frontend server.
 
 You must have both servers running for the example to work.
 
