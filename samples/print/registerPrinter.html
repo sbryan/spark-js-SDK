@@ -108,27 +108,49 @@
 
         <!-- spark sdk -->
         <!-- TODO: For now include the source directly. Change this to installed minified source file -->
-        <script type="text/javascript" charset="utf-8" src="utilities/Helpers.js"></script>
-        <script type="text/javascript" charset="utf-8" src="utilities/Paginated.js"></script>
-        <script type="text/javascript" charset="utf-8" src="utilities/Request.js"></script>
-        <script type="text/javascript" charset="utf-8" src="Client.js"></script>
-        <script type="text/javascript" charset="utf-8" src="PrintDB.js"></script>
-        <script type="text/javascript" charset="utf-8" src="Printer.js"></script>
-        <script type="text/javascript" charset="utf-8" src="MeshAPI.js"></script>
-        <script type="text/javascript" charset="utf-8" src="TrayAPI.js"></script>
-        <script type="text/javascript" charset="utf-8" src="Job.js"></script>
-        <script type="text/javascript" charset="utf-8" src="Tasks.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/utilities/Helpers.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/utilities/Paginated.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/utilities/Request.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/Client.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/PrintDB.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/Printer.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/MeshAPI.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/TrayAPI.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/Job.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/Tasks.js"></script>
         <!-- end spark sdk -->
 
-        <script>
-            var APP_KEY = ''; // Your app key
+        <!-- your config file -->
+        <script type="text/javascript" src="../config.js"></script>
 
-            // The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
-            var GUEST_TOKEN_URL = 'http://localhost:3000/guest_token';
-            // The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
-            var ACCESS_TOKEN_URL = 'http://localhost:3000/access_token';
-            // The refresh token endpoint that is implemented by your server (i.e. http://example.com/refresh_token)
-            var REFRESH_TOKEN_URL = 'http://localhost:3000/refresh_token';
+        <script>
+
+            var MeshAPI = ADSKSpark.MeshAPI;
+            var TrayAPI = ADSKSpark.TrayAPI;
+            var Client  = ADSKSpark.Client;
+
+            var _meshID = null;
+            var _printerTypes = null;
+
+
+            //Init the Spark Client - you may supply your personal config through the config.js file
+            var SERVER_URL = SERVER_URL || 'http://localhost:3000',
+                APP_KEY = APP_KEY || '',
+                GUEST_TOKEN_URL = SERVER_URL ? SERVER_URL + '/guest_token' : 'http://localhost:3000/guest_token',
+                ACCESS_TOKEN_URL = SERVER_URL ? SERVER_URL + '/access_token' : 'http://localhost:3000/access_token',
+                REFRESH_TOKEN_URL = SERVER_URL ? SERVER_URL + '/refresh_token' : 'http://localhost:3000/refresh_token',
+                REDIRECT_URI = REDIRECT_URI || '';
+
+
+            var options = {
+                guestTokenUrl: GUEST_TOKEN_URL,
+                accessTokenUrl: ACCESS_TOKEN_URL,
+                refreshTokenUrl: REFRESH_TOKEN_URL
+            };
+
+
+            Client.initialize(APP_KEY, options);
+
 
             /**
              * Get the code param in URL after returning from Spark Auth flow
@@ -143,22 +165,6 @@
              * The spark object already exists in this point
              */
             jQuery(function ($) {
-                var MeshAPI = ADSKSpark.MeshAPI;
-                var TrayAPI = ADSKSpark.TrayAPI;
-                var Client  = ADSKSpark.Client;
-
-                var _meshID = null;
-                var _printerTypes = null;
-
-                var options = {
-                    isProduction:false,
-                    guestTokenUrl: GUEST_TOKEN_URL,
-                    accessTokenUrl: ACCESS_TOKEN_URL,
-                    refreshTokenUrl: REFRESH_TOKEN_URL
-                };
-
-
-                Client.initialize(APP_KEY, options);
 
                 //First let's see if we have a valid access token
                 if (Client.isAccessTokenValid()) {

@@ -3,6 +3,10 @@
     <head>
         <title>Spark Sample Application</title>
         <meta charset="utf-8">
+
+        <!-- fonts -->
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:300,600,400' rel='stylesheet' type='text/css'>
+
         <!-- Bootstrap core CSS -->
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
@@ -231,12 +235,34 @@
 
         <script>
 
-            // The guest token endpoint that is implemented by your server (i.e. http://example.com/guest_token)
-            var GUEST_TOKEN_URL = 'http://localhost:3000/guest_token';
-            // The access token endpoint that is implemented by your server (i.e. http://example.com/access_token)
-            var ACCESS_TOKEN_URL = 'http://localhost:3000/access_token';
-            // The refresh token endpoint that is implemented by your server (i.e. http://example.com/refresh_token)
-            var REFRESH_TOKEN_URL = 'http://localhost:3000/refresh_token';
+            var MeshAPI = ADSKSpark.MeshAPI;
+            var TrayAPI = ADSKSpark.TrayAPI;
+            var Client  = ADSKSpark.Client;
+
+            var _meshID = null;
+            var _trayID = null;
+            var _preparedTrayID = null;
+            var _printerTypes = null;
+            var _printableFileID = null;
+            var _printJob = null;
+
+            //Init the Spark Client - you may supply your personal config through the config.js file
+            var SERVER_URL = SERVER_URL || 'http://localhost:3000',
+                APP_KEY = APP_KEY || '',
+                GUEST_TOKEN_URL = SERVER_URL ? SERVER_URL + '/guest_token' : 'http://localhost:3000/guest_token',
+                ACCESS_TOKEN_URL = SERVER_URL ? SERVER_URL + '/access_token' : 'http://localhost:3000/access_token',
+                REFRESH_TOKEN_URL = SERVER_URL ? SERVER_URL + '/refresh_token' : 'http://localhost:3000/refresh_token',
+                REDIRECT_URI = REDIRECT_URI || '';
+
+            var options = {
+                isProduction:false,
+                guestTokenUrl: GUEST_TOKEN_URL,
+                accessTokenUrl: ACCESS_TOKEN_URL,
+                refreshTokenUrl: REFRESH_TOKEN_URL
+            };
+
+
+            Client.initialize(APP_KEY, options);
 
 
             /**
@@ -244,26 +270,7 @@
              * The spark object already exists in this point
              */
             jQuery(function ($) {
-                var MeshAPI = ADSKSpark.MeshAPI;
-                var TrayAPI = ADSKSpark.TrayAPI;
-                var Client  = ADSKSpark.Client;
-
-                var _meshID = null;
-                var _trayID = null;
-                var _preparedTrayID = null;
-                var _printerTypes = null;
-                var _printableFileID = null;
-                var _printJob = null;
 	            var isServerLogin = (window.location.search.indexOf('code') != -1);
-
-                var options = {
-                    isProduction:false,
-                    guestTokenUrl: GUEST_TOKEN_URL,
-                    accessTokenUrl: ACCESS_TOKEN_URL,
-                    refreshTokenUrl: REFRESH_TOKEN_URL
-                };
-
-	            Client.initialize(APP_KEY,options);
 
                 //First let's see if we have a valid access token
                 if (Client.isAccessTokenValid()) {
