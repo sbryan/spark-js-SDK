@@ -288,4 +288,4 @@ If no redirectUri is entered, the access token is retured to the page that loade
 
 
 ## Usage
-Open spark-js-sdk/samples/authentication/implicit-login.html or spark-js-sdk/samples/authentication/explicit-login.html
+Open `spark-js-sdk/samples/authentication/implicit-login.html` or `spark-js-sdk/samples/authentication/explicit-login.html`
