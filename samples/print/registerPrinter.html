@@ -18,12 +18,10 @@
                     <h2>Spark SDK Authentication Sample</h2>
 
                     <div class="col-md-10 col-md-offset-1">
-                        <p>Guest Token: <span id="guest-token-span">none</span></p>
                         <p>Access Token: <span id="access-token-span">none</span></p>
 
                         <button id="login-button" class="btn btn-primary">Login</button>
                         <button id="logout-button" class="btn btn-danger">Logout</button>
-                        <button id="guest-button" class="btn btn-primary">Get Guest Token</button>
                     </div>
                 </div>
             </div>
@@ -108,6 +106,7 @@
 
         <!-- spark sdk -->
         <!-- TODO: For now include the source directly. Change this to installed minified source file -->
+        <script type="text/javascript" charset="utf-8" src="../../sdk/src/config/Constants.js"></script>
         <script type="text/javascript" charset="utf-8" src="../../sdk/src/utilities/Helpers.js"></script>
         <script type="text/javascript" charset="utf-8" src="../../sdk/src/utilities/Paginated.js"></script>
         <script type="text/javascript" charset="utf-8" src="../../sdk/src/utilities/Request.js"></script>
@@ -120,9 +119,6 @@
         <script type="text/javascript" charset="utf-8" src="../../sdk/src/Tasks.js"></script>
         <!-- end spark sdk -->
 
-        <!-- your config file -->
-        <script type="text/javascript" src="../config.js"></script>
-
         <script>
 
             var MeshAPI = ADSKSpark.MeshAPI;
@@ -133,24 +129,8 @@
             var _printerTypes = null;
 
 
-            //Init the Spark Client - you may supply your personal config through the config.js file
-            var SERVER_URL = SERVER_URL || 'http://localhost:3000',
-                APP_KEY = APP_KEY || '',
-                GUEST_TOKEN_URL = SERVER_URL ? SERVER_URL + '/guest_token' : 'http://localhost:3000/guest_token',
-                ACCESS_TOKEN_URL = SERVER_URL ? SERVER_URL + '/access_token' : 'http://localhost:3000/access_token',
-                REFRESH_TOKEN_URL = SERVER_URL ? SERVER_URL + '/refresh_token' : 'http://localhost:3000/refresh_token',
-                REDIRECT_URI = REDIRECT_URI || '';
-
-
-            var options = {
-                guestTokenUrl: GUEST_TOKEN_URL,
-                accessTokenUrl: ACCESS_TOKEN_URL,
-                refreshTokenUrl: REFRESH_TOKEN_URL
-            };
-
-
-            Client.initialize(APP_KEY, options);
-
+            //Init the Spark Client
+            ADSKSpark.Client.initialize('<your-app-key>');
 
             /**
              * Get the code param in URL after returning from Spark Auth flow
@@ -172,23 +152,22 @@
                     $('#logout-button').show();
                 } else {//user needs to login
                     $('#login-button').show();
-                    //if we get back from the login service
-                    var code = extractRedirectionCode();
+                    Client.completeLogin(false).then(function (token) {
+                        console.log('Completed login with token: ' + token);
 
-                    if (code) {
-                        Client.completeLogin(code).then(function (token) {
-                            console.log('Completed login with token: ' + token);
-                            if (token) {
-                                //You can redirect now to some page in your app or to homepage
-                                // or to reload the top window or any other action
-                                window.location.reload();
-                            } else {
-                                console.error('Problem with fetching token');
-                            }
-                        }, function (error) {
-                            console.error(error.message);
-                        });
-                    }
+                        if (token) {
+                            //You can redirect now to some page in your app or to homepage
+                            // or to reload the top window or any other action
+                            location.href = location.protocol + '//' + location.host + location.pathname;
+                        } else {
+                            console.error('Problem with fetching token');
+                        }
+
+                    }, function (error) {
+
+                        console.error(error.message);
+                        $('#profile').text(error.message);
+                    });
                 }
 
                 // Register buttons
@@ -198,13 +177,7 @@
 
                 $('#logout-button').click(function() {
                     Client.logout();
-                    window.location.reload();
-                });
-
-                $('#guest-button').click(function() {
-                    Client.getGuestToken().then(function(token) {
-                        $('#guest-token-span').text(token);
-                    });
+                    window.location.assign(ADSKSpark.Helpers.calculateRedirectUri());
                 });
 
                 $('#reg').click(function(event) {

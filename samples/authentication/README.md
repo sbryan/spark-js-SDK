@@ -220,10 +220,13 @@ ADSKSpark.Client.completeLogin(true).then(function (token) {
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk.min.js"></script>
 <script>
 
-	var SERVER_URL = 'http://localhost:3000',
-	    GUEST_TOKEN_URL = SERVER_URL + '/guest_token',
-		ACCESS_TOKEN_URL = SERVER_URL + '/access_token',
-		REFRESH_TOKEN_URL = SERVER_URL + '/refresh_token';
+	//Init the Spark Client
+	var options = {
+		redirectUri: '',
+		guestTokenUrl: 'http://localhost:3000/guest_token',
+		accessTokenUrl: 'http://localhost:3000/access_token',
+		refreshTokenUrl: 'http://localhost:3000/refresh_token'
+	};
 
 	// Initialize Spark client
 	ADSKSpark.Client.initialize('<your-app-key>', options);

@@ -49,28 +49,17 @@
 <!-- spark sdk -->
 <script type="text/javascript" src="//code.spark.autodesk.com/autodesk-spark-sdk.min.js"></script>
 
-<!-- your config file -->
-<script type="text/javascript" src="../config.js"></script>
-
-
 <script>
 
-	//Init the Spark Client - you may supply your personal config through the config.js file
-	var SERVER_URL = SERVER_URL || 'http://localhost:3000',
-		APP_KEY = APP_KEY || '',
-		GUEST_TOKEN_URL = SERVER_URL ? SERVER_URL + '/guest_token' : 'http://localhost:3000/guest_token',
-		ACCESS_TOKEN_URL = SERVER_URL ? SERVER_URL + '/access_token' : 'http://localhost:3000/access_token',
-		REFRESH_TOKEN_URL = SERVER_URL ? SERVER_URL + '/refresh_token' : 'http://localhost:3000/refresh_token',
-		REDIRECT_URI = REDIRECT_URI || '';
-
+	//Init the Spark Client
 	var options = {
-		redirectUri: REDIRECT_URI,
-		guestTokenUrl: GUEST_TOKEN_URL,
-		accessTokenUrl: ACCESS_TOKEN_URL,
-		refreshTokenUrl: REFRESH_TOKEN_URL
+		redirectUri: '',
+		guestTokenUrl: 'http://localhost:3000/guest_token',
+		accessTokenUrl: 'http://localhost:3000/access_token',
+		refreshTokenUrl: 'http://localhost:3000/refresh_token'
 	};
 
-	ADSKSpark.Client.initialize(APP_KEY, options);
+	ADSKSpark.Client.initialize('<your-app-key>', options);
 
 	var accessTokenObj = {};
 

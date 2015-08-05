@@ -25,10 +25,8 @@
                         <p>Guest Token: <span id="guest-token-span">none</span></p>
                         <p>Access Token: <span id="access-token-span">none</span></p>
 
-                        <button id="login-button" class="btn btn-primary">Login</button>
-	                    <button id="implicit-login-button" class="btn btn-primary">Implicit Login</button>
+	                    <button id="implicit-login-button" class="btn btn-primary">Login</button>
 	                    <button id="logout-button" class="btn btn-danger">Logout</button>
-                        <button id="guest-button" class="btn btn-primary">Get Guest Token</button>
                         <br>
                         <p>Info:<br>
                         <pre id="profile"></pre>
@@ -231,8 +229,6 @@
         <script type="text/javascript" charset="utf-8" src="../sdk/src/Tasks.js"></script>
         <!-- end spark sdk -->
 
-        <script type="text/javascript" charset="utf-8" src="config.js"></script>
-
         <script>
 
             var MeshAPI = ADSKSpark.MeshAPI;
@@ -246,23 +242,8 @@
             var _printableFileID = null;
             var _printJob = null;
 
-            //Init the Spark Client - you may supply your personal config through the config.js file
-            var SERVER_URL = SERVER_URL || 'http://localhost:3000',
-                APP_KEY = APP_KEY || '',
-                GUEST_TOKEN_URL = SERVER_URL ? SERVER_URL + '/guest_token' : 'http://localhost:3000/guest_token',
-                ACCESS_TOKEN_URL = SERVER_URL ? SERVER_URL + '/access_token' : 'http://localhost:3000/access_token',
-                REFRESH_TOKEN_URL = SERVER_URL ? SERVER_URL + '/refresh_token' : 'http://localhost:3000/refresh_token',
-                REDIRECT_URI = REDIRECT_URI || '';
-
-            var options = {
-                isProduction:false,
-                guestTokenUrl: GUEST_TOKEN_URL,
-                accessTokenUrl: ACCESS_TOKEN_URL,
-                refreshTokenUrl: REFRESH_TOKEN_URL
-            };
-
-
-            Client.initialize(APP_KEY, options);
+            //Init the Spark Client
+            ADSKSpark.Client.initialize('<your-app-key>');
 
 
             /**
@@ -270,7 +251,7 @@
              * The spark object already exists in this point
              */
             jQuery(function ($) {
-	            var isServerLogin = (window.location.search.indexOf('code') != -1);
+	            var isServerLogin = false;
 
                 //First let's see if we have a valid access token
                 if (Client.isAccessTokenValid()) {
@@ -286,35 +267,27 @@
                     });
                 } else {
                     //user needs to login
-                    $('#login-button').show();
-	                $('#implicit-login-button').show();
+                    $('#implicit-login-button').show();
 
-		                Client.completeLogin(isServerLogin).then(function (token) {
-			                console.log('Completed login with token: ' + token);
+                    Client.completeLogin(isServerLogin).then(function (token) {
+                        console.log('Completed login with token: ' + token);
 
-			                if (token) {
-				                //You can redirect now to some page in your app or to homepage
-				                // or to reload the top window or any other action
-				                window.location.reload();
-			                } else {
-				                console.error('Problem with fetching token');
-			                }
+                        if (token) {
+                            //You can redirect now to some page in your app or to homepage
+                            // or to reload the top window or any other action
+                            location.href = location.protocol + '//' + location.host + location.pathname;
+                        } else {
+                            console.error('Problem with fetching token');
+                        }
 
-		                }, function (error) {
+                    }, function (error) {
 
-			                console.error(error.message);
-			                $('#profile').text(error.message);
-		                });
-
-
-
-
+                        console.error(error.message);
+                        $('#profile').text(error.message);
+                    });
                 }
 
                 // Register buttons
-                $('#login-button').click(function() {
-                    window.location = Client.getLoginRedirectUrl(false,true);
-                });
 
 	            $('#implicit-login-button').click(function() {
 		            window.location = Client.getLoginRedirectUrl();
@@ -323,12 +296,6 @@
                 $('#logout-button').click(function() {
                     Client.logout();
 	                window.location.assign(ADSKSpark.Helpers.calculateRedirectUri());
-                });
-
-                $('#guest-button').click(function() {
-                    Client.getGuestToken().then(function(token) {
-                        $('#guest-token-span').text(token);
-                    });
                 });
 
                 $('#printer-types').click(function() {
