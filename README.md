@@ -27,6 +27,14 @@ ADSKSpark.Client.initialize('<your app key>'); //<your app key> is a string cont
 
 * See the Sample Code section below for additional options.
 
+### Samples
+This repository contains various samples that utilizes the SDK and performs different Spark functionalities, among them:
+* Obtain access tokens that enable you to call the Spark APIs
+* Import, analyze and repair Meshes
+* Prepare, Create and Send 3D print jobs
+
+You can see more inside the `samples` folder
+
 #### Sample Code
 
 ```HTML
