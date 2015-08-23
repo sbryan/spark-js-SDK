@@ -12,14 +12,14 @@ var ADSKSpark = ADSKSpark || {};
         this._checkTaskResponse = function (taskResponse) {
             console.log('Task status: ', taskResponse.status, 'progress:', taskResponse.progress);
 
-            if (taskResponse.status === 'done') {
-                return taskResponse.result;
-            }
             if (taskResponse.status === 'error') {
                 return Promise.reject(taskResponse.error);
             }
             if (progressCallback) {
                 progressCallback(taskResponse.progress);
+            }
+            if (taskResponse.status === 'done') {
+                return taskResponse.result;
             }
 
             // console.log('Delay task');
