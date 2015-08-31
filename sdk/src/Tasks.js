@@ -10,7 +10,7 @@ var ADSKSpark = ADSKSpark || {};
         var _taskId, _interval;
 
         this._checkTaskResponse = function (taskResponse) {
-            console.log('Task status: ', taskResponse.status, 'progress:', taskResponse.progress);
+            // console.log('Task status: ', taskResponse.status, 'progress:', taskResponse.progress);
 
             if (taskResponse.status === 'error') {
                 return Promise.reject(taskResponse.error);
