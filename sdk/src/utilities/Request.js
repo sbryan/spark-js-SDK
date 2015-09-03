@@ -87,9 +87,9 @@ var ADSKSpark = ADSKSpark || {};
                 }
 
                 xhr.onload = function () {
-                    if (xhr.status === 200 || xhr.status === 201 || xhr.status === 202 || xhr.status === 204) {
+                    var response;
 
-                        var response;
+                    if (xhr.status === 200 || xhr.status === 201 || xhr.status === 202 || xhr.status === 204) {
 
                         //Successful with an empty body - xhr.status 204 in the API means that the response is empty
                         if (xhr.status !== 204 && !options.notJsonResponse) {
@@ -110,12 +110,12 @@ var ADSKSpark = ADSKSpark || {};
                         error.status = xhr.status;
                         error.statusText = xhr.statusText;
                         if (xhr.responseType === 'arraybuffer') {
-                            var response = new Uint8Array(xhr.response);
+                            response = new Uint8Array(xhr.response);
                             error.responseText = String.fromCharCode.apply(null, response);
                             try {
                                 var err = JSON.parse(error.responseText);
                                 error = err;
-                            } catch(ex) {
+                            } catch (ex) {
                             }
                         }
                         else {
