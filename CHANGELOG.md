@@ -4,6 +4,7 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 
 ## [Unreleased][unreleased]
 
+## [0.1.2] - 2015-09-03
 ### Changed
 - TaskWaiter updates progress callback on task completion
 - Request improved handling of error responses
