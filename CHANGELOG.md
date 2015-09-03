@@ -4,6 +4,13 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 
 ## [Unreleased][unreleased]
 
+### Changed
+- TaskWaiter updates progress callback on task completion
+- Request improved handling of error responses
+
+### Removed
+- Printer.sendCommandAndWait() and Printer.waitForCommand() 
+
 ## [0.1.1] - 2015-07-28
 ### Added
 - Add bower support
