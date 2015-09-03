@@ -251,27 +251,10 @@ var ADSKSpark = ADSKSpark || {};
         },
 
         /**
-         * Send a command to the printer and wait for it to finish.
-         * @param {string} command
-         * @param {string} params
-         * @param {Object} options
-         * @returns {Promise} - A Promise that will resolve to the command status.
-         */
-        sendCommandAndWait: function (command, params, options) {
-            this.sendCommand(command, params)
-                .then(function (data) {
-                    return this.waitForCommand(data.task_id, options);
-                })
-                .then(function (data) {
-                    return data;
-                });
-        },
-
-        /**
          * Send a command to the printer.
          * @param {string} command
          * @param {string} [params]
-         * @returns {Promise} - A Promise that will resolve to the command and task_id.
+         * @returns {Promise} - A Promise that will resolve to the task_id.
          */
         sendCommand: function (command, params) {
             params = params || {};
@@ -286,59 +269,6 @@ var ADSKSpark = ADSKSpark || {};
                 .then(function (data) {
                     return data;
                 });
-        },
-
-        /**
-         * Wait for a printer command to finish.
-         * @param {string} taskId
-         * @param {Object} [options]
-         * @param {number} [options.freq=1000] How often (ms) will command status be checked?
-         * @param {number} [options.timeout=10000] How long (ms) until timeout?
-         * @param {Function} [options.progressHandler] Progress callback.
-         * @returns {Promise} - A Promise that will resolve to the command status.
-         */
-        waitForCommand: function (taskId, options) {
-            options = options || {};
-
-            var freq = options.freq || 1000, // 1 sec
-                timeout = options.timeout || 10000, // 10 sec
-                start = +new Date(),
-                url = '/print/printers/command/' + taskId;
-
-            return new Promise(function (resolve, reject) {
-                var timerId = setInterval(function () {
-                    Client.authorizedApiRequest(url)
-                        .get()
-                        .then(function (data) {
-                            var isError = ((data || {}).data || {}).is_error;
-                            if (isError) {
-                                clearInterval(timerId);
-                                reject(new Error(data.error_message));
-
-                            } else {
-                                if (options.progressHandler) {
-                                    options.progressHandler(data);
-                                }
-
-                                if (data && 1.0 <= data.progress) {
-                                    clearInterval(timerId);
-                                    resolve(data);
-
-                                } else {
-                                    var now = +new Date();
-                                    if (timeout <= (now - start)) {
-                                        clearInterval(timerId);
-                                        reject(new Error('timeout'));
-                                    }
-                                }
-                            }
-                        })
-                        .catch(function (error) {
-                            clearInterval(timerId);
-                            reject(error);
-                        });
-                }, freq);
-            });
         },
 
         /**
