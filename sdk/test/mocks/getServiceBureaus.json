@@ -1,0 +1,26 @@
+[
+	{
+		"id": "59fe3fa2-05f0-4d13-a0f1-981fe840d8e0",
+		"name": "i.materialise",
+		"logoUrl": "http://sandbox.spark.autodesk.com/api/v1/servicebureaus/59fe3fa2-05f0-4d13-a0f1-981fe840d8e0/logourl/imaterialise_logo.png",
+		"websiteUrl": "https://sandbox.spark.autodesk.com/api/v1/servicebureaus/59fe3fa2-05f0-4d13-a0f1-981fe840d8e0/websiteurl"
+	},
+	{
+		"id": "60cc25c8-a922-4102-a640-af534051a71e",
+		"name": "shapeways",
+		"logoUrl": "http://sandbox.spark.autodesk.com/api/v1/servicebureaus/60cc25c8-a922-4102-a640-af534051a71e/logourl/shapeways_logo.png",
+		"websiteUrl": "https://sandbox.spark.autodesk.com/api/v1/servicebureaus/60cc25c8-a922-4102-a640-af534051a71e/websiteurl"
+	},
+	{
+		"id": "c04e968b-146b-4856-aea8-3cc1a137970c",
+		"name": "sculpteo",
+		"logoUrl": "http://sandbox.spark.autodesk.com/api/v1/servicebureaus/c04e968b-146b-4856-aea8-3cc1a137970c/logourl/sculpteo_logo.png",
+		"websiteUrl": "https://sandbox.spark.autodesk.com/api/v1/servicebureaus/c04e968b-146b-4856-aea8-3cc1a137970c/websiteurl"
+	},
+	{
+		"id": "ea0036eb-43da-4495-ae1b-3fff63e92db7",
+		"name": "3dhubs",
+		"logoUrl": "http://sandbox.spark.autodesk.com/api/v1/servicebureaus/ea0036eb-43da-4495-ae1b-3fff63e92db7/logourl/3dhubs_logo.png",
+		"websiteUrl": "https://sandbox.spark.autodesk.com/api/v1/servicebureaus/ea0036eb-43da-4495-ae1b-3fff63e92db7/websiteurl"
+	}
+]

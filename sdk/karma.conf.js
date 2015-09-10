@@ -23,6 +23,7 @@ module.exports = function(config) {
       'src/Client.js',
       'src/utilities/Paginated.js',
       'src/drive/*.js',
+	  'src/service-bureaus/*.js',
       'src/Job.js',
       'src/Printer.js',
       'src/*.js',

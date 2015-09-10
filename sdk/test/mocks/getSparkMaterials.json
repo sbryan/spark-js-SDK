@@ -1,0 +1,38 @@
+[
+	{
+		"id": "03C61213-4EEA-4352-A6F3-FD1E1461F137",
+		"name": "Gold"
+	},
+	{
+		"id": "49108D1B-0AFC-4417-ABB0-538FC6CA7F6F",
+		"name": "Rhodium"
+	},
+	{
+		"id": "6759E5F8-A896-4695-BB11-5B9D604A9E06",
+		"name": "Alumide"
+	},
+	{
+		"id": "8C64A3EE-9D41-4925-9EF4-81A359B5D0E6",
+		"name": "Polyamide"
+	},
+	{
+		"id": "929D4AB5-1178-4639-9F2E-F3AA3ECD196E",
+		"name": "Sandstone"
+	},
+	{
+		"id": "95C93D92-7C95-44F4-888A-C1A06EA20A29",
+		"name": "Resin"
+	},
+	{
+		"id": "A8585DB8-294E-4FF3-A5EF-7E66734E5789",
+		"name": "Steel"
+	},
+	{
+		"id": "F7CB79CD-B857-486C-82FE-BE737A4810B5",
+		"name": "Ceramics"
+	},
+	{
+		"id": "FC565E34-8144-4209-B110-0F4745AC07C6",
+		"name": "Aluminum"
+	}
+]

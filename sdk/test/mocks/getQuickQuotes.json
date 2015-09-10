@@ -1,0 +1,39 @@
+{
+	"success": true,
+	"quotes": [
+		{
+			"success": true,
+			"service_bureau_id": "59fe3fa2-05f0-4d13-a0f1-981fe840d8e0",
+			"material_id": "6759E5F8-A896-4695-BB11-5B9D604A9E06",
+			"file_id": "17377619",
+			"price": "16.82"
+		},
+		{
+			"success": true,
+			"service_bureau_id": "60cc25c8-a922-4102-a640-af534051a71e",
+			"material_id": "6759E5F8-A896-4695-BB11-5B9D604A9E06",
+			"file_id": "17377619",
+			"price": "12.47"
+		},
+		{
+			"success": false,
+			"service_bureau_id": "c04e968b-146b-4856-aea8-3cc1a137970c",
+			"material_id": "6759E5F8-A896-4695-BB11-5B9D604A9E06",
+			"file_id": "17377619",
+			"error": {
+				"code": "17",
+				"message": "Quick quote is not available for this service bureau. Try calling the accurateQuote API."
+			}
+		},
+		{
+			"success": false,
+			"service_bureau_id": "ea0036eb-43da-4495-ae1b-3fff63e92db7",
+			"material_id": "6759E5F8-A896-4695-BB11-5B9D604A9E06",
+			"file_id": "17377619",
+			"error": {
+				"code": "16",
+				"message": "This material is not supported by the service bureau."
+			}
+		}
+	]
+}
