@@ -35,7 +35,8 @@ module.exports = function (grunt) {
 					appConfig.src + '/Job.js',
 					appConfig.src + '/Printer.js',
 					appConfig.src + '/*.js',
-					appConfig.src + '/drive/*.js'],
+					appConfig.src + '/drive/*.js',
+                    appConfig.src + '/service-bureaus/*.js'],
 				dest: appConfig.dist + '/<%= pkg.name %><%= version %>.min.js'
 			}
 		},
