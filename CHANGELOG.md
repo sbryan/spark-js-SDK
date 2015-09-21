@@ -4,6 +4,10 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 
 ## [Unreleased][unreleased]
 
+## [0.1.2] - 2015-09-21
+### Added
+- Service bureaus API
+
 ## [0.1.2] - 2015-09-03
 ### Changed
 - TaskWaiter updates progress callback on task completion
@@ -59,5 +63,9 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 - Some Print API implementation, mainly mesh related methods
 - Added grunt to the SDK with initial build tasks
 
-[unreleased]: https://github.com/spark3dp/spark-js-SDK/compare/v0.1.1...develop
+[unreleased]: https://github.com/spark3dp/spark-js-SDK/compare/v0.2.0...develop
+[0.2.0]: https://github.com/spark3dp/spark-js-SDK/compare/v0.1.2...v0.2.0
+[0.1.2]: https://github.com/spark3dp/spark-js-SDK/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/spark3dp/spark-js-SDK/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/spark3dp/spark-js-SDK/compare/v0.0.2...v0.1.0
+
