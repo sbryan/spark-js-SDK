@@ -4,7 +4,7 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 
 ## [Unreleased][unreleased]
 
-## [0.1.2] - 2015-09-21
+## [0.2.0] - 2015-09-21
 ### Added
 - Service bureaus API
 
