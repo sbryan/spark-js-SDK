@@ -81,7 +81,9 @@ describe('ServiceBureaus', function () {
 			}
 		});
 
-		return ServiceBureaus.getQuotes().then(function (response) {
+        var data = JSON.stringify({ 'items': [ {'material_id': "1234",'files': [{"file_id":"12345"}]}] });
+
+		return ServiceBureaus.getQuotes(data).then(function (response) {
 			expect(response.quotes[0]).to.have.property('success', fakeQuickQuotesGetResponse.quotes[0].success);
 			expect(response.quotes[0]).to.have.property('service_bureau_id', fakeQuickQuotesGetResponse.quotes[0].service_bureau_id);
 			expect(response.quotes[0]).to.have.property('material_id', fakeQuickQuotesGetResponse.quotes[0].material_id);
@@ -90,6 +92,34 @@ describe('ServiceBureaus', function () {
 		});
 
 	});
+
+    it('should reject getQuotes if items object is undefined', function () {
+        return ServiceBureaus
+            .getQuotes()
+            .then(function (response) {
+            })
+            .catch(function (error) {
+                expect(error).to.be.an.instanceof(Object);
+                expect(error).to.have.property('message');
+            });
+
+    });
+
+    it('should reject getQuotes if items object is empty', function () {
+
+        var data = JSON.stringify({ 'items': [ ] });
+
+        return ServiceBureaus
+            .getQuotes(data)
+            .then(function (response) {
+            })
+            .catch(function (error) {
+                expect(error).to.be.an.instanceof(Object);
+                expect(error).to.have.property('message');
+            });
+
+    });
+
 
 	it('should get cart url successfully', function () {
 
@@ -100,7 +130,9 @@ describe('ServiceBureaus', function () {
 			}
 		});
 
-		return ServiceBureaus.getCartUrl("12345").then(function (response) {
+        var data = JSON.stringify({ 'models' : [ {'file_id' : "12344", 'file_name' : "file.stl", 'quantity':1} ] });
+
+		return ServiceBureaus.getCartUrl("12345", data).then(function (response) {
 			expect(response.urls[0]).to.have.property('url', fakeCartUrlGetResponse.urls[0].url);
 			expect(response.urls[0]).to.have.property('file_ids', fakeCartUrlGetResponse.urls[0].file_ids);
 
@@ -108,4 +140,45 @@ describe('ServiceBureaus', function () {
 
 	});
 
+    it('should reject getCartUrl if models object and serviceBureauId are undefined', function () {
+        return ServiceBureaus
+            .getCartUrl()
+            .then(function (response) {
+            })
+            .catch(function (error) {
+                expect(error).to.be.an.instanceof(Object);
+                expect(error).to.have.property('message');
+            });
+
+    });
+
+    it('should reject getCartUrl if models object is empty', function () {
+
+        var data = JSON.stringify({ 'models' : [ ] });
+
+        return ServiceBureaus
+            .getCartUrl("1234", data)
+            .then(function (response) {
+            })
+            .catch(function (error) {
+                expect(error).to.be.an.instanceof(Object);
+                expect(error).to.have.property('message');
+            });
+
+    });
+
+    it('should reject getCartUrl if serviceBureauId is empty', function () {
+
+        var data = JSON.stringify({ 'models' : [ ] });
+
+        return ServiceBureaus
+            .getCartUrl("", data)
+            .then(function (response) {
+            })
+            .catch(function (error) {
+                expect(error).to.be.an.instanceof(Object);
+                expect(error).to.have.property('message');
+            });
+
+    });
 });

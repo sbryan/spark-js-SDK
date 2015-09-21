@@ -4,52 +4,109 @@
 var ADSKSpark = ADSKSpark || {};
 
 (function () {
-	'use strict';
+    'use strict';
 
-	var Constants = ADSKSpark.Constants,
-		Client = ADSKSpark.Client,
-		Helpers = ADSKSpark.Helpers;
+    var Constants = ADSKSpark.Constants,
+        Client = ADSKSpark.Client,
+        Helpers = ADSKSpark.Helpers;
 
 
-	ADSKSpark.ServiceBureaus = {
+    var verifyItems = function (itemsObjStr) {
+        var result = false;
+        try {
+            var itemsObj = JSON.parse(itemsObjStr);
+            if (itemsObj.items && itemsObj.items.length) {
+                result = true;
+            }
+        }
+        catch(e) {
+        }
+        return result;
+    }
 
-		getServiceBureaus: function () {
+    var verifyModels = function (modelsObjStr) {
+        var result = false;
+        try {
+            var modelsObj = JSON.parse(modelsObjStr);
+            if (modelsObj.models && modelsObj.models.length) {
+                result = true;
+            }
+        }
+        catch(e) {
+        }
+        return result;
+    }
 
-			var headers = {'Content-Type': 'application/json'};
+    /**
+     * @class
+     * @type {{getServiceBureaus: getServiceBureaus, getSparkMaterials: getSparkMaterials, getQuotes: getQuotes, getCartUrl: getCartUrl}}
+     * @description - The ServiceBureaus API singleton.
+     * See reference - https://spark.autodesk.com/developers/reference/servicebureaus
+     */
+    ADSKSpark.ServiceBureaus = {
 
-		    return Client.authorizedApiRequest('/servicebureaus').get(headers);
+        /**
+         * @description - Get service bureaus list
+         * @memberOf ADSKSpark.ServiceBureaus
+         * @returns {Promise} - A promise that will resolve to an array of service bureaus
+         */
+        getServiceBureaus: function () {
 
-			return Promise.reject(new Error('An error occurred'));
-		},
+            var headers = {'Content-Type': 'application/json'};
 
-		getSparkMaterials: function () {
+            return Client.authorizedApiRequest('/servicebureaus').get(headers);
+        },
 
-			var headers = {'Content-Type': 'application/json'};
+        /**
+         * @description - Get Spark materials list
+         * @memberOf ADSKSpark.ServiceBureaus
+         * @returns {Promise} - A promise that will resolve to an array of spark materials
+         */
+        getSparkMaterials: function () {
 
-			return Client.authorizedApiRequest('/servicebureaus/materials').get(headers);
+            var headers = {'Content-Type': 'application/json'};
 
-			return Promise.reject(new Error('An error occurred'));
-		},
+            return Client.authorizedApiRequest('/servicebureaus/materials').get(headers);
+        },
 
-		getQuotes: function (items) {
+        /**
+         * @description - Get quotes from service bureaus
+         * @memberOf ADSKSpark.ServiceBureaus
+         * @param {String} items - JSON (as a string) that holds the items and have the following structure: { 'items': [ {'material_id': selectedMaterialId,'files': [{"file_id":fileId}]}] }
+         * @returns {Promise} - A promise that will resolve to an array of spark materials
+         */
+        getQuotes: function (items) {
 
-			var headers = {'Content-Type': 'application/json'};
+            if (verifyItems(items)) {
 
-			return Client.authorizedApiRequest('/servicebureaus/quickquotes').post(headers, items);
+                var headers = {'Content-Type': 'application/json'};
 
-			return Promise.reject(new Error('An error occurred'));
-		},
+                return Client.authorizedApiRequest('/servicebureaus/quickquotes').post(headers, items);
+            }
 
-		getCartUrl: function (serviceBureauId, items) {
+            return Promise.reject(new Error('Invalid items object'));
+        },
 
-			var headers = {'Content-Type': 'application/json'};
+        /**
+         * @description - Get cart url from a specific service bureau
+         * @memberOf ADSKSpark.ServiceBureaus
+         * @param {String} serviceBureauId - The service bureau id ( guid )
+         * @param {String} models - JSON (as a string) that holds the models and have the following structure: { 'models' : [ {'file_id' : currentFileId, 'file_name' : fileName, 'quantity':1} ] }
+         * @returns {Promise} - A promise that will resolve to a cart url
+         */
+        getCartUrl: function (serviceBureauId, models) {
 
-			return Client.authorizedApiRequest('/servicebureaus/' + serviceBureauId + '/submit').post(headers, items);
+            if (verifyModels(models) && serviceBureauId && serviceBureauId.length) {
 
-			return Promise.reject(new Error('An error occurred'));
-		}
+                var headers = {'Content-Type': 'application/json'};
 
-	};
+                return Client.authorizedApiRequest('/servicebureaus/' + serviceBureauId + '/submit').post(headers, models);
+            }
+
+            return Promise.reject(new Error('Invalid service bureau id or items object'));
+        }
+
+    };
 
 
 }());
