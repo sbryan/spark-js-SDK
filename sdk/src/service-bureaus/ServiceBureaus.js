@@ -6,10 +6,7 @@ var ADSKSpark = ADSKSpark || {};
 (function () {
     'use strict';
 
-    var Constants = ADSKSpark.Constants,
-        Client = ADSKSpark.Client,
-        Helpers = ADSKSpark.Helpers;
-
+    var Client = ADSKSpark.Client;
 
     var verifyItems = function (itemsObjStr) {
         var result = false;
@@ -22,7 +19,7 @@ var ADSKSpark = ADSKSpark || {};
         catch(e) {
         }
         return result;
-    }
+    };
 
     var verifyModels = function (modelsObjStr) {
         var result = false;
@@ -35,7 +32,7 @@ var ADSKSpark = ADSKSpark || {};
         catch(e) {
         }
         return result;
-    }
+    };
 
     /**
      * @class
