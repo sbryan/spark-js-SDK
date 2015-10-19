@@ -38,12 +38,13 @@ var ADSKSpark = ADSKSpark || {};
 
         /**
          * @param {String} [profileId] - The type ID. If not specified, return all profiles.
+         * @param {Object} [params] - request parameters.
          * @returns {Promise} - A promise that will resolve with a list of profiles.
          */
-        getProfile: function (profileId) {
+        getProfile: function (profileId, params) {
             profileId = profileId || '';
             return Client.authorizedApiRequest('/printdb/profiles/' + profileId)
-                .get();
+                .get(null, params);
         }
     };
 
