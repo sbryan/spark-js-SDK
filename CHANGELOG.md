@@ -4,6 +4,9 @@ This project adheres to [Autodesk Spark JS SDK](https://github.com/spark3dp/spar
 
 ## [Unreleased][unreleased]
 
+### Added
+- PrintDB.getProfile() takes request parameters
+
 ## [0.2.0] - 2015-09-21
 ### Added
 - Service bureaus API
