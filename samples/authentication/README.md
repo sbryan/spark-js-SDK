@@ -129,6 +129,7 @@ the Explicit flow. This repository has a nodejs sample server implementation tha
 ### Quick Start
 #### Step 1 - Configure your Keys and Server
 * In `spark-js-sdk/samples/authentication/explicit_login.html` conduct these changes:
+
 1. Initialize APP_KEY with your App Key.
 2. Set the `options` object with your redirect URI and your server endpoints. The defaults that are set in this file assume you will be using nodejs server that is supplied with this repository (if you are using a different server implementation, you should skip directly to Step 3)
 
